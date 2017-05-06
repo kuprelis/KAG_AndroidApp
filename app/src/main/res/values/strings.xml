@@ -2,5 +2,5 @@
     <string name="app_name">KAG_AndroidApp</string>
     <string name="news">Naujienos</string>
     <string name="my_schedule">Tvarkaraštis</string>
-    <string name="search">Paieška</string>
+    <string name="settings">Nustatymai</string>
 </resources>

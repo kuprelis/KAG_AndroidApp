@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -30,23 +31,44 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment f = null;
                 switch (item.getItemId()) {
+                    case R.id.tab_my_schedule:
+                        break;
                     case R.id.tab_news:
                         f = new NewsFragment();
                         break;
-                    case R.id.tab_my_schedule:
-                        return true;
-                        //break;
-                    case R.id.tab_search:
-                        return true;
-                        //break;
+                    case R.id.tab_settings:
+                        break;
                 }
+                // TODO remove test code
                 FragmentManager fm = getSupportFragmentManager();
-                fm.beginTransaction()
-                        .replace(R.id.fragment_container, f)
-                        .commit();
+                FragmentTransaction ft = fm.beginTransaction();
+                Fragment old = fm.findFragmentById(R.id.fragment_container);
+                if (old != null) ft.remove(old);
+                if (f != null) ft.add(R.id.fragment_container, f);
+                ft.commit();
+
                 return true;
             }
         });
 
+        mBottomNav.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
+            @Override
+            public void onNavigationItemReselected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.tab_my_schedule:
+                        break;
+                    case R.id.tab_news:
+                        FragmentManager fm = getSupportFragmentManager();
+                        NewsFragment nf = (NewsFragment) fm.findFragmentById(R.id.fragment_container);
+                        nf.reset();
+                        break;
+                    case R.id.tab_settings:
+                        break;
+                }
+            }
+        });
+
+        // TODO open last tab
+        mBottomNav.setSelectedItemId(0);
     }
 }
