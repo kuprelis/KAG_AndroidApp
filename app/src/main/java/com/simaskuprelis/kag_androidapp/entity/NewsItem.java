@@ -5,6 +5,7 @@ import com.squareup.moshi.Json;
 
 public class NewsItem {
     // TODO add decoder
+    // TODO remove id if not needed
     @Json(name = "id")
     private int mId;
     @Json(name = "title")
@@ -12,15 +13,13 @@ public class NewsItem {
     @Json(name = "category")
     private int mCategory;
     @Json(name = "primarytext")
-    private String mTextPrimary;
+    private String mText;
     @Json(name = "maintext")
-    private String mTextMain;
-    //@Json(name = "visable")
-    //private boolean mVisible;
+    private String mBonusText;
+    @Json(name = "visable")
+    private boolean mVisible;
     @Json(name = "fotourl")
     private String mPhotoUrl;
-    //@Json(name = "gallery_id")
-    //private int mGalleryId;
     //@Json(name = "created_at")
     //private Date mCreated;
     //@Json(name = "updated_at")
@@ -38,15 +37,19 @@ public class NewsItem {
         return mCategory;
     }
 
-    public String getTextPrimary() {
-        return mTextPrimary;
+    public String getText() {
+        return mText;
     }
 
-    public String getTextMain() {
-        return mTextMain;
+    public String getBonusText() {
+        return mBonusText;
     }
 
     public String getPhotoUrl() {
         return mPhotoUrl;
+    }
+
+    public boolean isVisible() {
+        return mVisible;
     }
 }

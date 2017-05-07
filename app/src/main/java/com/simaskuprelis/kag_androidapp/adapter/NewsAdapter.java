@@ -57,7 +57,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     public void onBindViewHolder(NewsAdapter.ViewHolder holder, int position) {
         NewsItem item = mNewsList.get(position);
         holder.mTitle.setText(parseHtml(item.getTitle()));
-        holder.mBody.setText(parseHtml(item.getTextPrimary()));
+        holder.mBody.setText(parseHtml(item.getText()));
         holder.mBody.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
