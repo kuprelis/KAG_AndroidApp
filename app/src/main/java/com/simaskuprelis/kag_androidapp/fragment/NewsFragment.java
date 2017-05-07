@@ -10,10 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.simaskuprelis.kag_androidapp.NewsApi;
+import com.simaskuprelis.kag_androidapp.api.NewsApi;
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.adapter.NewsAdapter;
-import com.simaskuprelis.kag_androidapp.object.NewsItem;
+import com.simaskuprelis.kag_androidapp.entity.NewsItem;
 import com.squareup.moshi.Moshi;
 
 import java.util.List;

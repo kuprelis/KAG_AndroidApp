@@ -1,9 +1,7 @@
-package com.simaskuprelis.kag_androidapp.object;
+package com.simaskuprelis.kag_androidapp.entity;
 
 
 import com.squareup.moshi.Json;
-
-import java.util.Date;
 
 public class NewsItem {
     // TODO add decoder

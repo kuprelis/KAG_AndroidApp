@@ -1,7 +1,7 @@
-package com.simaskuprelis.kag_androidapp;
+package com.simaskuprelis.kag_androidapp.api;
 
 
-import com.simaskuprelis.kag_androidapp.object.NewsItem;
+import com.simaskuprelis.kag_androidapp.entity.NewsItem;
 
 import java.util.List;
 

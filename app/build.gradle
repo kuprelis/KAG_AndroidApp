@@ -23,6 +23,7 @@ ext {
     supportVersion = '25.3.1'
     butterknifeVersion = '8.5.1'
     retrofitVersion = '2.2.0'
+    firebaseVersion = '10.2.4'
 }
 
 dependencies {
@@ -42,7 +43,7 @@ dependencies {
 
     compile 'com.squareup.moshi:moshi:1.4.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.google.firebase:firebase-database:10.0.1'
+    compile "com.google.firebase:firebase-database:$firebaseVersion"
 
     testCompile 'junit:junit:4.12'
 }

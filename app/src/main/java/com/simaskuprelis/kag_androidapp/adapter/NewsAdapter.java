@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.simaskuprelis.kag_androidapp.R;
-import com.simaskuprelis.kag_androidapp.object.NewsItem;
+import com.simaskuprelis.kag_androidapp.entity.NewsItem;
 
 import java.util.Collections;
 import java.util.List;
