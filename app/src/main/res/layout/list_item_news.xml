@@ -26,6 +26,14 @@
             android:textColor="@android:color/black"/>
 
         <TextView
+            android:id="@+id/date_created"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/dateText"
+            tools:text="2017-04-20 16:20:00"/>
+
+        <TextView
             android:id="@+id/body_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -26,6 +26,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         TextView mTitle;
         @BindView(R.id.body_text)
         TextView mBody;
+        @BindView(R.id.date_created)
+        TextView mDate;
 
         ViewHolder(View v) {
             super(v);
@@ -57,6 +59,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     public void onBindViewHolder(NewsAdapter.ViewHolder holder, int position) {
         NewsItem item = mNewsList.get(position);
         holder.mTitle.setText(parseHtml(item.getTitle()));
+        holder.mDate.setText(item.getCreated());
         holder.mBody.setText(parseHtml(item.getText()));
         holder.mBody.setMovementMethod(LinkMovementMethod.getInstance());
     }

@@ -4,6 +4,8 @@ package com.simaskuprelis.kag_androidapp.entity;
 import com.squareup.moshi.Json;
 
 public class NewsItem {
+    private static final int VISIBLE = 1;
+
     // TODO add decoder
     // TODO remove id if not needed
     @Json(name = "id")
@@ -17,13 +19,13 @@ public class NewsItem {
     @Json(name = "maintext")
     private String mBonusText;
     @Json(name = "visable")
-    private boolean mVisible;
+    private int mVisible;
     @Json(name = "fotourl")
     private String mPhotoUrl;
-    //@Json(name = "created_at")
-    //private Date mCreated;
-    //@Json(name = "updated_at")
-    //private Date mUpdated;
+    @Json(name = "created_at")
+    private String mCreated;
+    @Json(name = "updated_at")
+    private String mUpdated;
 
     public int getId() {
         return mId;
@@ -45,11 +47,19 @@ public class NewsItem {
         return mBonusText;
     }
 
+    public boolean isVisible() {
+        return mVisible == VISIBLE;
+    }
+
     public String getPhotoUrl() {
         return mPhotoUrl;
     }
 
-    public boolean isVisible() {
-        return mVisible;
+    public String getCreated() {
+        return mCreated;
+    }
+
+    public String getUpdated() {
+        return mUpdated;
     }
 }
