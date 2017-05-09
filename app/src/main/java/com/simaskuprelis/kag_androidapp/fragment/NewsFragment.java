@@ -13,9 +13,11 @@ import android.view.ViewGroup;
 import com.simaskuprelis.kag_androidapp.api.NewsApi;
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.adapter.NewsAdapter;
+import com.simaskuprelis.kag_androidapp.api.NewsResponse;
 import com.simaskuprelis.kag_androidapp.entity.NewsItem;
 import com.squareup.moshi.Moshi;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -27,12 +29,25 @@ import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class NewsFragment extends Fragment {
-    // TODO get from firebase
     private static final String BASE_URL = "http://www.azuolynogimnazija.lt/json/";
     private static final String TAG = "NewsFragment";
 
     @BindView(R.id.news_list)
     RecyclerView mRecyclerView;
+
+    private int mPage;
+    private boolean mItemsAvailable;
+    private boolean mLoading;
+    private List<NewsItem> mNewsItems;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPage = 1;
+        mItemsAvailable = true;
+        mLoading = false;
+        mNewsItems = new ArrayList<>();
+    }
 
     @Nullable
     @Override
@@ -42,6 +57,22 @@ public class NewsFragment extends Fragment {
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(new NewsAdapter(mNewsItems));
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager llm = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (llm.findLastVisibleItemPosition() == mNewsItems.size() - 1) addItems();
+            }
+        });
+        addItems();
+
+        return v;
+    }
+
+    private void addItems() {
+        if (!mItemsAvailable || mLoading) return;
 
         Moshi moshi = new Moshi.Builder().build();
         Retrofit retrofit = new Retrofit.Builder()
@@ -49,20 +80,26 @@ public class NewsFragment extends Fragment {
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .build();
         NewsApi api = retrofit.create(NewsApi.class);
-        Call<List<NewsItem>> call = api.getNews();
-        call.enqueue(new Callback<List<NewsItem>>() {
+        Call<NewsResponse> call = api.getNews(mPage, null);
+        mLoading = true;
+        call.enqueue(new Callback<NewsResponse>() {
             @Override
-            public void onResponse(Call<List<NewsItem>> call, Response<List<NewsItem>> response) {
-                mRecyclerView.setAdapter(new NewsAdapter(response.body()));
+            public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
+                NewsResponse data = response.body();
+                Log.d(TAG, String.format("first: %d, last: %d", data.getFirst(), data.getLast()));
+                mNewsItems.addAll(data.getItems());
+                mRecyclerView.getAdapter().notifyDataSetChanged();
+                mItemsAvailable = data.getCurrentPage() != data.getLastPage();
+                mPage++;
+                mLoading = false;
             }
 
             @Override
-            public void onFailure(Call<List<NewsItem>> call, Throwable t) {
+            public void onFailure(Call<NewsResponse> call, Throwable t) {
                 Log.e(TAG, t.toString());
+                mLoading = false;
             }
         });
-
-        return v;
     }
 
     public void reset() {

@@ -2,16 +2,14 @@ package com.simaskuprelis.kag_androidapp.api;
 
 
 import com.simaskuprelis.kag_androidapp.entity.ImportantNewsItem;
-import com.simaskuprelis.kag_androidapp.entity.NewsItem;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public interface NewsApi {
     @GET("news")
-    Call<List<NewsItem>> getNews();
+    Call<NewsResponse> getNews(@Query("page") Integer page, @Query("perpage") Integer perPage);
 
     @GET("svarbu")
     Call<ImportantNewsItem> getImportantNews();

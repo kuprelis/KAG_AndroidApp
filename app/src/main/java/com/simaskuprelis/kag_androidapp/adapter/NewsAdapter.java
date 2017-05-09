@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.entity.NewsItem;
 
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -37,7 +36,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     public NewsAdapter(List<NewsItem> news) {
         mNewsList = news;
-        Collections.reverse(mNewsList);
     }
 
     @Override
