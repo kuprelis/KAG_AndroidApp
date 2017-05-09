@@ -6,10 +6,6 @@ import com.squareup.moshi.Json;
 public class NewsItem {
     private static final int VISIBLE = 1;
 
-    // TODO add decoder
-    // TODO remove id if not needed
-    @Json(name = "id")
-    private int mId;
     @Json(name = "title")
     private String mTitle;
     @Json(name = "category")
@@ -26,10 +22,6 @@ public class NewsItem {
     private String mCreated;
     @Json(name = "updated_at")
     private String mUpdated;
-
-    public int getId() {
-        return mId;
-    }
 
     public String getTitle() {
         return mTitle;

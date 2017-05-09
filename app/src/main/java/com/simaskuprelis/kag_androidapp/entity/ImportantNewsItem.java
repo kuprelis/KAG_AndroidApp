@@ -1,26 +1,21 @@
 package com.simaskuprelis.kag_androidapp.entity;
 
 
-import java.util.Date;
+import com.squareup.moshi.Json;
 
 public class ImportantNewsItem {
-    private String mTitle;
-    private String mText;
-    private boolean mActive;
-    //@Json(name = "created_at")
-    //private Date mCreated;
-    //@Json(name = "updated_at")
-    //private Date mUpdated;
+    private static final int ACTIVE = 1;
 
-    public String getTitle() {
-        return mTitle;
-    }
+    @Json(name = "text")
+    private String mText;
+    @Json(name = "active")
+    private int mActive;
 
     public String getText() {
         return mText;
     }
 
     public boolean isActive() {
-        return mActive;
+        return mActive == ACTIVE;
     }
 }

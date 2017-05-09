@@ -9,11 +9,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.simaskuprelis.kag_androidapp.api.NewsApi;
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.adapter.NewsAdapter;
 import com.simaskuprelis.kag_androidapp.api.NewsResponse;
+import com.simaskuprelis.kag_androidapp.entity.ImportantNewsItem;
 import com.simaskuprelis.kag_androidapp.entity.NewsItem;
 import com.squareup.moshi.Moshi;
 
@@ -34,6 +38,12 @@ public class NewsFragment extends Fragment {
 
     @BindView(R.id.news_list)
     RecyclerView mRecyclerView;
+    @BindView(R.id.important_display)
+    LinearLayout mImportantDisplay;
+    @BindView(R.id.important_text)
+    TextView mImportantText;
+    @BindView(R.id.loading_indicator)
+    ProgressBar mLoadingIndicator;
 
     private int mPage;
     private boolean mItemsAvailable;
@@ -55,7 +65,8 @@ public class NewsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_news, container, false);
         ButterKnife.bind(this, v);
 
-        mRecyclerView.setHasFixedSize(true);
+        updateImportant();
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(new NewsAdapter(mNewsItems));
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -69,6 +80,31 @@ public class NewsFragment extends Fragment {
         addItems();
 
         return v;
+    }
+
+    // TODO write interface for updateImportant and addItems
+    private void updateImportant() {
+        Moshi moshi = new Moshi.Builder().build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
+                .build();
+        NewsApi api = retrofit.create(NewsApi.class);
+        Call<ImportantNewsItem> call = api.getImportantNews();
+        call.enqueue(new Callback<ImportantNewsItem>() {
+            @Override
+            public void onResponse(Call<ImportantNewsItem> call, Response<ImportantNewsItem> response) {
+                ImportantNewsItem item = response.body();
+                if (!item.isActive()) return;
+                mImportantText.setText(item.getText());
+                mImportantDisplay.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFailure(Call<ImportantNewsItem> call, Throwable t) {
+                Log.e(TAG, t.toString());
+            }
+        });
     }
 
     private void addItems() {
@@ -85,8 +121,8 @@ public class NewsFragment extends Fragment {
         call.enqueue(new Callback<NewsResponse>() {
             @Override
             public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
+                mLoadingIndicator.setVisibility(View.GONE);
                 NewsResponse data = response.body();
-                Log.d(TAG, String.format("first: %d, last: %d", data.getFirst(), data.getLast()));
                 mNewsItems.addAll(data.getItems());
                 mRecyclerView.getAdapter().notifyDataSetChanged();
                 mItemsAvailable = data.getCurrentPage() != data.getLastPage();
