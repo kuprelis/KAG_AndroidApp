@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.api.NewsApi;
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.adapter.NewsAdapter;
@@ -49,6 +50,7 @@ public class NewsFragment extends Fragment {
     private boolean mItemsAvailable;
     private boolean mLoading;
     private List<NewsItem> mNewsItems;
+    private NewsApi mNewsApi;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +59,13 @@ public class NewsFragment extends Fragment {
         mItemsAvailable = true;
         mLoading = false;
         mNewsItems = new ArrayList<>();
+
+        Moshi moshi = new Moshi.Builder().build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
+                .build();
+        mNewsApi = retrofit.create(NewsApi.class);
     }
 
     @Nullable
@@ -82,21 +91,14 @@ public class NewsFragment extends Fragment {
         return v;
     }
 
-    // TODO write interface for updateImportant and addItems
     private void updateImportant() {
-        Moshi moshi = new Moshi.Builder().build();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
-                .build();
-        NewsApi api = retrofit.create(NewsApi.class);
-        Call<ImportantNewsItem> call = api.getImportantNews();
+        Call<ImportantNewsItem> call = mNewsApi.getImportantNews();
         call.enqueue(new Callback<ImportantNewsItem>() {
             @Override
             public void onResponse(Call<ImportantNewsItem> call, Response<ImportantNewsItem> response) {
                 ImportantNewsItem item = response.body();
                 if (!item.isActive()) return;
-                mImportantText.setText(item.getText());
+                mImportantText.setText(Utils.parseHtml(item.getText()));
                 mImportantDisplay.setVisibility(View.VISIBLE);
             }
 
@@ -110,14 +112,8 @@ public class NewsFragment extends Fragment {
     private void addItems() {
         if (!mItemsAvailable || mLoading) return;
 
-        Moshi moshi = new Moshi.Builder().build();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
-                .build();
-        NewsApi api = retrofit.create(NewsApi.class);
-        Call<NewsResponse> call = api.getNews(mPage, null);
         mLoading = true;
+        Call<NewsResponse> call = mNewsApi.getNews(mPage, null);
         call.enqueue(new Callback<NewsResponse>() {
             @Override
             public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
