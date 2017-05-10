@@ -46,6 +46,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(NewsAdapter.ViewHolder holder, int position) {
         NewsItem item = mNewsList.get(position);
+        if (!item.isVisible()) holder.itemView.setVisibility(View.GONE);
         holder.mTitle.setText(Utils.parseHtml(item.getTitle()));
         holder.mDate.setText(item.getCreated());
         holder.mBody.setText(Utils.parseHtml(item.getText()));
