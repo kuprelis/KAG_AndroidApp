@@ -3,4 +3,10 @@
     <string name="news">Naujienos</string>
     <string name="my_schedule">Tvarkaraštis</string>
     <string name="settings">Nustatymai</string>
+
+    <string name="mon_short">P</string>
+    <string name="tue_short">A</string>
+    <string name="wed_short">T</string>
+    <string name="thu_short">K</string>
+    <string name="fri_short">P</string>
 </resources>

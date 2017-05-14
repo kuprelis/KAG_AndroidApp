@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.simaskuprelis.kag_androidapp.fragment.NewsFragment;
 import com.simaskuprelis.kag_androidapp.R;
+import com.simaskuprelis.kag_androidapp.fragment.TimetablePagerFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
                 Fragment f = null;
                 switch (item.getItemId()) {
                     case R.id.tab_my_schedule:
+                        f = new TimetablePagerFragment();
                         break;
                     case R.id.tab_news:
                         f = new NewsFragment();
