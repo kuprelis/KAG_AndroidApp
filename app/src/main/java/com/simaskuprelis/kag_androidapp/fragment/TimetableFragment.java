@@ -11,6 +11,10 @@ import android.view.ViewGroup;
 
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.adapter.TimetableAdapter;
+import com.simaskuprelis.kag_androidapp.entity.Group;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,11 +23,15 @@ import butterknife.ButterKnife;
 public class TimetableFragment extends Fragment {
 
     private static final String KEY_DAY = "day";
+    private static final String KEY_TIMES = "times";
+    private static final String KEY_GROUPS = "groups";
 
     @BindView(R.id.timetable)
     RecyclerView mTimetable;
 
     private int mDay;
+    private List<Group> mGroups;
+    private List<Integer> mTimes;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,7 +53,7 @@ public class TimetableFragment extends Fragment {
         return v;
     }
 
-    public static TimetableFragment newInstance(int day) {
+    public static TimetableFragment newInstance(int day, List<Group> groups, List<Integer> times) {
         Bundle args = new Bundle();
         args.putInt(KEY_DAY, day);
         TimetableFragment fragment = new TimetableFragment();

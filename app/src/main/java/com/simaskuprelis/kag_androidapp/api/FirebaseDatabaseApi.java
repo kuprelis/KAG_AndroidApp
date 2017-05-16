@@ -31,8 +31,7 @@ public class FirebaseDatabaseApi {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        DataSnapshot ds = (DataSnapshot) dataSnapshot.getChildren().iterator();
-                        listener.onLoad(ds.getValue(Node.class));
+                        listener.onLoad(dataSnapshot.getValue(Node.class));
                     }
 
                     @Override
@@ -79,8 +78,7 @@ public class FirebaseDatabaseApi {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        DataSnapshot ds = (DataSnapshot) dataSnapshot.getChildren().iterator();
-                        listener.onLoad(ds.getValue(Group.class));
+                        listener.onLoad(dataSnapshot.getValue(Group.class));
                     }
 
                     @Override

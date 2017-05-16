@@ -4,19 +4,27 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.simaskuprelis.kag_androidapp.entity.Group;
 import com.simaskuprelis.kag_androidapp.fragment.TimetableFragment;
+
+import java.util.List;
 
 public class TimetablePagerAdapter extends FragmentPagerAdapter {
 
     private static final int ITEM_COUNT = 5;
 
-    public TimetablePagerAdapter(FragmentManager fm) {
+    private List<Integer> mTimes;
+    private List<Group> mGroups;
+
+    public TimetablePagerAdapter(FragmentManager fm, List<Integer> times, List<Group> groups) {
         super(fm);
+        mTimes = times;
+        mGroups = groups;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return TimetableFragment.newInstance(position + 1);
+        return TimetableFragment.newInstance(position + 1, mGroups, mTimes);
     }
 
     @Override
