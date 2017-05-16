@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:textSize="30sp"
-            android:text="1"/>
+            tools:text="1"/>
 
         <View
             android:layout_width="1dp"
@@ -37,7 +37,7 @@
             android:layout_margin="12dp"
             android:textColor="@android:color/black"
             android:textSize="18sp"
-            android:text="3, matematika A"/>
+            tools:text="3, matematika A"/>
 
         <View
             android:layout_width="1dp"
@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="13:00"/>
+            tools:text="13:00"/>
 
     </LinearLayout>
 
