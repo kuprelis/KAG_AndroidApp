@@ -9,8 +9,11 @@ public class Utils {
         Spanned s = Html.fromHtml(html);
 
         int i = s.length() - 1;
-        while (i >= 0 && Character.isWhitespace(s.charAt(i))) i--;
-
+        while (i >= 0) {
+            char c = s.charAt(i);
+            if (!Character.isWhitespace(c) && !Character.isSpaceChar(c)) break;
+            i--;
+        }
         return s.subSequence(0, i+1);
     }
 }
