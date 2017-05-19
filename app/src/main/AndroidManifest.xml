@@ -18,6 +18,8 @@
             </intent-filter>'
         </activity>
 
+        <activity android:name=".activity.GroupActivity" />
+
         <service
             android:name=".service.MyFirebaseMessagingService">
             <intent-filter>

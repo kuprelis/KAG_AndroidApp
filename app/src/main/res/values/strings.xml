@@ -9,4 +9,15 @@
     <string name="wed_short">T</string>
     <string name="thu_short">K</string>
     <string name="fri_short">P</string>
+
+    <string name="monday">Pirmadienis</string>
+    <string name="wednesday">Antradienis</string>
+    <string name="tuesday">Trečiadienis</string>
+    <string name="thursday">Ketvirtadienis</string>
+    <string name="friday">Penktadienis</string>
+
+    <string name="teacher">Mokytojas</string>
+    <string name="room">Kabinetas</string>
+    <string name="students">Mokiniai</string>
+    <string name="lessons">Pamokos</string>
 </resources>

@@ -74,7 +74,7 @@ public class TimetableFragment extends Fragment {
     private void setupAdapter() {
         if (mTimes == null || mTimetable == null || mTimetable.getAdapter() != null) return;
         mTimetable.setLayoutManager(new LinearLayoutManager(getContext()));
-        mTimetable.setAdapter(new TimetableAdapter(mGroups, mTimes));
+        mTimetable.setAdapter(new TimetableAdapter(mGroups, mTimes, getContext()));
     }
 
     public static TimetableFragment newInstance(List<Group> groups) {

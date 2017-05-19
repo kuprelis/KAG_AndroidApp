@@ -1,5 +1,7 @@
 package com.simaskuprelis.kag_androidapp.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.simaskuprelis.kag_androidapp.R;
+import com.simaskuprelis.kag_androidapp.activity.GroupActivity;
 import com.simaskuprelis.kag_androidapp.entity.Group;
 
 import java.util.List;
@@ -21,6 +24,7 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
 
     private SparseArray<Group> mGroups;
     private List<Integer> mTimes;
+    private Context mContext;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.lesson_number)
@@ -36,9 +40,10 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
         }
     }
 
-    public TimetableAdapter(SparseArray<Group> groups, List<Integer> times) {
+    public TimetableAdapter(SparseArray<Group> groups, List<Integer> times, Context c) {
         mGroups = groups;
         mTimes = times;
+        mContext = c;
     }
 
     @Override
@@ -52,8 +57,17 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
         holder.mNumber.setText(Integer.toString(position + 1));
         int startTime = mTimes.get(position * 2);
         holder.mTime.setText(String.format("%02d:%02d", startTime / 60, startTime % 60));
-        Group g = mGroups.get(position + 1);
+        final Group g = mGroups.get(position + 1);
         if (g != null) holder.mName.setText(g.getName());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mContext, GroupActivity.class);
+                i.putExtra(GroupActivity.EXTRA_GROUP, g);
+                mContext.startActivity(i);
+            }
+        });
     }
 
     @Override

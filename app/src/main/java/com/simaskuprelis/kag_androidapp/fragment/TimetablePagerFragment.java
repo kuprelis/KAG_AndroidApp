@@ -89,7 +89,7 @@ public class TimetablePagerFragment extends Fragment {
     }
 
     private void setupAdapter() {
-        if (mGroups == null || mPager == null || mPager.getAdapter() != null) return;
+        if (getActivity() == null || mGroups == null || mPager == null || mPager.getAdapter() != null) return;
         FragmentManager fm = getActivity().getSupportFragmentManager();
         mPager.setAdapter(new TimetablePagerAdapter(fm, mGroups));
         mTabs.setupWithViewPager(mPager);
