@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ButterKnife.setDebug(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -56,21 +55,16 @@ public class MainActivity extends AppCompatActivity {
         mBottomNav.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
             @Override
             public void onNavigationItemReselected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.tab_my_schedule:
-                        break;
-                    case R.id.tab_news:
-                        FragmentManager fm = getSupportFragmentManager();
-                        NewsFragment nf = (NewsFragment) fm.findFragmentById(R.id.fragment_container);
-                        nf.reset();
-                        break;
-                    case R.id.tab_settings:
-                        break;
+                FragmentManager fm = getSupportFragmentManager();
+                Fragment f = fm.findFragmentById(R.id.fragment_container);
+                if (f == null) return;
+                if (f instanceof TimetablePagerFragment) {
+                    ((TimetablePagerFragment) f).reset();
+                } else if (f instanceof NewsFragment) {
+                    ((NewsFragment) f).reset();
                 }
             }
         });
 
-        // TODO open last tab
-        mBottomNav.setSelectedItemId(0);
     }
 }

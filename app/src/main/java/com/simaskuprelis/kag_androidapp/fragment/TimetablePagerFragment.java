@@ -38,6 +38,7 @@ public class TimetablePagerFragment extends Fragment {
 
     private List<Group> mGroups;
     private String mUserId = "18a_kups"; // TODO get from prefs
+    private int mTodayPage;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,6 +65,15 @@ public class TimetablePagerFragment extends Fragment {
             public void onFail(Exception e) {
             }
         });
+
+        Calendar cal = Calendar.getInstance();
+        switch (cal.get(Calendar.DAY_OF_WEEK)) {
+            case Calendar.TUESDAY: mTodayPage = 1; break;
+            case Calendar.WEDNESDAY: mTodayPage = 2; break;
+            case Calendar.THURSDAY: mTodayPage = 3; break;
+            case Calendar.FRIDAY: mTodayPage = 4; break;
+            default: mTodayPage = 0; break;
+        }
     }
 
     @Nullable
@@ -83,16 +93,10 @@ public class TimetablePagerFragment extends Fragment {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         mPager.setAdapter(new TimetablePagerAdapter(fm, mGroups));
         mTabs.setupWithViewPager(mPager);
+        mPager.setCurrentItem(mTodayPage, false);
+    }
 
-        Calendar cal = Calendar.getInstance();
-        int page;
-        switch (cal.get(Calendar.DAY_OF_WEEK)) {
-            case Calendar.TUESDAY: page = 1; break;
-            case Calendar.WEDNESDAY: page = 2; break;
-            case Calendar.THURSDAY: page = 3; break;
-            case Calendar.FRIDAY: page = 4; break;
-            default: page = 0; break;
-        }
-        mPager.setCurrentItem(page, false);
+    public void reset() {
+        mPager.setCurrentItem(mTodayPage);
     }
 }
