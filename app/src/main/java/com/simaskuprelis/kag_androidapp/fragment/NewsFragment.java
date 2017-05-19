@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.crash.FirebaseCrash;
 import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.api.NewsApi;
 import com.simaskuprelis.kag_androidapp.R;
@@ -104,7 +105,7 @@ public class NewsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ImportantNewsItem> call, Throwable t) {
-                Log.e(TAG, t.toString());
+                FirebaseCrash.logcat(Log.ERROR, TAG, t.toString());
             }
         });
     }
@@ -128,13 +129,13 @@ public class NewsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<NewsResponse> call, Throwable t) {
-                Log.e(TAG, t.toString());
+                FirebaseCrash.logcat(Log.ERROR, TAG, t.toString());
                 mLoading = false;
             }
         });
     }
 
     public void reset() {
-        mRecyclerView.scrollToPosition(0);
+        mRecyclerView.smoothScrollToPosition(0);
     }
 }
