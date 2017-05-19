@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.fragment.NewsFragment;
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.fragment.TimetablePagerFragment;
@@ -25,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        // TODO move to entry point
+        Utils.setupDatabase();
 
         putFragment(new TimetablePagerFragment());
 
