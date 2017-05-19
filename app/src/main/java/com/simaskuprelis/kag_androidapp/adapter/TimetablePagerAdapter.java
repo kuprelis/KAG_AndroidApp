@@ -2,7 +2,7 @@ package com.simaskuprelis.kag_androidapp.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.simaskuprelis.kag_androidapp.entity.Group;
 import com.simaskuprelis.kag_androidapp.entity.Lesson;
@@ -11,7 +11,7 @@ import com.simaskuprelis.kag_androidapp.fragment.TimetableFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimetablePagerAdapter extends FragmentPagerAdapter {
+public class TimetablePagerAdapter extends FragmentStatePagerAdapter {
 
     private static final int ITEM_COUNT = 5;
 

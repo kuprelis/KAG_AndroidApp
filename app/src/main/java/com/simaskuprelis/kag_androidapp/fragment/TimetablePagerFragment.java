@@ -20,6 +20,7 @@ import com.simaskuprelis.kag_androidapp.api.listener.NodesListener;
 import com.simaskuprelis.kag_androidapp.entity.Group;
 import com.simaskuprelis.kag_androidapp.entity.Node;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -82,5 +83,16 @@ public class TimetablePagerFragment extends Fragment {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         mPager.setAdapter(new TimetablePagerAdapter(fm, mGroups));
         mTabs.setupWithViewPager(mPager);
+
+        Calendar cal = Calendar.getInstance();
+        int page;
+        switch (cal.get(Calendar.DAY_OF_WEEK)) {
+            case Calendar.TUESDAY: page = 1; break;
+            case Calendar.WEDNESDAY: page = 2; break;
+            case Calendar.THURSDAY: page = 3; break;
+            case Calendar.FRIDAY: page = 4; break;
+            default: page = 0; break;
+        }
+        mPager.setCurrentItem(page, false);
     }
 }
