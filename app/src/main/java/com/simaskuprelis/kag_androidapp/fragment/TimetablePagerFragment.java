@@ -15,12 +15,12 @@ import android.view.ViewGroup;
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.adapter.TimetablePagerAdapter;
 import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
-import com.simaskuprelis.kag_androidapp.api.listener.SingleGroupListener;
-import com.simaskuprelis.kag_androidapp.api.listener.SingleNodeListener;
+import com.simaskuprelis.kag_androidapp.api.listener.GroupsListener;
+import com.simaskuprelis.kag_androidapp.api.listener.NodesListener;
 import com.simaskuprelis.kag_androidapp.entity.Group;
 import com.simaskuprelis.kag_androidapp.entity.Node;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,41 +36,33 @@ public class TimetablePagerFragment extends Fragment {
     FloatingActionButton mEditFab;
 
     private List<Group> mGroups;
-    private boolean mLoaded;
     private String mUserId = "18a_kups"; // TODO get from prefs
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mLoaded = false;
-        FirebaseDatabaseApi.getNode(new SingleNodeListener() {
+        FirebaseDatabaseApi.getNodes(Collections.singletonList(mUserId), new NodesListener() {
             @Override
-            public void onLoad(Node node) {
-                mGroups = new ArrayList<>();
-                final List<String> ids = node.getGroups();
-                for (String id : ids) {
-                    FirebaseDatabaseApi.getGroup(new SingleGroupListener() {
-                        @Override
-                        public void onLoad(Group group) {
-                            mGroups.add(group);
-                            if (mGroups.size() == ids.size()) {
-                                mLoaded = true;
-                                setupAdapter();
-                            }
-                        }
+            public void onLoad(List<Node> nodes) {
+                Node n = nodes.get(0);
+                FirebaseDatabaseApi.getGroups(n.getGroups(), new GroupsListener() {
+                    @Override
+                    public void onLoad(List<Group> groups) {
+                        mGroups = groups;
+                        setupAdapter();
+                    }
 
-                        @Override
-                        public void onFail(Exception e) {
-                        }
-                    }, id);
-                }
+                    @Override
+                    public void onFail(Exception e) {
+                    }
+                });
             }
 
             @Override
             public void onFail(Exception e) {
             }
-        }, mUserId);
+        });
     }
 
     @Nullable
@@ -86,7 +78,7 @@ public class TimetablePagerFragment extends Fragment {
     }
 
     private void setupAdapter() {
-        if (!mLoaded || mPager == null || mPager.getAdapter() != null) return;
+        if (mGroups == null || mPager == null || mPager.getAdapter() != null) return;
         FragmentManager fm = getActivity().getSupportFragmentManager();
         mPager.setAdapter(new TimetablePagerAdapter(fm, mGroups));
         mTabs.setupWithViewPager(mPager);
