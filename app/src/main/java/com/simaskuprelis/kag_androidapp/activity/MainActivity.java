@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        putFragment(new TimetablePagerFragment());
+
         mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -40,15 +42,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.tab_settings:
                         break;
                 }
-                // TODO remove test code
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                Fragment old = fm.findFragmentById(R.id.fragment_container);
-                if (old != null) ft.remove(old);
-                if (f != null) ft.add(R.id.fragment_container, f);
-                ft.commit();
-
-                return true;
+                putFragment(f);
+                return f != null;
             }
         });
 
@@ -66,5 +61,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void putFragment(Fragment f) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        Fragment old = fm.findFragmentById(R.id.fragment_container);
+        if (old != null) ft.remove(old);
+        if (f != null) ft.add(R.id.fragment_container, f);
+        ft.commit();
     }
 }
