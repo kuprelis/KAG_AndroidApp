@@ -48,6 +48,7 @@ public class Node implements Comparable<Node> {
 
     @Override
     public int compareTo(@NonNull Node o) {
-        return this.getName().compareToIgnoreCase(o.getName());
+        if (getCategory() != o.getCategory()) return getCategory() - o.getCategory();
+        return getName().compareToIgnoreCase(o.getName());
     }
 }

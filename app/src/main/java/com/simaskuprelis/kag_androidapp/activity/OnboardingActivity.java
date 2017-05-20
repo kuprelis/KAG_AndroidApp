@@ -3,9 +3,13 @@ package com.simaskuprelis.kag_androidapp.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -17,6 +21,7 @@ import com.simaskuprelis.kag_androidapp.api.listener.NodesListener;
 import com.simaskuprelis.kag_androidapp.api.listener.PreloadListener;
 import com.simaskuprelis.kag_androidapp.entity.Node;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,6 +38,7 @@ public class OnboardingActivity extends AppCompatActivity {
     ProgressBar mLoadingIndicator;
 
     private List<Node> mNodes;
+    private List<Node> mAdapterNodes;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,7 +54,8 @@ public class OnboardingActivity extends AppCompatActivity {
                 FirebaseDatabaseApi.getNodes(null, new NodesListener() {
                     @Override
                     public void onLoad(List<Node> nodes) {
-                        mNodes = nodes;
+                        mNodes = new ArrayList<>(nodes);
+                        mAdapterNodes = nodes;
                         setupAdapter();
                     }
 
@@ -67,7 +74,7 @@ public class OnboardingActivity extends AppCompatActivity {
     private void setupAdapter() {
         mLoadingIndicator.setVisibility(View.GONE);
         mNodeList.setLayoutManager(new LinearLayoutManager(this));
-        mNodeList.setAdapter(new NodeAdapter(mNodes, new NodeClickListener() {
+        mNodeList.setAdapter(new NodeAdapter(mAdapterNodes, new NodeClickListener() {
             @Override
             public void onClick(Node n) {
                 sendResult(n.getId());
@@ -80,5 +87,43 @@ public class OnboardingActivity extends AppCompatActivity {
         i.putExtra(EXTRA_USER_ID, id);
         setResult(RESULT_OK, i);
         finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_onboarding, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.node_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filterItems(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterItems(newText);
+                return true;
+            }
+        });
+
+        return true;
+    }
+
+    private void filterItems(String query) {
+        if (mNodes == null) return;
+        mLoadingIndicator.setVisibility(View.VISIBLE);
+        mAdapterNodes.clear();
+        query = query.toLowerCase();
+        if (query.isEmpty()) {
+            mAdapterNodes.addAll(mNodes);
+        } else for (Node n : mNodes) {
+            String name = n.getName().toLowerCase();
+            if (name.contains(query)) mAdapterNodes.add(n);
+        }
+        mLoadingIndicator.setVisibility(View.GONE);
+        mNodeList.getAdapter().notifyDataSetChanged();
     }
 }
