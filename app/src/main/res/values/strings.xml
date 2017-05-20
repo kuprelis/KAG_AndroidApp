@@ -22,4 +22,6 @@
     <string name="lessons">Pamokos</string>
 
     <string name="important_news">Svarbi informacija</string>
+
+    <string name="select_node">Pasirinkite tvarkaraštį</string>
 </resources>

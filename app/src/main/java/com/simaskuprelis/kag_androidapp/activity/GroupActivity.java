@@ -65,11 +65,11 @@ public class GroupActivity extends AppCompatActivity {
                     }
                 }
 
-                setupRecycler(mTeachers, new NodeAdapter(teachers));
-                setupRecycler(mStudents, new NodeAdapter(students));
+                setupRecycler(mTeachers, new NodeAdapter(teachers, null));
+                setupRecycler(mStudents, new NodeAdapter(students, null));
                 setupRecycler(mLessons, new LessonAdapter(g.getLessons(), context));
 
-                if (rooms.size() != 0) setupRecycler(mRooms, new NodeAdapter(rooms));
+                if (rooms.size() != 0) setupRecycler(mRooms, new NodeAdapter(rooms, null));
                 else mRoomDisplay.setVisibility(View.GONE);
             }
 

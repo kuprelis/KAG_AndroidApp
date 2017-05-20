@@ -1,7 +1,9 @@
 package com.simaskuprelis.kag_androidapp.fragment;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -28,6 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TimetablePagerFragment extends Fragment {
+    public static final String PREF_USER_ID = "userId";
 
     @BindView(R.id.pager)
     ViewPager mPager;
@@ -37,12 +40,15 @@ public class TimetablePagerFragment extends Fragment {
     FloatingActionButton mEditFab;
 
     private List<Group> mGroups;
-    private String mUserId = "18a_kups"; // TODO get from prefs
+    private String mUserId;
     private int mTodayPage;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        mUserId = sp.getString(PREF_USER_ID, null);
 
         FirebaseDatabaseApi.getNodes(Collections.singletonList(mUserId), new NodesListener() {
             @Override

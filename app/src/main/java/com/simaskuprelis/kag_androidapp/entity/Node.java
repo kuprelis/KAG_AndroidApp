@@ -2,15 +2,14 @@ package com.simaskuprelis.kag_androidapp.entity;
 
 import android.support.annotation.NonNull;
 
-import com.google.firebase.database.PropertyName;
-
 import java.util.List;
 
 public class Node implements Comparable<Node> {
-    private static final int TEACHER = 1;
-    private static final int ROOM = 2;
-    private static final int STUDENT = 3;
+    public static final int TEACHER = 1;
+    public static final int ROOM = 2;
+    public static final int STUDENT = 3;
 
+    private String mId;
     private int mCategory;
     private List<String> mGroups;
     private String mName;
@@ -37,6 +36,14 @@ public class Node implements Comparable<Node> {
 
     public void setCategory(int category) {
         mCategory = category;
+    }
+
+    public String getId() {
+        return mId;
+    }
+
+    public void setId(String id) {
+        mId = id;
     }
 
     @Override

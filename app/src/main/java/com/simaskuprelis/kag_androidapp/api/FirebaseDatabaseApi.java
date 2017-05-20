@@ -12,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.simaskuprelis.kag_androidapp.api.listener.GroupsListener;
 import com.simaskuprelis.kag_androidapp.api.listener.NodesListener;
+import com.simaskuprelis.kag_androidapp.api.listener.PreloadListener;
 import com.simaskuprelis.kag_androidapp.api.listener.TimesListener;
 import com.simaskuprelis.kag_androidapp.entity.Group;
 import com.simaskuprelis.kag_androidapp.entity.Node;
@@ -39,6 +40,7 @@ public class FirebaseDatabaseApi {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Node n = dataSnapshot.getValue(Node.class);
+                            n.setId(dataSnapshot.getKey());
                             nodes.add(n);
                             if (nodes.size() == ids.size()) {
                                 Collections.sort(nodes);
@@ -58,6 +60,7 @@ public class FirebaseDatabaseApi {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
                                 Node n = ds.getValue(Node.class);
+                                n.setId(ds.getKey());
                                 nodes.add(n);
                             }
                             Collections.sort(nodes);
@@ -131,6 +134,22 @@ public class FirebaseDatabaseApi {
                             items.add(ds.getValue(Integer.class));
                         }
                         listener.onLoad(items);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        FirebaseCrash.logcat(Log.ERROR, TAG, databaseError.toString());
+                        listener.onFail(databaseError.toException());
+                    }
+                });
+    }
+
+    public static void preload(final PreloadListener listener) {
+        FirebaseDatabase.getInstance().getReference()
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        listener.onLoad();
                     }
 
                     @Override

@@ -1,5 +1,6 @@
 package com.simaskuprelis.kag_androidapp.adapter;
 
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import butterknife.ButterKnife;
 public class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewHolder> {
 
     private List<Node> mNodes;
+    private NodeClickListener mListener;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.node_name)
@@ -28,8 +30,9 @@ public class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewHolder> {
         }
     }
 
-    public NodeAdapter(List<Node> nodes) {
+    public NodeAdapter(List<Node> nodes, @Nullable NodeClickListener listener) {
         mNodes = nodes;
+        mListener = listener;
     }
 
     @Override
@@ -40,8 +43,14 @@ public class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(NodeAdapter.ViewHolder holder, int position) {
-        Node n = mNodes.get(position);
+        final Node n = mNodes.get(position);
         holder.mName.setText(n.getName());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) mListener.onClick(n);
+            }
+        });
     }
 
     @Override
