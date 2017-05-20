@@ -33,6 +33,13 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
+        <receiver android:name=".receiver.ImportantNewsReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.simaskuprelis.kag_androidapp.POLL_IMPORTANT" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

@@ -20,4 +20,6 @@
     <string name="room">Kabinetas</string>
     <string name="students">Mokiniai</string>
     <string name="lessons">Pamokos</string>
+
+    <string name="important_news">Svarbi informacija</string>
 </resources>

@@ -5,8 +5,14 @@ import android.text.Html;
 import android.text.Spanned;
 
 import com.google.firebase.database.FirebaseDatabase;
+import com.simaskuprelis.kag_androidapp.api.NewsApi;
+import com.squareup.moshi.Moshi;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class Utils {
+    private static final String BASE_URL = "http://www.azuolynogimnazija.lt/json/";
     private static boolean sDatabaseSetup = false;
 
     public static void setupDatabase() {
@@ -25,5 +31,14 @@ public class Utils {
             i--;
         }
         return s.subSequence(0, i+1);
+    }
+
+    public static NewsApi getApi() {
+        Moshi moshi = new Moshi.Builder().build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
+                .build();
+        return retrofit.create(NewsApi.class);
     }
 }

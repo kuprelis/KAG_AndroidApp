@@ -1,5 +1,8 @@
 package com.simaskuprelis.kag_androidapp.activity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -13,11 +16,18 @@ import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.fragment.NewsFragment;
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.fragment.TimetablePagerFragment;
+import com.simaskuprelis.kag_androidapp.receiver.ImportantNewsReceiver;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
+    public static final int TAB_TIMETABLE = 0;
+    public static final int TAB_NEWS = 1;
+    public static final int TAB_SETTINGS = 2;
+    public static final String EXTRA_TAB = "com.simaskuprelis.kag_androidapp.tab";
+
+
     @BindView(R.id.bottom_nav)
     BottomNavigationView mBottomNav;
 
@@ -30,7 +40,29 @@ public class MainActivity extends AppCompatActivity {
         // TODO move to entry point
         Utils.setupDatabase();
 
-        putFragment(new TimetablePagerFragment());
+        Intent i = new Intent(ImportantNewsReceiver.ACTION_POLL_IMPORTANT);
+        PendingIntent pi = PendingIntent.getBroadcast(this, 0, i, PendingIntent.FLAG_NO_CREATE);
+        if (pi == null) {
+            pi = PendingIntent.getBroadcast(this, 0, i, 0);
+            AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+            // TODO get interval from settings
+            am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+                    AlarmManager.INTERVAL_HOUR, pi);
+        }
+
+        int tab = getIntent().getIntExtra(EXTRA_TAB, TAB_TIMETABLE);
+        switch (tab) {
+            case TAB_TIMETABLE:
+                putFragment(new TimetablePagerFragment());
+                mBottomNav.setSelectedItemId(R.id.tab_my_schedule);
+                break;
+            case TAB_NEWS:
+                putFragment(new NewsFragment());
+                mBottomNav.setSelectedItemId(R.id.tab_news);
+                break;
+            case TAB_SETTINGS:
+                break;
+        }
 
         mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

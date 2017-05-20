@@ -10,6 +10,8 @@ public class ImportantNewsItem {
     private String mText;
     @Json(name = "active")
     private int mActive;
+    @Json(name = "updated_at")
+    private String mUpdated;
 
     public String getText() {
         return mText;
@@ -17,5 +19,9 @@ public class ImportantNewsItem {
 
     public boolean isActive() {
         return mActive == ACTIVE;
+    }
+
+    public String getUpdated() {
+        return mUpdated;
     }
 }

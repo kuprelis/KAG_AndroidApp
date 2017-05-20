@@ -21,7 +21,6 @@ import com.simaskuprelis.kag_androidapp.adapter.NewsAdapter;
 import com.simaskuprelis.kag_androidapp.api.NewsResponse;
 import com.simaskuprelis.kag_androidapp.entity.ImportantNewsItem;
 import com.simaskuprelis.kag_androidapp.entity.NewsItem;
-import com.squareup.moshi.Moshi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +30,8 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class NewsFragment extends Fragment {
-    private static final String BASE_URL = "http://www.azuolynogimnazija.lt/json/";
     private static final String TAG = "NewsFragment";
 
     @BindView(R.id.news_list)
@@ -60,13 +56,7 @@ public class NewsFragment extends Fragment {
         mItemsAvailable = true;
         mLoading = false;
         mNewsItems = new ArrayList<>();
-
-        Moshi moshi = new Moshi.Builder().build();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
-                .build();
-        mNewsApi = retrofit.create(NewsApi.class);
+        mNewsApi = Utils.getApi();
     }
 
     @Nullable
