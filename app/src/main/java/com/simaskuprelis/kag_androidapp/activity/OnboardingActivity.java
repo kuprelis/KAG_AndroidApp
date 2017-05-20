@@ -40,6 +40,8 @@ public class OnboardingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_onboarding);
         ButterKnife.bind(this);
 
+        setTitle(R.string.select_node);
+
         FirebaseDatabaseApi.preload(new PreloadListener() {
             @Override
             public void onLoad() {
@@ -68,11 +70,15 @@ public class OnboardingActivity extends AppCompatActivity {
         mNodeList.setAdapter(new NodeAdapter(mNodes, new NodeClickListener() {
             @Override
             public void onClick(Node n) {
-                Intent i = new Intent();
-                i.putExtra(EXTRA_USER_ID, n.getId());
-                setResult(RESULT_OK, i);
-                finish();
+                sendResult(n.getId());
             }
         }));
+    }
+
+    private void sendResult(String id) {
+        Intent i = new Intent();
+        i.putExtra(EXTRA_USER_ID, id);
+        setResult(RESULT_OK, i);
+        finish();
     }
 }
