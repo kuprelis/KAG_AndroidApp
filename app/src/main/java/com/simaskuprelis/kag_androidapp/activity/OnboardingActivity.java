@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -73,7 +74,10 @@ public class OnboardingActivity extends AppCompatActivity {
 
     private void setupAdapter() {
         mLoadingIndicator.setVisibility(View.GONE);
-        mNodeList.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        mNodeList.setLayoutManager(llm);
+        DividerItemDecoration did = new DividerItemDecoration(this, llm.getOrientation());
+        mNodeList.addItemDecoration(did);
         mNodeList.setAdapter(new NodeAdapter(mAdapterNodes, new NodeClickListener() {
             @Override
             public void onClick(Node n) {

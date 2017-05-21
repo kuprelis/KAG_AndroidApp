@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -16,7 +17,6 @@ import com.simaskuprelis.kag_androidapp.adapter.NodeAdapter;
 import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
 import com.simaskuprelis.kag_androidapp.api.listener.NodesListener;
 import com.simaskuprelis.kag_androidapp.entity.Group;
-import com.simaskuprelis.kag_androidapp.entity.Lesson;
 import com.simaskuprelis.kag_androidapp.entity.Node;
 
 import java.util.ArrayList;
@@ -82,7 +82,10 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     private void setupRecycler(RecyclerView rv, RecyclerView.Adapter adapter) {
-        rv.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        rv.setLayoutManager(llm);
+        DividerItemDecoration did = new DividerItemDecoration(this, llm.getOrientation());
+        rv.addItemDecoration(did);
         rv.setAdapter(adapter);
     }
 }
