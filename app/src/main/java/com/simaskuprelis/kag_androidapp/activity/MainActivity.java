@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.simaskuprelis.kag_androidapp.fragment.NewsFragment;
 import com.simaskuprelis.kag_androidapp.R;
+import com.simaskuprelis.kag_androidapp.fragment.SettingsFragment;
 import com.simaskuprelis.kag_androidapp.fragment.TimetablePagerFragment;
 
 import butterknife.BindView;
@@ -42,25 +43,26 @@ public class MainActivity extends AppCompatActivity {
                 mBottomNav.setSelectedItemId(R.id.tab_news);
                 break;
             case TAB_SETTINGS:
+                putFragment(new SettingsFragment());
+                mBottomNav.setSelectedItemId(R.id.tab_settings);
                 break;
         }
 
         mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment f = null;
                 switch (item.getItemId()) {
                     case R.id.tab_my_schedule:
-                        f = new TimetablePagerFragment();
+                        putFragment(new TimetablePagerFragment());
                         break;
                     case R.id.tab_news:
-                        f = new NewsFragment();
+                        putFragment(new NewsFragment());
                         break;
                     case R.id.tab_settings:
+                        putFragment(new SettingsFragment());
                         break;
                 }
-                putFragment(f);
-                return f != null;
+                return true;
             }
         });
 

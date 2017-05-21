@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.fragment.TimetablePagerFragment;
 import com.simaskuprelis.kag_androidapp.receiver.ImportantNewsReceiver;
@@ -22,6 +23,7 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Utils.setupDatabase();
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         Intent intent = new Intent(ImportantNewsReceiver.ACTION_POLL_IMPORTANT);
         PendingIntent pi = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_NO_CREATE);
