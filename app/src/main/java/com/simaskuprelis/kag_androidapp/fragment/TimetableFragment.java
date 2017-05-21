@@ -3,6 +3,7 @@ package com.simaskuprelis.kag_androidapp.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
@@ -73,7 +74,10 @@ public class TimetableFragment extends Fragment {
 
     private void setupAdapter() {
         if (mTimes == null || mTimetable == null || mTimetable.getAdapter() != null) return;
-        mTimetable.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        mTimetable.setLayoutManager(llm);
+        DividerItemDecoration did = new DividerItemDecoration(getContext(), llm.getOrientation());
+        mTimetable.addItemDecoration(did);
         mTimetable.setAdapter(new TimetableAdapter(mGroups, mTimes, getContext()));
     }
 

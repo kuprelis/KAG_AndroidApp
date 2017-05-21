@@ -32,7 +32,9 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
         @BindView(R.id.lesson_name)
         TextView mName;
         @BindView(R.id.start_time)
-        TextView mTime;
+        TextView mStartTime;
+        @BindView(R.id.end_time)
+        TextView mEndTime;
 
         ViewHolder(View v) {
             super(v);
@@ -55,8 +57,10 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
     @Override
     public void onBindViewHolder(TimetableAdapter.ViewHolder holder, int position) {
         holder.mNumber.setText(Integer.toString(position + 1));
-        int startTime = mTimes.get(position * 2);
-        holder.mTime.setText(String.format("%02d:%02d", startTime / 60, startTime % 60));
+        int start = mTimes.get(position * 2);
+        int end = mTimes.get(position * 2 + 1);
+        holder.mStartTime.setText(formatTime(start));
+        holder.mEndTime.setText(formatTime(end));
         final Group g = mGroups.get(position + 1);
         if (g != null) holder.mName.setText(g.getName());
 
@@ -68,6 +72,10 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
                 mContext.startActivity(i);
             }
         });
+    }
+
+    private String formatTime(int minutes) {
+        return String.format("%02d:%02d", minutes / 60, minutes % 60);
     }
 
     @Override

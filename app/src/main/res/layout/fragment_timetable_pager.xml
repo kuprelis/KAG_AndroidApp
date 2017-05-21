@@ -14,7 +14,9 @@
             android:id="@+id/pager_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabTextAppearance="@style/TimetableTabText"/>
+            app:tabTextAppearance="@style/TimetableTabText"
+            android:elevation="4dp"
+            android:background="@android:color/white"/>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
