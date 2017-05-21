@@ -19,11 +19,20 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.MainActivity" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
 
-        <activity android:name=".activity.OnboardingActivity"/>
+        <activity
+            android:name=".activity.OnboardingActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
 
-        <activity android:name=".activity.GroupActivity" />
+        <activity
+            android:name=".activity.GroupActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
 
         <service
             android:name=".service.MyFirebaseMessagingService">
