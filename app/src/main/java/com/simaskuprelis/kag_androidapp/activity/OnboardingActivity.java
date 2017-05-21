@@ -1,7 +1,9 @@
 package com.simaskuprelis.kag_androidapp.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +35,8 @@ public class OnboardingActivity extends AppCompatActivity {
 
     public static final String EXTRA_USER_ID = "com.simaskuprelis.kag_androidapp.user_id";
 
+    private static final String PREF_FIRST_LAUNCH = "firstLaunch";
+
     @BindView(R.id.node_list)
     RecyclerView mNodeList;
     @BindView(R.id.loading_indicator)
@@ -48,22 +52,31 @@ public class OnboardingActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setTitle(R.string.select_node);
+        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!sp.contains(PREF_FIRST_LAUNCH)) {
+            FirebaseDatabaseApi.preload(new PreloadListener() {
+                @Override
+                public void onLoad() {
+                    sp.edit().putBoolean(PREF_FIRST_LAUNCH, false).apply();
+                    loadData();
+                }
 
-        FirebaseDatabaseApi.preload(new PreloadListener() {
+                @Override
+                public void onFail(Exception e) {
+                }
+            });
+        } else {
+            loadData();
+        }
+    }
+
+    private void loadData() {
+        FirebaseDatabaseApi.getNodes(null, new NodesListener() {
             @Override
-            public void onLoad() {
-                FirebaseDatabaseApi.getNodes(null, new NodesListener() {
-                    @Override
-                    public void onLoad(List<Node> nodes) {
-                        mNodes = new ArrayList<>(nodes);
-                        mAdapterNodes = nodes;
-                        setupAdapter();
-                    }
-
-                    @Override
-                    public void onFail(Exception e) {
-                    }
-                });
+            public void onLoad(List<Node> nodes) {
+                mNodes = new ArrayList<>(nodes);
+                mAdapterNodes = nodes;
+                setupAdapter();
             }
 
             @Override
