@@ -5,12 +5,12 @@
             android:key="@string/pref_notify_important"
             android:title="@string/important_news"
             android:defaultValue="true" />
-
+        <!--
         <SwitchPreference
             android:key="@string/pref_notify_news"
             android:title="@string/news"
             android:defaultValue="false" />
-
+        -->
         <ListPreference
             android:key="@string/pref_poll_interval"
             android:title="@string/poll_interval"

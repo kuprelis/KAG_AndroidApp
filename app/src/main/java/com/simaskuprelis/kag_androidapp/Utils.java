@@ -1,11 +1,18 @@
 package com.simaskuprelis.kag_androidapp;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.Spanned;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.simaskuprelis.kag_androidapp.api.NewsApi;
+import com.simaskuprelis.kag_androidapp.receiver.ImportantNewsReceiver;
 import com.squareup.moshi.Moshi;
 
 import retrofit2.Retrofit;
@@ -40,5 +47,27 @@ public class Utils {
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .build();
         return retrofit.create(NewsApi.class);
+    }
+
+    public static void updatePollState(Context c) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
+        AlarmManager am = (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);
+
+        boolean on = sp.getBoolean(c.getString(R.string.pref_notify_important), true);
+
+        Intent i = new Intent(ImportantNewsReceiver.ACTION_POLL_IMPORTANT);
+        PendingIntent pi = PendingIntent.getBroadcast(c, 0, i, PendingIntent.FLAG_NO_CREATE);
+        if (on) {
+            if (pi == null) pi = PendingIntent.getBroadcast(c, 0, i, 0);
+            int interval = Integer.valueOf(sp.getString(c.getString(R.string.pref_poll_interval), "1"));
+            am.cancel(pi);
+            am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+                    interval * 60 * 60 * 1000, pi);
+        } else  {
+            if (pi != null) {
+                am.cancel(pi);
+                pi.cancel();
+            }
+        }
     }
 }
