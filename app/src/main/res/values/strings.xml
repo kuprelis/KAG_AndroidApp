@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">KAG_AndroidApp</string>
+
     <string name="news">Naujienos</string>
     <string name="my_schedule">Tvarkaraštis</string>
     <string name="settings">Nustatymai</string>
@@ -9,7 +10,6 @@
     <string name="wed_short">T</string>
     <string name="thu_short">K</string>
     <string name="fri_short">P</string>
-
     <string name="monday">Pirmadienis</string>
     <string name="wednesday">Antradienis</string>
     <string name="tuesday">Trečiadienis</string>
@@ -25,6 +25,7 @@
 
     <string name="select_node">Pasirinkite tvarkaraštį</string>
     <string name="search">Paieška</string>
+    <string name="pick_node">Pakeisti tvarkaraštį</string>
 
     <string name="notifications">Pranešimai</string>
     <string name="poll_interval">Atnaujinimo dažnis</string>
