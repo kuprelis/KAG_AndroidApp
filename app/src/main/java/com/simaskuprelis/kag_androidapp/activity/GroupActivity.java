@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -45,8 +46,12 @@ public class GroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group);
         ButterKnife.bind(this);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         final Group g = (Group) getIntent().getExtras().get(EXTRA_GROUP);
         if (g == null) return;
+
+        setTitle(g.getName());
 
         final Context context = this;
         FirebaseDatabaseApi.getNodes(g.getNodes(), new NodesListener() {
@@ -79,6 +84,15 @@ public class GroupActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupRecycler(RecyclerView rv, RecyclerView.Adapter adapter) {

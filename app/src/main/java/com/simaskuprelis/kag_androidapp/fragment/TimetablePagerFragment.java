@@ -113,11 +113,20 @@ public class TimetablePagerFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDetach() {
+        getActivity().setTitle(R.string.app_name);
+        super.onDetach();
+    }
+
     private void loadData() {
         FirebaseDatabaseApi.getNodes(Collections.singletonList(mUserId), new NodesListener() {
             @Override
             public void onLoad(List<Node> nodes) {
                 Node n = nodes.get(0);
+                Activity activity = getActivity();
+                if (activity == null) return;
+                activity.setTitle(n.getName());
                 FirebaseDatabaseApi.getGroups(n.getGroups(), new GroupsListener() {
                     @Override
                     public void onLoad(List<Group> groups) {

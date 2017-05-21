@@ -25,7 +25,7 @@
 
     <string name="select_node">Pasirinkite tvarkaraštį</string>
     <string name="search">Paieška</string>
-    <string name="pick_node">Pakeisti tvarkaraštį</string>
+    <string name="pick_node">Kitas tvarkaraštis</string>
 
     <string name="notifications">Pranešimai</string>
     <string name="poll_interval">Atnaujinimo dažnis</string>
