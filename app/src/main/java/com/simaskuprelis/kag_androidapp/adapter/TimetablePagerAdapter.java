@@ -5,32 +5,24 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.simaskuprelis.kag_androidapp.entity.Group;
-import com.simaskuprelis.kag_androidapp.entity.Lesson;
 import com.simaskuprelis.kag_androidapp.fragment.TimetableFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TimetablePagerAdapter extends FragmentStatePagerAdapter {
 
     private static final int ITEM_COUNT = 5;
 
-    private List<List<Group>> mGroups;
+    private List<Group> mGroups;
 
     public TimetablePagerAdapter(FragmentManager fm, List<Group> groups) {
         super(fm);
-        mGroups = new ArrayList<>();
-        for (int i = 0; i < ITEM_COUNT; i++) mGroups.add(new ArrayList<Group>());
-        for (Group g : groups) {
-            for (Lesson l : g.getLessons()) {
-                mGroups.get(l.getDay() - 1).add(g);
-            }
-        }
+        mGroups = groups;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return TimetableFragment.newInstance(mGroups.get(position));
+        return TimetableFragment.newInstance(mGroups, position + 1);
     }
 
     @Override

@@ -28,12 +28,14 @@ import butterknife.ButterKnife;
 public class TimetableFragment extends Fragment {
 
     private static final String KEY_GROUPS = "groups";
+    private static final String KEY_DAY = "day";
 
     @BindView(R.id.timetable)
     RecyclerView mTimetable;
 
     private SparseArray<Group> mGroups;
     private List<Integer> mTimes;
+    private int mDay;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,10 +55,12 @@ public class TimetableFragment extends Fragment {
 
         Bundle args = getArguments();
         List<Group> groups = args.getParcelableArrayList(KEY_GROUPS);
+        mDay = args.getInt(KEY_DAY);
+
         mGroups = new SparseArray<>();
         for (Group g : groups) {
             for (Lesson l : g.getLessons()) {
-                mGroups.append(l.getNumber(), g);
+                if (l.getDay() == mDay) mGroups.append(l.getNumber(), g);
             }
         }
     }
@@ -81,9 +85,10 @@ public class TimetableFragment extends Fragment {
         mTimetable.setAdapter(new TimetableAdapter(mGroups, mTimes, getContext()));
     }
 
-    public static TimetableFragment newInstance(List<Group> groups) {
+    public static TimetableFragment newInstance(List<Group> groups, int day) {
         Bundle args = new Bundle();
         args.putParcelableArrayList(KEY_GROUPS, new ArrayList<>(groups));
+        args.putInt(KEY_DAY, day);
         TimetableFragment fragment = new TimetableFragment();
         fragment.setArguments(args);
         return fragment;
