@@ -7,10 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
 
-import com.google.firebase.database.FirebaseDatabase;
 import com.simaskuprelis.kag_androidapp.api.NewsApi;
 import com.simaskuprelis.kag_androidapp.receiver.ImportantNewsReceiver;
 import com.squareup.moshi.Moshi;
@@ -20,13 +22,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class Utils {
     private static final String BASE_URL = "http://www.azuolynogimnazija.lt/json/";
-    private static boolean sDatabaseSetup = false;
-
-    public static void setupDatabase() {
-        if (sDatabaseSetup) return;
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        sDatabaseSetup = true;
-    }
 
     public static CharSequence parseHtml(String html) {
         Spanned s = Html.fromHtml(html);
@@ -69,5 +64,14 @@ public class Utils {
                 pi.cancel();
             }
         }
+    }
+
+    public static void setupRecycler(RecyclerView rv, Context c, RecyclerView.Adapter adapter) {
+        if (c == null) return;
+        LinearLayoutManager llm = new LinearLayoutManager(c);
+        rv.setLayoutManager(llm);
+        DividerItemDecoration did = new DividerItemDecoration(c, llm.getOrientation());
+        rv.addItemDecoration(did);
+        rv.setAdapter(adapter);
     }
 }

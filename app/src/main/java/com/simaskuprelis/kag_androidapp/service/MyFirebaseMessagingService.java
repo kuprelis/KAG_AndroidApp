@@ -1,7 +1,8 @@
 package com.simaskuprelis.kag_androidapp.service;
 
-import android.app.Notification;
 import android.app.NotificationManager;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v7.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -17,16 +18,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         RemoteMessage.Notification rmn = remoteMessage.getNotification();
         if (rmn == null) return;
 
-        String title = rmn.getTitle();
-        Notification n = new NotificationCompat.Builder(this)
-                .setContentTitle(title != null ? title : getString(R.string.app_name))
+        NotificationCompat.Builder nb = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                .setContentTitle(getString(R.string.app_name))
                 .setContentText(rmn.getBody())
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setColor(getColor(R.color.colorAccent))
-                .build();
+                .setColor(getResources().getColor(R.color.colorAccent));
 
+        if (rmn.getSound() != null) {
+            Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            nb.setSound(uri);
+        }
 
         NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        nm.notify(0, n);
+        nm.notify(0, nb.build());
     }
 }

@@ -3,8 +3,6 @@ package com.simaskuprelis.kag_androidapp.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -12,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.simaskuprelis.kag_androidapp.R;
+import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.adapter.TimetableAdapter;
 import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
 import com.simaskuprelis.kag_androidapp.api.listener.TimesListener;
@@ -41,18 +40,6 @@ public class TimetableFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FirebaseDatabaseApi.getTimes(new TimesListener() {
-            @Override
-            public void onLoad(List<Integer> times) {
-                mTimes = times;
-                setupAdapter();
-            }
-
-            @Override
-            public void onFail(Exception e) {
-            }
-        });
-
         Bundle args = getArguments();
         List<Group> groups = args.getParcelableArrayList(KEY_GROUPS);
         mDay = args.getInt(KEY_DAY);
@@ -63,6 +50,21 @@ public class TimetableFragment extends Fragment {
                 if (l.getDay() == mDay) mGroups.append(l.getNumber(), g);
             }
         }
+
+        FirebaseDatabaseApi.getTimes(new TimesListener() {
+            @Override
+            public void onLoad(List<Integer> times) {
+                mTimes = times;
+                if (mTimetable != null) {
+                    Utils.setupRecycler(mTimetable, getContext(),
+                            new TimetableAdapter(mGroups, mTimes, getContext()));
+                }
+            }
+
+            @Override
+            public void onFail(Exception e) {
+            }
+        });
     }
 
     @Nullable
@@ -71,18 +73,12 @@ public class TimetableFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_timetable, container, false);
         ButterKnife.bind(this, v);
 
-        setupAdapter();
+        if (mTimes != null && mTimetable.getAdapter() == null) {
+            Utils.setupRecycler(mTimetable, getContext(),
+                    new TimetableAdapter(mGroups, mTimes, getContext()));
+        }
 
         return v;
-    }
-
-    private void setupAdapter() {
-        if (mTimes == null || mTimetable == null || mTimetable.getAdapter() != null) return;
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        mTimetable.setLayoutManager(llm);
-        DividerItemDecoration did = new DividerItemDecoration(getContext(), llm.getOrientation());
-        mTimetable.addItemDecoration(did);
-        mTimetable.setAdapter(new TimetableAdapter(mGroups, mTimes, getContext()));
     }
 
     public static TimetableFragment newInstance(List<Group> groups, int day) {
