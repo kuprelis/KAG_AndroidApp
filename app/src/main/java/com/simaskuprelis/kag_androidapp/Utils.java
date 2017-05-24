@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
 
@@ -69,5 +72,14 @@ public class Utils {
                 pi.cancel();
             }
         }
+    }
+
+    public static void setupRecycler(RecyclerView rv, Context c, RecyclerView.Adapter adapter) {
+        if (c == null) return;
+        LinearLayoutManager llm = new LinearLayoutManager(c);
+        rv.setLayoutManager(llm);
+        DividerItemDecoration did = new DividerItemDecoration(c, llm.getOrientation());
+        rv.addItemDecoration(did);
+        rv.setAdapter(adapter);
     }
 }

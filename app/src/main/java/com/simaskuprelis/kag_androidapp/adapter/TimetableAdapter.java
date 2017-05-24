@@ -62,16 +62,17 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
         holder.mStartTime.setText(formatTime(start));
         holder.mEndTime.setText(formatTime(end));
         final Group g = mGroups.get(position + 1);
-        if (g != null) holder.mName.setText(g.getName());
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(mContext, GroupActivity.class);
-                i.putExtra(GroupActivity.EXTRA_GROUP, g);
-                mContext.startActivity(i);
-            }
-        });
+        if (g != null) {
+            holder.mName.setText(g.getName());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(mContext, GroupActivity.class);
+                    i.putExtra(GroupActivity.EXTRA_GROUP, g);
+                    mContext.startActivity(i);
+                }
+            });
+        }
     }
 
     private String formatTime(int minutes) {

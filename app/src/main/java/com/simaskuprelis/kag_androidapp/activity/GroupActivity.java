@@ -5,14 +5,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.simaskuprelis.kag_androidapp.R;
+import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.adapter.LessonAdapter;
 import com.simaskuprelis.kag_androidapp.adapter.NodeAdapter;
 import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
@@ -70,12 +69,15 @@ public class GroupActivity extends AppCompatActivity {
                     }
                 }
 
-                setupRecycler(mTeachers, new NodeAdapter(teachers, null));
-                setupRecycler(mStudents, new NodeAdapter(students, null));
-                setupRecycler(mLessons, new LessonAdapter(g.getLessons(), context));
+                Utils.setupRecycler(mTeachers, context, new NodeAdapter(teachers, null));
+                Utils.setupRecycler(mStudents, context, new NodeAdapter(students, null));
+                Utils.setupRecycler(mLessons, context, new LessonAdapter(g.getLessons(), context));
 
-                if (rooms.size() != 0) setupRecycler(mRooms, new NodeAdapter(rooms, null));
-                else mRoomDisplay.setVisibility(View.GONE);
+                if (rooms.size() != 0) {
+                    Utils.setupRecycler(mRooms, context, new NodeAdapter(rooms, null));
+                } else {
+                    mRoomDisplay.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -93,13 +95,5 @@ public class GroupActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void setupRecycler(RecyclerView rv, RecyclerView.Adapter adapter) {
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        rv.setLayoutManager(llm);
-        DividerItemDecoration did = new DividerItemDecoration(this, llm.getOrientation());
-        rv.addItemDecoration(did);
-        rv.setAdapter(adapter);
     }
 }

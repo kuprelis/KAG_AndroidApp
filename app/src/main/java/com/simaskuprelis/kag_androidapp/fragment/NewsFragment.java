@@ -3,7 +3,6 @@ package com.simaskuprelis.kag_androidapp.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -68,12 +67,7 @@ public class NewsFragment extends Fragment {
 
         updateImportant();
 
-
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(llm);
-        DividerItemDecoration did = new DividerItemDecoration(getContext(), llm.getOrientation());
-        mRecyclerView.addItemDecoration(did);
-        mRecyclerView.setAdapter(new NewsAdapter(mNewsItems));
+        Utils.setupRecycler(mRecyclerView, getContext(), new NewsAdapter(mNewsItems));
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

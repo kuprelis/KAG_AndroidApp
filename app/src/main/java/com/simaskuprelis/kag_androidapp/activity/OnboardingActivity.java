@@ -7,8 +7,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
@@ -17,6 +15,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.simaskuprelis.kag_androidapp.R;
+import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.adapter.NodeAdapter;
 import com.simaskuprelis.kag_androidapp.adapter.NodeClickListener;
 import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
@@ -87,16 +86,13 @@ public class OnboardingActivity extends AppCompatActivity {
 
     private void setupAdapter() {
         mLoadingIndicator.setVisibility(View.GONE);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        mNodeList.setLayoutManager(llm);
-        DividerItemDecoration did = new DividerItemDecoration(this, llm.getOrientation());
-        mNodeList.addItemDecoration(did);
-        mNodeList.setAdapter(new NodeAdapter(mAdapterNodes, new NodeClickListener() {
+        NodeAdapter adapter = new NodeAdapter(mAdapterNodes, new NodeClickListener() {
             @Override
             public void onClick(Node n) {
                 sendResult(n.getId());
             }
-        }));
+        });
+        Utils.setupRecycler(mNodeList, this, adapter);
     }
 
     private void sendResult(String id) {
