@@ -18,7 +18,6 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Utils.setupDatabase();
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         Utils.updatePollState(this);
 
