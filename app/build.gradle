@@ -1,14 +1,18 @@
+plugins {
+    id 'com.github.ben-manes.versions' version '0.15.0'
+}
+
 apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    buildToolsVersion "26.0.0"
     defaultConfig {
         applicationId "com.simaskuprelis.kag_androidapp"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 3
-        versionName "0.1.2"
+        versionCode 4
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -33,10 +37,10 @@ android {
 }
 
 ext {
-    supportVersion = '25.3.1'
-    butterknifeVersion = '8.6.0'
+    supportVersion = '25.4.0'
+    butterknifeVersion = '8.7.0'
     retrofitVersion = '2.3.0'
-    firebaseVersion = '10.2.6'
+    firebaseVersion = '11.0.2'
 }
 
 dependencies {
@@ -65,5 +69,18 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+// https://github.com/ben-manes/gradle-versions-plugin
+dependencyUpdates.resolutionStrategy = {
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+            if (rejected) {
+                selection.reject('Release candidate')
+            }
+        }
+    }
+}
 
 apply plugin: 'com.google.gms.google-services'
