@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:title="@string/main_timetable"
+        android:key="@string/pref_user_id"
+        android:summary=" "/>
+
     <PreferenceCategory android:title="@string/notifications">
         <SwitchPreference
             android:key="@string/pref_notify_important"

@@ -27,9 +27,9 @@
     <string name="search">Paieška</string>
     <string name="pick_node">Kitas tvarkaraštis</string>
 
+    <string name="main_timetable">Pagrindinis tvarkaraštis</string>
     <string name="notifications">Pranešimai</string>
     <string name="poll_interval">Atnaujinimo dažnis</string>
-    <string name="poll_interval_summary">Pasirinkite, kaip greitai norite gauti naujienas</string>
     <string name="other">Kita</string>
     <string name="contact">Susisiekti su kūrėju</string>
     <string name="mail_uri">mailto:simas.kuprelis@gmail.com</string>
@@ -37,4 +37,5 @@
     <string name="pref_notify_important">notifyImportant</string>
     <string name="pref_notify_news">notifyNews</string>
     <string name="pref_poll_interval">pollInterval</string>
+    <string name="pref_user_id">defaultId</string>
 </resources>
