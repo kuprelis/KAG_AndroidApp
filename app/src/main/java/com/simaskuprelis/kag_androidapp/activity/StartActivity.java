@@ -25,7 +25,7 @@ public class StartActivity extends AppCompatActivity {
         if (sp.contains(TimetablePagerFragment.PREF_USER_ID)) {
             startMain();
         } else {
-            Intent i = new Intent(this, OnboardingActivity.class);
+            Intent i = new Intent(this, NodePickActivity.class);
             startActivityForResult(i, REQUEST_USER_ID);
         }
     }
@@ -36,7 +36,7 @@ public class StartActivity extends AppCompatActivity {
 
         if (requestCode == REQUEST_USER_ID) {
             if (resultCode == RESULT_OK) {
-                String id = data.getStringExtra(OnboardingActivity.EXTRA_USER_ID);
+                String id = data.getStringExtra(NodePickActivity.EXTRA_USER_ID);
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
                 sp.edit()
                         .putString(TimetablePagerFragment.PREF_USER_ID, id)

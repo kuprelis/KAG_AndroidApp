@@ -20,7 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.simaskuprelis.kag_androidapp.R;
-import com.simaskuprelis.kag_androidapp.activity.OnboardingActivity;
+import com.simaskuprelis.kag_androidapp.activity.NodePickActivity;
 import com.simaskuprelis.kag_androidapp.adapter.TimetablePagerAdapter;
 import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
 import com.simaskuprelis.kag_androidapp.api.listener.GroupsListener;
@@ -91,7 +91,7 @@ public class TimetablePagerFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_pick_node) {
-            Intent i = new Intent(getContext(), OnboardingActivity.class);
+            Intent i = new Intent(getContext(), NodePickActivity.class);
             startActivityForResult(i, REQUEST_USER_ID);
         }
         return super.onOptionsItemSelected(item);
@@ -103,7 +103,7 @@ public class TimetablePagerFragment extends Fragment {
         if (resultCode != Activity.RESULT_OK) return;
 
         if (requestCode == REQUEST_USER_ID) {
-            String id = data.getStringExtra(OnboardingActivity.EXTRA_USER_ID);
+            String id = data.getStringExtra(NodePickActivity.EXTRA_USER_ID);
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
             sp.edit()
                     .putString(TimetablePagerFragment.PREF_USER_ID, id)

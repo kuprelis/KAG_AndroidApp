@@ -27,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class OnboardingActivity extends AppCompatActivity {
+public class NodePickActivity extends AppCompatActivity {
 
     public static final String EXTRA_USER_ID = "com.simaskuprelis.kag_androidapp.user_id";
 
