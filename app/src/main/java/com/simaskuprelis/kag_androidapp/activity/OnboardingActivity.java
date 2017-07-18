@@ -1,9 +1,7 @@
 package com.simaskuprelis.kag_androidapp.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +18,6 @@ import com.simaskuprelis.kag_androidapp.adapter.NodeAdapter;
 import com.simaskuprelis.kag_androidapp.adapter.NodeClickListener;
 import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
 import com.simaskuprelis.kag_androidapp.api.listener.NodesListener;
-import com.simaskuprelis.kag_androidapp.api.listener.PreloadListener;
 import com.simaskuprelis.kag_androidapp.entity.Node;
 
 import java.util.ArrayList;
@@ -33,8 +30,6 @@ import butterknife.ButterKnife;
 public class OnboardingActivity extends AppCompatActivity {
 
     public static final String EXTRA_USER_ID = "com.simaskuprelis.kag_androidapp.user_id";
-
-    private static final String PREF_FIRST_LAUNCH = "firstLaunch";
 
     @BindView(R.id.node_list)
     RecyclerView mNodeList;
@@ -51,25 +46,7 @@ public class OnboardingActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setTitle(R.string.select_node);
-        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!sp.contains(PREF_FIRST_LAUNCH)) {
-            FirebaseDatabaseApi.preload(new PreloadListener() {
-                @Override
-                public void onLoad() {
-                    sp.edit().putBoolean(PREF_FIRST_LAUNCH, false).apply();
-                    loadData();
-                }
 
-                @Override
-                public void onFail(Exception e) {
-                }
-            });
-        } else {
-            loadData();
-        }
-    }
-
-    private void loadData() {
         FirebaseDatabaseApi.getNodes(null, new NodesListener() {
             @Override
             public void onLoad(List<Node> nodes) {
