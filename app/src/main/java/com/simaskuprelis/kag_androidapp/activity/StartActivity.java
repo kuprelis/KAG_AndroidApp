@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.Utils;
-import com.simaskuprelis.kag_androidapp.fragment.TimetablePagerFragment;
 
 public class StartActivity extends AppCompatActivity {
     private static final int REQUEST_USER_ID = 0;
@@ -22,7 +21,7 @@ public class StartActivity extends AppCompatActivity {
         Utils.updatePollState(this);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sp.contains(TimetablePagerFragment.PREF_USER_ID)) {
+        if (sp.contains(getString(R.string.pref_user_id))) {
             startMain();
         } else {
             Intent i = new Intent(this, NodePickActivity.class);
@@ -39,7 +38,7 @@ public class StartActivity extends AppCompatActivity {
                 String id = data.getStringExtra(NodePickActivity.EXTRA_USER_ID);
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
                 sp.edit()
-                        .putString(TimetablePagerFragment.PREF_USER_ID, id)
+                        .putString(getString(R.string.pref_user_id), id)
                         .apply();
                 startMain();
             } else finish();

@@ -36,7 +36,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TimetablePagerFragment extends Fragment {
-    public static final String PREF_USER_ID = "userId";
     private static final int REQUEST_USER_ID = 0;
 
     @BindView(R.id.pager)
@@ -57,7 +56,7 @@ public class TimetablePagerFragment extends Fragment {
         setHasOptionsMenu(true);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        mUserId = sp.getString(PREF_USER_ID, null);
+        mUserId = sp.getString(getString(R.string.pref_user_id), null);
         loadData();
 
         Calendar cal = Calendar.getInstance();
@@ -103,12 +102,7 @@ public class TimetablePagerFragment extends Fragment {
         if (resultCode != Activity.RESULT_OK) return;
 
         if (requestCode == REQUEST_USER_ID) {
-            String id = data.getStringExtra(NodePickActivity.EXTRA_USER_ID);
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-            sp.edit()
-                    .putString(TimetablePagerFragment.PREF_USER_ID, id)
-                    .apply();
-            mUserId = id;
+            mUserId = data.getStringExtra(NodePickActivity.EXTRA_USER_ID);
             loadData();
         }
     }
@@ -125,8 +119,7 @@ public class TimetablePagerFragment extends Fragment {
             public void onLoad(List<Node> nodes) {
                 Node n = nodes.get(0);
                 Activity activity = getActivity();
-                if (activity == null) return;
-                activity.setTitle(n.getName());
+                if (activity != null) activity.setTitle(n.getName());
                 FirebaseDatabaseApi.getGroups(n.getGroups(), new GroupsListener() {
                     @Override
                     public void onLoad(List<Group> groups) {
