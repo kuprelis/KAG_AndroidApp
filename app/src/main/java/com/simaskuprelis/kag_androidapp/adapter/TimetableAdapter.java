@@ -1,6 +1,5 @@
 package com.simaskuprelis.kag_androidapp.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -24,7 +23,6 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
 
     private SparseArray<Group> mGroups;
     private List<Integer> mTimes;
-    private Context mContext;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.lesson_number)
@@ -42,10 +40,9 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
         }
     }
 
-    public TimetableAdapter(SparseArray<Group> groups, List<Integer> times, Context c) {
+    public TimetableAdapter(SparseArray<Group> groups, List<Integer> times) {
         mGroups = groups;
         mTimes = times;
-        mContext = c;
     }
 
     @Override

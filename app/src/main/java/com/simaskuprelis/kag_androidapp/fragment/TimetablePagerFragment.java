@@ -26,6 +26,7 @@ import com.simaskuprelis.kag_androidapp.adapter.TimetablePagerAdapter;
 import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
 import com.simaskuprelis.kag_androidapp.api.listener.GroupsListener;
 import com.simaskuprelis.kag_androidapp.api.listener.NodesListener;
+import com.simaskuprelis.kag_androidapp.api.listener.TimesListener;
 import com.simaskuprelis.kag_androidapp.entity.Group;
 import com.simaskuprelis.kag_androidapp.entity.Node;
 
@@ -51,8 +52,10 @@ public class TimetablePagerFragment extends Fragment {
     FloatingActionButton mEditFab;
 
     private List<Group> mGroups;
-    private String mNodeId;
+    private List<Integer> mTimes;
+    private String mDefaultId;
     private int mTodayPage;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,9 +63,21 @@ public class TimetablePagerFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
+        FirebaseDatabaseApi.getTimes(new TimesListener() {
+            @Override
+            public void onLoad(List<Integer> times) {
+                mTimes = times;
+                setupAdapter();
+            }
+
+            @Override
+            public void onFail(Exception e) {
+            }
+        });
+
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        mNodeId = sp.getString(getString(R.string.pref_user_id), null);
-        loadData();
+        mDefaultId = sp.getString(getString(R.string.pref_user_id), null);
+        loadData(mDefaultId);
 
         Calendar cal = Calendar.getInstance();
         switch (cal.get(Calendar.DAY_OF_WEEK)) {
@@ -113,12 +128,7 @@ public class TimetablePagerFragment extends Fragment {
                 break;
 
             case R.id.menu_default_node:
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-                String id = sp.getString(getString(R.string.pref_user_id), null);
-                if (id != null && !id.equals(mNodeId)) {
-                    mNodeId = id;
-                    loadData();
-                }
+                loadData(mDefaultId);
                 break;
         }
 
@@ -130,16 +140,12 @@ public class TimetablePagerFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) return;
 
-        switch (requestCode) {
-            case REQUEST_NODE_ID:
-                mNodeId = data.getStringExtra(NodePickActivity.RESULT_NODE_ID);
-                loadData();
-                break;
-
-            case REQUEST_GROUP_NODE_ID:
-                mNodeId = data.getStringExtra(GroupActivity.RESULT_GROUP_NODE_ID);
-                loadData();
-                break;
+        if (requestCode == REQUEST_NODE_ID) {
+            String id = data.getStringExtra(NodePickActivity.RESULT_NODE_ID);
+            loadData(id);
+        } else if (requestCode == REQUEST_GROUP_NODE_ID) {
+            String id = data.getStringExtra(GroupActivity.RESULT_GROUP_NODE_ID);
+            loadData(id);
         }
     }
 
@@ -157,8 +163,8 @@ public class TimetablePagerFragment extends Fragment {
         startActivityForResult(i, REQUEST_GROUP_NODE_ID);
     }
 
-    private void loadData() {
-        FirebaseDatabaseApi.getNodes(Collections.singletonList(mNodeId), new NodesListener() {
+    private void loadData(String nodeId) {
+        FirebaseDatabaseApi.getNodes(Collections.singletonList(nodeId), new NodesListener() {
             @Override
             public void onLoad(List<Node> nodes) {
                 Node n = nodes.get(0);
@@ -184,12 +190,12 @@ public class TimetablePagerFragment extends Fragment {
     }
 
     private void setupAdapter() {
-        if (getActivity() == null || mGroups == null || mPager == null) return;
+        if (getActivity() == null || mGroups == null || mTimes == null || mPager == null) return;
 
         int page = mPager.getAdapter() == null ? mTodayPage : mPager.getCurrentItem();
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        mPager.setAdapter(new TimetablePagerAdapter(fm, mGroups, getContext()));
+        mPager.setAdapter(new TimetablePagerAdapter(fm, mGroups, mTimes, getContext()));
         mTabs.setupWithViewPager(mPager);
         mPager.setCurrentItem(page, false);
     }
