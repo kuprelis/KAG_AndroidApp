@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
 
 public class NodePickActivity extends AppCompatActivity {
 
-    public static final String EXTRA_USER_ID = "com.simaskuprelis.kag_androidapp.user_id";
+    public static final String RESULT_NODE_ID = "com.simaskuprelis.kag_androidapp.user_id";
 
     @BindView(R.id.node_list)
     RecyclerView mNodeList;
@@ -74,7 +74,7 @@ public class NodePickActivity extends AppCompatActivity {
 
     private void sendResult(String id) {
         Intent i = new Intent();
-        i.putExtra(EXTRA_USER_ID, id);
+        i.putExtra(RESULT_NODE_ID, id);
         setResult(RESULT_OK, i);
         finish();
     }

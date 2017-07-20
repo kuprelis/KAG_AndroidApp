@@ -36,7 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TimetablePagerFragment extends Fragment {
-    private static final int REQUEST_USER_ID = 0;
+    private static final int REQUEST_NODE_ID = 0;
 
     @BindView(R.id.pager)
     ViewPager mPager;
@@ -91,7 +91,7 @@ public class TimetablePagerFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_pick_node) {
             Intent i = new Intent(getContext(), NodePickActivity.class);
-            startActivityForResult(i, REQUEST_USER_ID);
+            startActivityForResult(i, REQUEST_NODE_ID);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -101,8 +101,8 @@ public class TimetablePagerFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) return;
 
-        if (requestCode == REQUEST_USER_ID) {
-            mUserId = data.getStringExtra(NodePickActivity.EXTRA_USER_ID);
+        if (requestCode == REQUEST_NODE_ID) {
+            mUserId = data.getStringExtra(NodePickActivity.RESULT_NODE_ID);
             loadData();
         }
     }

@@ -11,7 +11,7 @@ import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.Utils;
 
 public class StartActivity extends AppCompatActivity {
-    private static final int REQUEST_USER_ID = 0;
+    private static final int REQUEST_NODE_ID = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class StartActivity extends AppCompatActivity {
             startMain();
         } else {
             Intent i = new Intent(this, NodePickActivity.class);
-            startActivityForResult(i, REQUEST_USER_ID);
+            startActivityForResult(i, REQUEST_NODE_ID);
         }
     }
 
@@ -33,9 +33,9 @@ public class StartActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_USER_ID) {
+        if (requestCode == REQUEST_NODE_ID) {
             if (resultCode == RESULT_OK) {
-                String id = data.getStringExtra(NodePickActivity.EXTRA_USER_ID);
+                String id = data.getStringExtra(NodePickActivity.RESULT_NODE_ID);
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
                 sp.edit()
                         .putString(getString(R.string.pref_user_id), id)

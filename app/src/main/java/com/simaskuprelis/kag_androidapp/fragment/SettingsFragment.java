@@ -21,7 +21,7 @@ import java.util.List;
 public class SettingsFragment extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private static final int REQUEST_USER_ID = 0;
+    private static final int REQUEST_NODE_ID = 0;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -33,7 +33,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Intent i = new Intent(getContext(), NodePickActivity.class);
-                startActivityForResult(i, REQUEST_USER_ID);
+                startActivityForResult(i, REQUEST_NODE_ID);
                 return true;
             }
         });
@@ -43,8 +43,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) return;
-        if (requestCode == REQUEST_USER_ID) {
-            String s = data.getStringExtra(NodePickActivity.EXTRA_USER_ID);
+        if (requestCode == REQUEST_NODE_ID) {
+            String s = data.getStringExtra(NodePickActivity.RESULT_NODE_ID);
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
             sp.edit().putString(getString(R.string.pref_user_id), s).apply();
             updateIdPref();
