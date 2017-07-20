@@ -15,10 +15,12 @@ import android.widget.ProgressBar;
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.adapter.NodeAdapter;
-import com.simaskuprelis.kag_androidapp.adapter.NodeClickListener;
 import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
 import com.simaskuprelis.kag_androidapp.api.listener.NodesListener;
 import com.simaskuprelis.kag_androidapp.entity.Node;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,7 @@ import butterknife.ButterKnife;
 
 public class NodePickActivity extends AppCompatActivity {
 
-    public static final String RESULT_NODE_ID = "com.simaskuprelis.kag_androidapp.user_id";
+    public static final String RESULT_NODE_ID = "com.simaskuprelis.kag_androidapp.node_id";
 
     @BindView(R.id.node_list)
     RecyclerView mNodeList;
@@ -61,20 +63,29 @@ public class NodePickActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
     private void setupAdapter() {
         mLoadingIndicator.setVisibility(View.GONE);
-        NodeAdapter adapter = new NodeAdapter(mAdapterNodes, new NodeClickListener() {
-            @Override
-            public void onClick(Node n) {
-                sendResult(n.getId());
-            }
-        });
+        NodeAdapter adapter = new NodeAdapter(mAdapterNodes);
         Utils.setupRecycler(mNodeList, this, adapter);
     }
 
-    private void sendResult(String id) {
+    @SuppressWarnings("unused")
+    @Subscribe
+    private void onNodeSelect(Node n) {
         Intent i = new Intent();
-        i.putExtra(RESULT_NODE_ID, id);
+        i.putExtra(RESULT_NODE_ID, n.getId());
         setResult(RESULT_OK, i);
         finish();
     }

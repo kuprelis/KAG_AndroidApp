@@ -1,6 +1,5 @@
 package com.simaskuprelis.kag_androidapp.adapter;
 
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +9,8 @@ import android.widget.TextView;
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.entity.Node;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -18,7 +19,6 @@ import butterknife.ButterKnife;
 public class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewHolder> {
 
     private List<Node> mNodes;
-    private NodeClickListener mListener;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.node_name)
@@ -30,9 +30,8 @@ public class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewHolder> {
         }
     }
 
-    public NodeAdapter(List<Node> nodes, @Nullable NodeClickListener listener) {
+    public NodeAdapter(List<Node> nodes) {
         mNodes = nodes;
-        mListener = listener;
     }
 
     @Override
@@ -48,7 +47,7 @@ public class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.ViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mListener != null) mListener.onClick(n);
+                EventBus.getDefault().post(n);
             }
         });
     }

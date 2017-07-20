@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.simaskuprelis.kag_androidapp.R;
+import com.simaskuprelis.kag_androidapp.activity.GroupActivity;
 import com.simaskuprelis.kag_androidapp.activity.NodePickActivity;
 import com.simaskuprelis.kag_androidapp.adapter.TimetablePagerAdapter;
 import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
@@ -27,6 +28,9 @@ import com.simaskuprelis.kag_androidapp.api.listener.GroupsListener;
 import com.simaskuprelis.kag_androidapp.api.listener.NodesListener;
 import com.simaskuprelis.kag_androidapp.entity.Group;
 import com.simaskuprelis.kag_androidapp.entity.Node;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -37,6 +41,7 @@ import butterknife.ButterKnife;
 
 public class TimetablePagerFragment extends Fragment {
     private static final int REQUEST_NODE_ID = 0;
+    private static final int REQUEST_GROUP_NODE_ID = 1;
 
     @BindView(R.id.pager)
     ViewPager mPager;
@@ -46,7 +51,7 @@ public class TimetablePagerFragment extends Fragment {
     FloatingActionButton mEditFab;
 
     private List<Group> mGroups;
-    private String mUserId;
+    private String mNodeId;
     private int mTodayPage;
 
     @Override
@@ -56,7 +61,7 @@ public class TimetablePagerFragment extends Fragment {
         setHasOptionsMenu(true);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        mUserId = sp.getString(getString(R.string.pref_user_id), null);
+        mNodeId = sp.getString(getString(R.string.pref_user_id), null);
         loadData();
 
         Calendar cal = Calendar.getInstance();
@@ -82,6 +87,18 @@ public class TimetablePagerFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_timetable, menu);
@@ -101,9 +118,16 @@ public class TimetablePagerFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) return;
 
-        if (requestCode == REQUEST_NODE_ID) {
-            mUserId = data.getStringExtra(NodePickActivity.RESULT_NODE_ID);
-            loadData();
+        switch (requestCode) {
+            case REQUEST_NODE_ID:
+                mNodeId = data.getStringExtra(NodePickActivity.RESULT_NODE_ID);
+                loadData();
+                break;
+
+            case REQUEST_GROUP_NODE_ID:
+                mNodeId = data.getStringExtra(GroupActivity.RESULT_GROUP_NODE_ID);
+                loadData();
+                break;
         }
     }
 
@@ -113,8 +137,16 @@ public class TimetablePagerFragment extends Fragment {
         super.onDetach();
     }
 
+    @SuppressWarnings("unused")
+    @Subscribe
+    public void onGroupSelect(Group g) {
+        Intent i = new Intent(getContext(), GroupActivity.class);
+        i.putExtra(GroupActivity.EXTRA_GROUP, g);
+        startActivityForResult(i, REQUEST_GROUP_NODE_ID);
+    }
+
     private void loadData() {
-        FirebaseDatabaseApi.getNodes(Collections.singletonList(mUserId), new NodesListener() {
+        FirebaseDatabaseApi.getNodes(Collections.singletonList(mNodeId), new NodesListener() {
             @Override
             public void onLoad(List<Node> nodes) {
                 Node n = nodes.get(0);
