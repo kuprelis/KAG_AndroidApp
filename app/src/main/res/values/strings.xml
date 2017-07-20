@@ -33,10 +33,12 @@
     <string name="poll_interval">Atnaujinimo dažnis</string>
     <string name="other">Kita</string>
     <string name="contact">Susisiekti su kūrėju</string>
+    <string name="app_ver">Programos versija</string>
     <string name="mail_uri">mailto:simas.kuprelis@gmail.com</string>
     
     <string name="pref_notify_important">notifyImportant</string>
     <string name="pref_notify_news">notifyNews</string>
     <string name="pref_poll_interval">pollInterval</string>
     <string name="pref_user_id">defaultId</string>
+    <string name="pref_app_ver">appVer</string>
 </resources>

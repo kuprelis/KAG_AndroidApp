@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
+import com.simaskuprelis.kag_androidapp.BuildConfig;
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.activity.NodePickActivity;
@@ -26,6 +27,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
+
+        findPreference(getString(R.string.pref_app_ver)).setSummary(BuildConfig.VERSION_NAME);
 
         updateIdPref();
         Preference idPref = findPreference(getString(R.string.pref_user_id));

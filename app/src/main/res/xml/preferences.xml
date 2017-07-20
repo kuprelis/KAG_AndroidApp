@@ -19,6 +19,7 @@
         <ListPreference
             android:key="@string/pref_poll_interval"
             android:title="@string/poll_interval"
+            android:dependency="@string/pref_notify_important"
             android:entryValues="@array/poll_interval_values"
             android:entries="@array/poll_interval_names"
             android:defaultValue="1"/>
@@ -31,6 +32,11 @@
                 android:action="android.intent.action.SENDTO"
                 android:data="@string/mail_uri" />
         </Preference>
+
+        <Preference
+            android:key="@string/pref_app_ver"
+            android:selectable="false"
+            android:title="@string/app_ver" />
     </PreferenceCategory>
 
 
