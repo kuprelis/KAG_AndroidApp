@@ -25,7 +25,8 @@
 
     <string name="select_node">Pasirinkite tvarkaraštį</string>
     <string name="search">Paieška</string>
-    <string name="pick_node">Kitas tvarkaraštis</string>
+    <string name="pick_node">Visi tvarkaraščiai</string>
+    <string name="default_node">Grįžti į pagrindinį</string>
 
     <string name="main_timetable">Pagrindinis tvarkaraštis</string>
     <string name="notifications">Pranešimai</string>

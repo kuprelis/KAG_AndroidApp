@@ -106,10 +106,22 @@ public class TimetablePagerFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_pick_node) {
-            Intent i = new Intent(getContext(), NodePickActivity.class);
-            startActivityForResult(i, REQUEST_NODE_ID);
+        switch (item.getItemId()) {
+            case R.id.menu_pick_node:
+                Intent i = new Intent(getContext(), NodePickActivity.class);
+                startActivityForResult(i, REQUEST_NODE_ID);
+                break;
+
+            case R.id.menu_default_node:
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String id = sp.getString(getString(R.string.pref_user_id), null);
+                if (id != null && !id.equals(mNodeId)) {
+                    mNodeId = id;
+                    loadData();
+                }
+                break;
         }
+
         return super.onOptionsItemSelected(item);
     }
 

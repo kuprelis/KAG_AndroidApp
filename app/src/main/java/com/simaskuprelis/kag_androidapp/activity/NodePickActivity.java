@@ -83,7 +83,7 @@ public class NodePickActivity extends AppCompatActivity {
 
     @SuppressWarnings("unused")
     @Subscribe
-    private void onNodeSelect(Node n) {
+    public void onNodeSelect(Node n) {
         Intent i = new Intent();
         i.putExtra(RESULT_NODE_ID, n.getId());
         setResult(RESULT_OK, i);
