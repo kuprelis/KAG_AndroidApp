@@ -185,10 +185,13 @@ public class TimetablePagerFragment extends Fragment {
 
     private void setupAdapter() {
         if (getActivity() == null || mGroups == null || mPager == null) return;
+
+        int page = mPager.getAdapter() == null ? mTodayPage : mPager.getCurrentItem();
+
         FragmentManager fm = getActivity().getSupportFragmentManager();
         mPager.setAdapter(new TimetablePagerAdapter(fm, mGroups, getContext()));
         mTabs.setupWithViewPager(mPager);
-        mPager.setCurrentItem(mTodayPage, false);
+        mPager.setCurrentItem(page, false);
     }
 
     public void reset() {
