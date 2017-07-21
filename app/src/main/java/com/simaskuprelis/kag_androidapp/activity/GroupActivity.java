@@ -16,7 +16,7 @@ import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.adapter.LessonAdapter;
 import com.simaskuprelis.kag_androidapp.adapter.NodeAdapter;
 import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
-import com.simaskuprelis.kag_androidapp.api.listener.NodesListener;
+import com.simaskuprelis.kag_androidapp.api.FirebaseListener;
 import com.simaskuprelis.kag_androidapp.entity.Group;
 import com.simaskuprelis.kag_androidapp.entity.Node;
 
@@ -56,17 +56,18 @@ public class GroupActivity extends AppCompatActivity {
         if (g == null) return;
 
         setTitle(g.getName());
+        Utils.setupRecycler(mLessons, this, new LessonAdapter(g.getLessons(), this));
 
         final Context context = this;
-        FirebaseDatabaseApi.getNodes(g.getNodes(), new NodesListener() {
+        FirebaseDatabaseApi.getGroupNodes(g.getId(), new FirebaseListener<List<Node>>() {
             @Override
-            public void onLoad(List<Node> nodes) {
+            public void onLoad(List<Node> obj) {
                 List<Node> teachers = new ArrayList<>();
                 List<Node> rooms = new ArrayList<>();
                 List<Node> students = new ArrayList<>();
 
-                for (Node n : nodes) {
-                    switch (n.getCategory()) {
+                for (Node n : obj) {
+                    switch (n.getCat()) {
                         case Node.TEACHER: teachers.add(n); break;
                         case Node.ROOM: rooms.add(n); break;
                         case Node.STUDENT: students.add(n); break;
@@ -76,8 +77,6 @@ public class GroupActivity extends AppCompatActivity {
 
                 Utils.setupRecycler(mTeachers, context, new NodeAdapter(teachers));
                 Utils.setupRecycler(mStudents, context, new NodeAdapter(students));
-                Utils.setupRecycler(mLessons, context, new LessonAdapter(g.getLessons(), context));
-
                 if (rooms.size() != 0) {
                     Utils.setupRecycler(mRooms, context, new NodeAdapter(rooms));
                 } else {

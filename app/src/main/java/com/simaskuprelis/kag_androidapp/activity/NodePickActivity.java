@@ -16,7 +16,7 @@ import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.adapter.NodeAdapter;
 import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
-import com.simaskuprelis.kag_androidapp.api.listener.NodesListener;
+import com.simaskuprelis.kag_androidapp.api.FirebaseListener;
 import com.simaskuprelis.kag_androidapp.entity.Node;
 
 import org.greenrobot.eventbus.EventBus;
@@ -48,12 +48,11 @@ public class NodePickActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setTitle(R.string.select_node);
-
-        FirebaseDatabaseApi.getNodes(null, new NodesListener() {
+        FirebaseDatabaseApi.getAllNodes(new FirebaseListener<List<Node>>() {
             @Override
-            public void onLoad(List<Node> nodes) {
-                mNodes = new ArrayList<>(nodes);
-                mAdapterNodes = nodes;
+            public void onLoad(List<Node> obj) {
+                mNodes = new ArrayList<>(obj);
+                mAdapterNodes = obj;
                 setupAdapter();
             }
 

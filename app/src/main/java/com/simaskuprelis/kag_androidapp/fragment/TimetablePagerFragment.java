@@ -24,9 +24,7 @@ import com.simaskuprelis.kag_androidapp.activity.GroupActivity;
 import com.simaskuprelis.kag_androidapp.activity.NodePickActivity;
 import com.simaskuprelis.kag_androidapp.adapter.TimetablePagerAdapter;
 import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
-import com.simaskuprelis.kag_androidapp.api.listener.GroupsListener;
-import com.simaskuprelis.kag_androidapp.api.listener.NodesListener;
-import com.simaskuprelis.kag_androidapp.api.listener.TimesListener;
+import com.simaskuprelis.kag_androidapp.api.FirebaseListener;
 import com.simaskuprelis.kag_androidapp.entity.Group;
 import com.simaskuprelis.kag_androidapp.entity.Node;
 
@@ -34,7 +32,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -63,10 +60,10 @@ public class TimetablePagerFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
-        FirebaseDatabaseApi.getTimes(new TimesListener() {
+        FirebaseDatabaseApi.getTimes(new FirebaseListener<List<Integer>>() {
             @Override
-            public void onLoad(List<Integer> times) {
-                mTimes = times;
+            public void onLoad(List<Integer> list) {
+                mTimes = list;
                 setupAdapter();
             }
 
@@ -164,27 +161,28 @@ public class TimetablePagerFragment extends Fragment {
     }
 
     private void loadData(String nodeId) {
-        FirebaseDatabaseApi.getNodes(Collections.singletonList(nodeId), new NodesListener() {
+        FirebaseDatabaseApi.getNode(nodeId, new FirebaseListener<Node>() {
             @Override
-            public void onLoad(List<Node> nodes) {
-                Node n = nodes.get(0);
-                Activity activity = getActivity();
-                if (activity != null) activity.setTitle(n.getName());
-                FirebaseDatabaseApi.getGroups(n.getGroups(), new GroupsListener() {
-                    @Override
-                    public void onLoad(List<Group> groups) {
-                        mGroups = groups;
-                        setupAdapter();
-                    }
-
-                    @Override
-                    public void onFail(Exception e) {
-                    }
-                });
+            public void onLoad(Node obj) {
+                Activity a = getActivity();
+                if (a != null) a.setTitle(obj.getName());
             }
 
             @Override
             public void onFail(Exception e) {
+            }
+        });
+
+        FirebaseDatabaseApi.getNodeGroups(nodeId, new FirebaseListener<List<Group>>() {
+            @Override
+            public void onLoad(List<Group> list) {
+                mGroups = list;
+                setupAdapter();
+            }
+
+            @Override
+            public void onFail(Exception e) {
+
             }
         });
     }

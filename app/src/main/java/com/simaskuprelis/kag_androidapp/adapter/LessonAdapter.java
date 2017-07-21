@@ -56,7 +56,7 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.ViewHolder
         StringBuilder sb = new StringBuilder()
                 .append(day)
                 .append(", ")
-                .append(l.getNumber())
+                .append(l.getNum())
                 .append(" pamoka");
         // TODO get normal names someday
         if (l.getRoom() != null) sb.append(", ").append(l.getRoom());

@@ -13,11 +13,8 @@ import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.activity.NodePickActivity;
 import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
-import com.simaskuprelis.kag_androidapp.api.listener.NodesListener;
+import com.simaskuprelis.kag_androidapp.api.FirebaseListener;
 import com.simaskuprelis.kag_androidapp.entity.Node;
-
-import java.util.Collections;
-import java.util.List;
 
 public class SettingsFragment extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -79,11 +76,11 @@ public class SettingsFragment extends PreferenceFragmentCompat
         final String id = getString(R.string.pref_user_id);
         String val = sp.getString(id, null);
         if (val == null) return;
-        FirebaseDatabaseApi.getNodes(Collections.singletonList(val), new NodesListener() {
+        FirebaseDatabaseApi.getNode(val, new FirebaseListener<Node>() {
             @Override
-            public void onLoad(List<Node> nodes) {
+            public void onLoad(Node obj) {
                 Preference p = findPreference(id);
-                p.setSummary(nodes.get(0).getName());
+                p.setSummary(obj.getName());
             }
 
             @Override

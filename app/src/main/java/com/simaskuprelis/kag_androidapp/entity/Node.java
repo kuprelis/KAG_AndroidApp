@@ -2,25 +2,14 @@ package com.simaskuprelis.kag_androidapp.entity;
 
 import android.support.annotation.NonNull;
 
-import java.util.List;
-
 public class Node implements Comparable<Node> {
     public static final int TEACHER = 1;
     public static final int ROOM = 2;
     public static final int STUDENT = 3;
 
     private String mId;
-    private int mCategory;
-    private List<String> mGroups;
+    private int mCat;
     private String mName;
-
-    public List<String> getGroups() {
-        return mGroups;
-    }
-
-    public void setGroups(List<String> groups) {
-        mGroups = groups;
-    }
 
     public String getName() {
         return mName;
@@ -30,12 +19,12 @@ public class Node implements Comparable<Node> {
         mName = name;
     }
 
-    public int getCategory() {
-        return mCategory;
+    public int getCat() {
+        return mCat;
     }
 
-    public void setCategory(int category) {
-        mCategory = category;
+    public void setCat(int cat) {
+        mCat = cat;
     }
 
     public String getId() {
@@ -48,7 +37,7 @@ public class Node implements Comparable<Node> {
 
     @Override
     public int compareTo(@NonNull Node o) {
-        if (getCategory() != o.getCategory()) return getCategory() - o.getCategory();
+        if (getCat() != o.getCat()) return getCat() - o.getCat();
         return getName().compareToIgnoreCase(o.getName());
     }
 }

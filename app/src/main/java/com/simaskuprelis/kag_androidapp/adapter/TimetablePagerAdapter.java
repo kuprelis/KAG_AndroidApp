@@ -33,7 +33,7 @@ public class TimetablePagerAdapter extends FragmentStatePagerAdapter {
         SparseArray<Group> groups = new SparseArray<>();
         for (Group g : mGroups) {
             for (Lesson l : g.getLessons()) {
-                if (l.getDay() == position + 1) groups.append(l.getNumber(), g);
+                if (l.getDay() == position + 1) groups.append(l.getNum(), g);
             }
         }
         return TimetableFragment.newInstance(groups, mTimes);
