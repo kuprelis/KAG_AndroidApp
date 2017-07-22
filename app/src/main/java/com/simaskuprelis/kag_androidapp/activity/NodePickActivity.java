@@ -3,6 +3,7 @@ package com.simaskuprelis.kag_androidapp.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +32,7 @@ import butterknife.ButterKnife;
 
 public class NodePickActivity extends AppCompatActivity {
 
+    public static final String EXTRA_UP_NAV = "com.simaskuprelis.kag_androidapp.up_nav";
     public static final String RESULT_NODE_ID = "com.simaskuprelis.kag_androidapp.node_id";
 
     @BindView(R.id.node_list)
@@ -46,6 +48,10 @@ public class NodePickActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_onboarding);
         ButterKnife.bind(this);
+
+        Intent i = getIntent();
+        boolean enableUp = !i.hasExtra(EXTRA_UP_NAV) || i.getExtras().getBoolean(EXTRA_UP_NAV, true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(enableUp);
 
         setTitle(R.string.select_node);
         FirebaseDatabaseApi.getAllNodes(new FirebaseListener<List<Node>>() {
@@ -110,6 +116,16 @@ public class NodePickActivity extends AppCompatActivity {
         });
 
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void filterItems(String query) {

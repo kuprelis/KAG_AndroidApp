@@ -25,6 +25,7 @@ public class StartActivity extends AppCompatActivity {
             startMain();
         } else {
             Intent i = new Intent(this, NodePickActivity.class);
+            i.putExtra(NodePickActivity.EXTRA_UP_NAV, false);
             startActivityForResult(i, REQUEST_NODE_ID);
         }
     }
