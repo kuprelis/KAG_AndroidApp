@@ -26,8 +26,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class Utils {
-    private static final String BASE_URL = "http://www.azuolynogimnazija.lt";
-    private static final String JSON_URL = "http://www.azuolynogimnazija.lt/json/";
+    public static final String BASE_URL = "http://www.azuolynogimnazija.lt";
+    public static final String JSON_URL = "http://www.azuolynogimnazija.lt/json/";
 
     public static CharSequence parseHtml(String html) {
         Document doc = Jsoup.parse(html, BASE_URL);

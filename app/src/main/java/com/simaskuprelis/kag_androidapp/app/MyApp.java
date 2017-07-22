@@ -1,4 +1,4 @@
-package com.simaskuprelis.kag_androidapp;
+package com.simaskuprelis.kag_androidapp.app;
 
 import android.app.Application;
 

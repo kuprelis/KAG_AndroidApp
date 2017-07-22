@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.crash.FirebaseCrash;
 import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.api.NewsApi;
@@ -67,7 +68,8 @@ public class NewsFragment extends Fragment {
 
         updateImportant();
 
-        Utils.setupRecycler(mRecyclerView, getContext(), new NewsAdapter(mNewsItems));
+        NewsAdapter adapter = new NewsAdapter(mNewsItems, Glide.with(this));
+        Utils.setupRecycler(mRecyclerView, getContext(), adapter);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
