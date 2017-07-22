@@ -17,13 +17,27 @@ import com.simaskuprelis.kag_androidapp.api.NewsApi;
 import com.simaskuprelis.kag_androidapp.receiver.ImportantNewsReceiver;
 import com.squareup.moshi.Moshi;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class Utils {
-    private static final String BASE_URL = "http://www.azuolynogimnazija.lt/json/";
+    private static final String BASE_URL = "http://www.azuolynogimnazija.lt";
+    private static final String JSON_URL = "http://www.azuolynogimnazija.lt/json/";
 
     public static CharSequence parseHtml(String html) {
+        Document doc = Jsoup.parse(html, BASE_URL);
+        Elements elements = doc.select("a");
+        for (Element e : elements) {
+            String absUrl = e.attr("abs:href");
+            if (!absUrl.isEmpty()) e.attr("href", absUrl);
+        }
+        html = doc.html();
+
         Spanned s = Html.fromHtml(html);
 
         int i = s.length() - 1;
@@ -38,7 +52,7 @@ public class Utils {
     public static NewsApi getApi() {
         Moshi moshi = new Moshi.Builder().build();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(JSON_URL)
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .build();
         return retrofit.create(NewsApi.class);
