@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.activity.GroupActivity;
@@ -45,13 +45,13 @@ public class TimetablePagerFragment extends Fragment {
     ViewPager mPager;
     @BindView(R.id.pager_tabs)
     TabLayout mTabs;
-    @BindView(R.id.edit_fab)
-    FloatingActionButton mEditFab;
+    @BindView(R.id.loading_indicator)
+    ProgressBar mLoading;
 
     private List<Group> mGroups;
     private List<Integer> mTimes;
     private String mDefaultId;
-    private int mTodayPage;
+    private int mPage;
 
 
     @Override
@@ -72,18 +72,11 @@ public class TimetablePagerFragment extends Fragment {
             }
         });
 
+        mPage = getTodayIndex();
+
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         mDefaultId = sp.getString(getString(R.string.pref_user_id), null);
         loadData(mDefaultId);
-
-        Calendar cal = Calendar.getInstance();
-        switch (cal.get(Calendar.DAY_OF_WEEK)) {
-            case Calendar.TUESDAY: mTodayPage = 1; break;
-            case Calendar.WEDNESDAY: mTodayPage = 2; break;
-            case Calendar.THURSDAY: mTodayPage = 3; break;
-            case Calendar.FRIDAY: mTodayPage = 4; break;
-            default: mTodayPage = 0; break;
-        }
     }
 
     @Nullable
@@ -92,8 +85,8 @@ public class TimetablePagerFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_timetable_pager, container, false);
         ButterKnife.bind(this, v);
 
+        mTabs.setupWithViewPager(mPager);
         if (mPager.getAdapter() == null) setupAdapter();
-        mEditFab.setVisibility(View.GONE);
 
         return v;
     }
@@ -161,6 +154,12 @@ public class TimetablePagerFragment extends Fragment {
     }
 
     private void loadData(String nodeId) {
+        if (mPager != null) {
+            mPage = mPager.getCurrentItem();
+            mPager.setAdapter(null);
+            mLoading.setVisibility(View.VISIBLE);
+        }
+
         FirebaseDatabaseApi.getNode(nodeId, new FirebaseListener<Node>() {
             @Override
             public void onLoad(Node obj) {
@@ -190,15 +189,25 @@ public class TimetablePagerFragment extends Fragment {
     private void setupAdapter() {
         if (getActivity() == null || mGroups == null || mTimes == null || mPager == null) return;
 
-        int page = mPager.getAdapter() == null ? mTodayPage : mPager.getCurrentItem();
-
+        mLoading.setVisibility(View.GONE);
         FragmentManager fm = getActivity().getSupportFragmentManager();
         mPager.setAdapter(new TimetablePagerAdapter(fm, mGroups, mTimes, getContext()));
-        mTabs.setupWithViewPager(mPager);
-        mPager.setCurrentItem(page, false);
+        mPager.setCurrentItem(mPage, false);
+    }
+
+    private int getTodayIndex() {
+        Calendar cal = Calendar.getInstance();
+        switch (cal.get(Calendar.DAY_OF_WEEK)) {
+            case Calendar.TUESDAY: return 1;
+            case Calendar.WEDNESDAY: return 2;
+            case Calendar.THURSDAY: return 3;
+            case Calendar.FRIDAY: return 4;
+            default: return 0;
+        }
     }
 
     public void reset() {
-        mPager.setCurrentItem(mTodayPage);
+        mPage = getTodayIndex();
+        mPager.setCurrentItem(mPage);
     }
 }

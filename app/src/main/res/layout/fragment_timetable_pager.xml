@@ -25,12 +25,9 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/edit_fab"
+    <ProgressBar
+        android:id="@+id/loading_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="32dp"
-        android:src="@drawable/ic_mode_edit_24dp"
-        app:elevation="4dp" />
+        android:layout_gravity="center"/>
 </FrameLayout>
