@@ -18,7 +18,6 @@ import butterknife.ButterKnife;
 public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.ViewHolder> {
 
     private List<Lesson> mLessons;
-    private Context mContext;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.node_name)
@@ -30,9 +29,8 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.ViewHolder
         }
     }
 
-    public LessonAdapter(List<Lesson> lessons, Context c) {
+    public LessonAdapter(List<Lesson> lessons) {
         mLessons = lessons;
-        mContext = c;
     }
 
     @Override
@@ -42,15 +40,16 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(LessonAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         Lesson l = mLessons.get(position);
         String day;
+        Context c = holder.itemView.getContext();
         switch (l.getDay()) {
-            case 1: day = mContext.getString(R.string.monday); break;
-            case 2: day = mContext.getString(R.string.tuesday); break;
-            case 3: day = mContext.getString(R.string.wednesday); break;
-            case 4: day = mContext.getString(R.string.thursday); break;
-            case 5: day = mContext.getString(R.string.friday); break;
+            case 1: day = c.getString(R.string.monday); break;
+            case 2: day = c.getString(R.string.tuesday); break;
+            case 3: day = c.getString(R.string.wednesday); break;
+            case 4: day = c.getString(R.string.thursday); break;
+            case 5: day = c.getString(R.string.friday); break;
             default: day = ""; break;
         }
         StringBuilder sb = new StringBuilder()

@@ -57,7 +57,7 @@ public class GroupActivity extends AppCompatActivity {
         if (g == null) return;
 
         setTitle(g.getName());
-        Utils.setupRecycler(mLessons, this, new LessonAdapter(g.getLessons(), this));
+        Utils.setupRecycler(mLessons, this, new LessonAdapter(g.getLessons()));
 
         final Context context = this;
         FirebaseDatabaseApi.getGroupNodes(g.getId(), new FirebaseListener<List<Node>>() {
