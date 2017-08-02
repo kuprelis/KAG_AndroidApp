@@ -54,19 +54,21 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     public void onBindViewHolder(NewsAdapter.ViewHolder holder, int position) {
         NewsItem item = mNewsList.get(position);
 
-        if (!item.isVisible()) {
-            holder.itemView.setVisibility(View.GONE);
-            return;
-        }
+        holder.itemView.setVisibility(item.isVisible() ? View.VISIBLE : View.GONE);
+        if (!item.isVisible()) return;
 
         String url = item.getPhotoUrl();
-        if (url != null && !url.isEmpty()) {
-            url = Utils.BASE_URL + url.substring(url.indexOf('/'));
+        holder.mImage.setVisibility(url.isEmpty() ? View.GONE : View.VISIBLE);
+        if (!url.isEmpty()) {
+            if (url.substring(0, 2).equals("..")) {
+                url = Utils.BASE_URL + url.substring(url.indexOf('/'));
+            }
+
             mRequestManager.load(url)
                     .apply(new RequestOptions().centerCrop())
                     .into(holder.mImage);
         } else {
-            holder.mImage.setVisibility(View.GONE);
+            mRequestManager.clear(holder.mImage);
         }
 
         holder.mTitle.setText(Utils.parseHtml(item.getTitle()));
