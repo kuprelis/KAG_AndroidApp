@@ -1,5 +1,6 @@
 package com.simaskuprelis.kag_androidapp.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,12 +17,16 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.crash.FirebaseCrash;
 import com.simaskuprelis.kag_androidapp.Utils;
+import com.simaskuprelis.kag_androidapp.activity.ArticleActivity;
 import com.simaskuprelis.kag_androidapp.api.NewsApi;
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.adapter.NewsAdapter;
 import com.simaskuprelis.kag_androidapp.api.NewsResponse;
 import com.simaskuprelis.kag_androidapp.entity.ImportantNewsItem;
 import com.simaskuprelis.kag_androidapp.entity.NewsItem;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +86,26 @@ public class NewsFragment extends Fragment {
         addItems();
 
         return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe
+    public void onNewsSelect(NewsItem ni) {
+        Intent i = new Intent(getContext(), ArticleActivity.class);
+        i.putExtra(ArticleActivity.EXTRA_ARTICLE, ni);
+        startActivity(i);
     }
 
     private void updateImportant() {

@@ -1,7 +1,6 @@
 package com.simaskuprelis.kag_androidapp.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.entity.NewsItem;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(NewsAdapter.ViewHolder holder, int position) {
-        NewsItem item = mNewsList.get(position);
+        final NewsItem item = mNewsList.get(position);
 
         holder.itemView.setVisibility(item.isVisible() ? View.VISIBLE : View.GONE);
         if (!item.isVisible()) return;
@@ -60,10 +61,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         String url = item.getPhotoUrl();
         holder.mImage.setVisibility(url.isEmpty() ? View.GONE : View.VISIBLE);
         if (!url.isEmpty()) {
-            if (url.substring(0, 2).equals("..")) {
-                url = Utils.BASE_URL + url.substring(url.indexOf('/'));
-            }
-
             mRequestManager.load(url)
                     .apply(new RequestOptions().centerCrop())
                     .into(holder.mImage);
@@ -71,10 +68,16 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             mRequestManager.clear(holder.mImage);
         }
 
-        holder.mTitle.setText(Utils.parseHtml(item.getTitle()));
+        holder.mTitle.setText(item.getTitle());
         holder.mDate.setText(item.getCreated());
         holder.mBody.setText(Utils.parseHtml(item.getText()));
-        holder.mBody.setMovementMethod(LinkMovementMethod.getInstance());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(item);
+            }
+        });
     }
 
     @Override

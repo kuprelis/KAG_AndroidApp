@@ -22,7 +22,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(rmn.getBody())
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setColor(getResources().getColor(R.color.colorAccent));
+                .setColor(getResources().getColor(R.color.accent));
 
         if (rmn.getSound() != null) {
             Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

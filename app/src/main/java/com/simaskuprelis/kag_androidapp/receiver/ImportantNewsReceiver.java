@@ -58,7 +58,7 @@ public class ImportantNewsReceiver extends BroadcastReceiver {
                             .setContentTitle(context.getString(R.string.important_news))
                             .setContentText(text)
                             .setSound(sound)
-                            .setColor(context.getResources().getColor(R.color.colorAccent))
+                            .setColor(context.getResources().getColor(R.color.accent))
                             .setContentIntent(pi)
                             .setAutoCancel(true)
                             .setStyle(new NotificationCompat.BigTextStyle().bigText(text));

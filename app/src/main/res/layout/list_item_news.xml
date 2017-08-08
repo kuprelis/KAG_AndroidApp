@@ -5,22 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="?android:selectableItemBackground">
 
     <TextView
         android:id="@+id/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Title"
-        android:textSize="18sp"
-        android:textColor="@color/blackText"/>
+        android:textSize="18sp"/>
 
     <TextView
         android:id="@+id/date_created"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        android:textColor="@color/dateText"
+        android:textColor="@color/textSecondary"
         tools:text="2017-04-20 16:20:00"/>
 
     <LinearLayout
@@ -35,10 +35,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:linksClickable="false"
-            android:textColor="@color/blackText"
             android:textSize="14sp"
             android:maxLines="6"
-            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec feugiat varius odio id luctus. Nunc eget purus sodales, accumsan ex id, aliquam lacus. Cras pharetra est ac tempus interdum." />
+            android:ellipsize="end"
+            tools:text="Lorem ipsum dolor sit amet" />
 
         <ImageView
             android:id="@+id/image"

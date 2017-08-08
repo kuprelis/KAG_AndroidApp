@@ -35,6 +35,8 @@
     <string name="contact">Susisiekti su kūrėju</string>
     <string name="app_ver">Programos versija</string>
     <string name="mail_uri">mailto:simas.kuprelis@gmail.com</string>
+
+    <string name="updated">Atnaujinta</string>
     
     <string name="pref_notify_important">notifyImportant</string>
     <string name="pref_notify_news">notifyNews</string>

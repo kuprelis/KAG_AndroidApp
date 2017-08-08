@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:textSize="26sp"
+        android:textColor="@color/textSecondary"
         tools:text="1"/>
 
     <TextView
@@ -26,7 +27,6 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
-        android:textColor="@android:color/black"
         android:textSize="18sp"
         tools:text="3, matematika A"/>
 
@@ -41,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="08:00"
+            android:textColor="@color/textSecondary"
             android:textStyle="bold"/>
 
         <TextView
@@ -48,6 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="08:45"
+            android:textColor="@color/textSecondary"
             android:textStyle=""/>
     </LinearLayout>
 
