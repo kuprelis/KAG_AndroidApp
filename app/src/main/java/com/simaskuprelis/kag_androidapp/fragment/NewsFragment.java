@@ -10,9 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.crash.FirebaseCrash;
@@ -28,7 +26,6 @@ import com.simaskuprelis.kag_androidapp.entity.NewsItem;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,10 +39,6 @@ public class NewsFragment extends Fragment {
 
     @BindView(R.id.news_list)
     RecyclerView mRecyclerView;
-    @BindView(R.id.important_display)
-    LinearLayout mImportantDisplay;
-    @BindView(R.id.important_text)
-    TextView mImportantText;
     @BindView(R.id.loading_indicator)
     ProgressBar mLoadingIndicator;
 
@@ -53,6 +46,7 @@ public class NewsFragment extends Fragment {
     private boolean mItemsAvailable;
     private boolean mLoading;
     private List<NewsItem> mNewsItems;
+    private ImportantNewsItem mImportant;
     private NewsApi mNewsApi;
 
     @Override
@@ -61,8 +55,38 @@ public class NewsFragment extends Fragment {
         mPage = 1;
         mItemsAvailable = true;
         mLoading = false;
-        mNewsItems = new ArrayList<>();
         mNewsApi = Utils.getApi();
+
+        Call<ImportantNewsItem> importantCall = mNewsApi.getImportantNews();
+        importantCall.enqueue(new Callback<ImportantNewsItem>() {
+            @Override
+            public void onResponse(Call<ImportantNewsItem> call, Response<ImportantNewsItem> response) {
+                mImportant = response.body();
+                setupAdapter();
+            }
+
+            @Override
+            public void onFailure(Call<ImportantNewsItem> call, Throwable t) {
+                FirebaseCrash.logcat(Log.ERROR, TAG, t.toString());
+            }
+        });
+
+        Call<NewsResponse> newsCall = mNewsApi.getNews(mPage, null);
+        newsCall.enqueue(new Callback<NewsResponse>() {
+            @Override
+            public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
+                NewsResponse data = response.body();
+                mNewsItems = data.getItems();
+                mItemsAvailable = data.getCurrentPage() != data.getLastPage();
+                mPage++;
+                setupAdapter();
+            }
+
+            @Override
+            public void onFailure(Call<NewsResponse> call, Throwable t) {
+                FirebaseCrash.logcat(Log.ERROR, TAG, t.toString());
+            }
+        });
     }
 
     @Nullable
@@ -71,20 +95,8 @@ public class NewsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_news, container, false);
         ButterKnife.bind(this, v);
 
-        updateImportant();
-
-        NewsAdapter adapter = new NewsAdapter(mNewsItems, Glide.with(this));
-        Utils.setupRecycler(mRecyclerView, getContext(), adapter);
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager llm = (LinearLayoutManager) recyclerView.getLayoutManager();
-                if (llm.findLastVisibleItemPosition() == mNewsItems.size() - 1) addItems();
-            }
-        });
-        addItems();
-
+        setupAdapter();
+        
         return v;
     }
 
@@ -100,46 +112,36 @@ public class NewsFragment extends Fragment {
         super.onStop();
     }
 
-    @SuppressWarnings("unused")
-    @Subscribe
-    public void onNewsSelect(NewsItem ni) {
-        Intent i = new Intent(getContext(), ArticleActivity.class);
-        i.putExtra(ArticleActivity.EXTRA_ARTICLE, ni);
-        startActivity(i);
-    }
+    private void setupAdapter() {
+        if (mRecyclerView == null || mRecyclerView.getAdapter() != null) return;
+        if (mImportant == null || mNewsItems == null) return;
 
-    private void updateImportant() {
-        Call<ImportantNewsItem> call = mNewsApi.getImportantNews();
-        call.enqueue(new Callback<ImportantNewsItem>() {
+        mLoadingIndicator.setVisibility(View.GONE);
+        NewsAdapter adapter = new NewsAdapter(mNewsItems, mImportant, Glide.with(this));
+        Utils.setupRecycler(mRecyclerView, getContext(), adapter);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onResponse(Call<ImportantNewsItem> call, Response<ImportantNewsItem> response) {
-                ImportantNewsItem item = response.body();
-                if (!item.isActive()) return;
-                mImportantText.setText(Utils.parseHtml(item.getText()).toString());
-                mImportantDisplay.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onFailure(Call<ImportantNewsItem> call, Throwable t) {
-                FirebaseCrash.logcat(Log.ERROR, TAG, t.toString());
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager llm = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (llm.findLastVisibleItemPosition() == mNewsItems.size() - 1) addItems();
             }
         });
     }
 
     private void addItems() {
         if (!mItemsAvailable || mLoading) return;
-
         mLoading = true;
+
         Call<NewsResponse> call = mNewsApi.getNews(mPage, null);
         call.enqueue(new Callback<NewsResponse>() {
             @Override
             public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
-                mLoadingIndicator.setVisibility(View.GONE);
                 NewsResponse data = response.body();
                 mNewsItems.addAll(data.getItems());
-                mRecyclerView.getAdapter().notifyDataSetChanged();
                 mItemsAvailable = data.getCurrentPage() != data.getLastPage();
                 mPage++;
+                mRecyclerView.getAdapter().notifyDataSetChanged();
                 mLoading = false;
             }
 
@@ -149,6 +151,14 @@ public class NewsFragment extends Fragment {
                 mLoading = false;
             }
         });
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe
+    public void onNewsSelect(NewsItem ni) {
+        Intent i = new Intent(getContext(), ArticleActivity.class);
+        i.putExtra(ArticleActivity.EXTRA_ARTICLE, ni);
+        startActivity(i);
     }
 
     public void reset() {
