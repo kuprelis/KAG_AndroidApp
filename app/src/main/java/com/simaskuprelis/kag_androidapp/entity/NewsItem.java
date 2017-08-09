@@ -7,7 +7,7 @@ import android.os.Parcelable;
 import com.simaskuprelis.kag_androidapp.Utils;
 import com.squareup.moshi.Json;
 
-public class NewsItem implements Parcelable {
+public class NewsItem extends NewsListItem implements Parcelable {
 
     @Json(name = "title")
     private String mTitle;
@@ -50,6 +50,11 @@ public class NewsItem implements Parcelable {
 
     public String getUpdated() {
         return mUpdated.substring(0, mUpdated.length() - 3);
+    }
+
+    @Override
+    public int getType() {
+        return TYPE_REGULAR;
     }
 
     protected NewsItem(Parcel in) {

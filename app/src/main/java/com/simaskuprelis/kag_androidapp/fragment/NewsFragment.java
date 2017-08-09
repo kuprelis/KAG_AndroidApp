@@ -22,10 +22,12 @@ import com.simaskuprelis.kag_androidapp.adapter.NewsAdapter;
 import com.simaskuprelis.kag_androidapp.api.NewsResponse;
 import com.simaskuprelis.kag_androidapp.entity.ImportantNewsItem;
 import com.simaskuprelis.kag_androidapp.entity.NewsItem;
+import com.simaskuprelis.kag_androidapp.entity.NewsListItem;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,26 +44,30 @@ public class NewsFragment extends Fragment {
     @BindView(R.id.loading_indicator)
     ProgressBar mLoadingIndicator;
 
+    private int mCallbacksReceived;
     private int mPage;
     private boolean mItemsAvailable;
     private boolean mLoading;
-    private List<NewsItem> mNewsItems;
-    private ImportantNewsItem mImportant;
+    private List<NewsListItem> mItems;
     private NewsApi mNewsApi;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mPage = 1;
         mItemsAvailable = true;
         mLoading = false;
         mNewsApi = Utils.getApi();
+        mItems = new ArrayList<>();
+        mCallbacksReceived = 0;
 
         Call<ImportantNewsItem> importantCall = mNewsApi.getImportantNews();
         importantCall.enqueue(new Callback<ImportantNewsItem>() {
             @Override
             public void onResponse(Call<ImportantNewsItem> call, Response<ImportantNewsItem> response) {
-                mImportant = response.body();
+                mCallbacksReceived++;
+                mItems.add(0, response.body());
                 setupAdapter();
             }
 
@@ -75,8 +81,9 @@ public class NewsFragment extends Fragment {
         newsCall.enqueue(new Callback<NewsResponse>() {
             @Override
             public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
+                mCallbacksReceived++;
                 NewsResponse data = response.body();
-                mNewsItems = data.getItems();
+                mItems.addAll(data.getItems());
                 mItemsAvailable = data.getCurrentPage() != data.getLastPage();
                 mPage++;
                 setupAdapter();
@@ -114,17 +121,17 @@ public class NewsFragment extends Fragment {
 
     private void setupAdapter() {
         if (mRecyclerView == null || mRecyclerView.getAdapter() != null) return;
-        if (mImportant == null || mNewsItems == null) return;
+        if (mCallbacksReceived != 2) return;
 
         mLoadingIndicator.setVisibility(View.GONE);
-        NewsAdapter adapter = new NewsAdapter(mNewsItems, mImportant, Glide.with(this));
+        NewsAdapter adapter = new NewsAdapter(mItems, Glide.with(this));
         Utils.setupRecycler(mRecyclerView, getContext(), adapter);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 LinearLayoutManager llm = (LinearLayoutManager) recyclerView.getLayoutManager();
-                if (llm.findLastVisibleItemPosition() == mNewsItems.size() - 1) addItems();
+                if (llm.findLastVisibleItemPosition() == mItems.size() - 1) addItems();
             }
         });
     }
@@ -138,7 +145,7 @@ public class NewsFragment extends Fragment {
             @Override
             public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
                 NewsResponse data = response.body();
-                mNewsItems.addAll(data.getItems());
+                mItems.addAll(data.getItems());
                 mItemsAvailable = data.getCurrentPage() != data.getLastPage();
                 mPage++;
                 mRecyclerView.getAdapter().notifyDataSetChanged();
