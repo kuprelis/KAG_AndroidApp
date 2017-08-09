@@ -8,6 +8,7 @@ import com.simaskuprelis.kag_androidapp.Utils;
 import com.squareup.moshi.Json;
 
 public class NewsItem extends NewsListItem implements Parcelable {
+    private static final int VISIBLE = 1;
 
     @Json(name = "title")
     private String mTitle;
@@ -17,6 +18,8 @@ public class NewsItem extends NewsListItem implements Parcelable {
     private String mText;
     @Json(name = "maintext")
     private String mBonusText;
+    @Json(name = "visable")
+    private int mVisible;
     @Json(name = "fotourl")
     private String mPhotoUrl;
     @Json(name = "created_at")
@@ -38,6 +41,10 @@ public class NewsItem extends NewsListItem implements Parcelable {
 
     public String getBonusText() {
         return mBonusText;
+    }
+
+    public boolean isVisible() {
+        return mVisible == VISIBLE;
     }
 
     public String getPhotoUrl() {
@@ -62,6 +69,7 @@ public class NewsItem extends NewsListItem implements Parcelable {
         mCategory = in.readInt();
         mText = in.readString();
         mBonusText = in.readString();
+        mVisible = in.readInt();
         mPhotoUrl = in.readString();
         mCreated = in.readString();
         mUpdated = in.readString();
@@ -78,6 +86,7 @@ public class NewsItem extends NewsListItem implements Parcelable {
         dest.writeInt(mCategory);
         dest.writeString(mText);
         dest.writeString(mBonusText);
+        dest.writeInt(mVisible);
         dest.writeString(mPhotoUrl);
         dest.writeString(mCreated);
         dest.writeString(mUpdated);

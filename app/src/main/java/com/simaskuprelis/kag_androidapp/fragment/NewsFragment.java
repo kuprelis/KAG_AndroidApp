@@ -67,7 +67,8 @@ public class NewsFragment extends Fragment {
             @Override
             public void onResponse(Call<ImportantNewsItem> call, Response<ImportantNewsItem> response) {
                 mCallbacksReceived++;
-                mItems.add(0, response.body());
+                ImportantNewsItem item = response.body();
+                if (item.isActive()) mItems.add(0, response.body());
                 setupAdapter();
             }
 
@@ -83,7 +84,9 @@ public class NewsFragment extends Fragment {
             public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
                 mCallbacksReceived++;
                 NewsResponse data = response.body();
-                mItems.addAll(data.getItems());
+                for (NewsItem item : data.getItems()) {
+                    if (item.isVisible()) mItems.add(item);
+                }
                 mItemsAvailable = data.getCurrentPage() != data.getLastPage();
                 mPage++;
                 setupAdapter();
