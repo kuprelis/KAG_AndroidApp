@@ -29,6 +29,13 @@ public class Utils {
     public static final String BASE_URL = "http://www.azuolynogimnazija.lt";
     public static final String JSON_URL = "http://www.azuolynogimnazija.lt/json/";
 
+    public static String absUrl(String url) {
+        if (url.length() >= 2 && url.substring(0, 2).equals("..")) {
+            return BASE_URL + url.substring(url.indexOf('/'));
+        }
+        return url;
+    }
+
     public static CharSequence parseHtml(String html) {
         Document doc = Jsoup.parse(html, BASE_URL);
         Elements elements = doc.select("a");

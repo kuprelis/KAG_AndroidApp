@@ -41,10 +41,7 @@ public class NewsItem implements Parcelable {
     }
 
     public String getPhotoUrl() {
-        if (mPhotoUrl.length() >= 2 && mPhotoUrl.substring(0, 2).equals("..")) {
-            return Utils.BASE_URL + mPhotoUrl.substring(mPhotoUrl.indexOf('/'));
-        }
-        return mPhotoUrl;
+        return Utils.absUrl(mPhotoUrl);
     }
 
     public String getCreated() {

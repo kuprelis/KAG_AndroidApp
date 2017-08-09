@@ -1,9 +1,11 @@
 package com.simaskuprelis.kag_androidapp.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,7 +30,7 @@ public class ArticleActivity extends AppCompatActivity {
     @BindView(R.id.date_updated)
     TextView mUpdated;
     @BindView(R.id.body_text)
-    TextView mBody;
+    WebView mBody;
 
     private NewsItem mItem;
 
@@ -44,13 +46,20 @@ public class ArticleActivity extends AppCompatActivity {
         if (imgUrl.isEmpty()) {
             mImage.setVisibility(View.GONE);
         } else {
-            Glide.with(this).load(mItem.getPhotoUrl()).into(mImage);
+            Glide.with(this).load(imgUrl).into(mImage);
         }
 
         mTitle.setText(mItem.getTitle());
 
-        String body = mItem.getText() + mItem.getBonusText();
-        mBody.setText(Utils.parseHtml(body));
+        mBody.setBackgroundColor(Color.TRANSPARENT);
+        String html =
+                "<style>" +
+                "body{margin: 0; padding: 0}" +
+                "div{margin: 0 !important; padding: 0 !important}" +
+                "img{display: inline; height: auto; max-width: 100%;}" +
+                "</style>" +
+                mItem.getText() + mItem.getBonusText();
+        mBody.loadDataWithBaseURL(Utils.BASE_URL, html, "text/html", null, null);
 
         String created = mItem.getCreated();
         String updated = mItem.getUpdated();

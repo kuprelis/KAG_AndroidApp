@@ -90,7 +90,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             vh.mTitle.setText(item.getTitle());
             vh.mDate.setText(item.getCreated());
-            vh.mBody.setText(Utils.parseHtml(item.getText()));
+            vh.mBody.setText(Utils.parseHtml(item.getText()).toString());
 
             vh.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
