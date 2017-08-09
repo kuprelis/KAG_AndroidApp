@@ -26,17 +26,17 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<NewsListItem> mItems;
     private RequestManager mRequestManager;
 
-    static class ViewHolder0 extends RecyclerView.ViewHolder {
+    static class ImportantHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.text)
         TextView mText;
 
-        ViewHolder0(View v) {
+        ImportantHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
         }
     }
 
-    static class ViewHolder1 extends RecyclerView.ViewHolder {
+    static class NewsHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.title_text)
         TextView mTitle;
         @BindView(R.id.body_text)
@@ -46,7 +46,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @BindView(R.id.image)
         ImageView mImage;
 
-        ViewHolder1(View v) {
+        NewsHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
         }
@@ -62,10 +62,10 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         LayoutInflater li = LayoutInflater.from(parent.getContext());
 
         if (viewType == NewsListItem.TYPE_IMPORTANT)
-            return new ViewHolder0(li.inflate(R.layout.list_item_news_important, parent, false));
+            return new ImportantHolder(li.inflate(R.layout.list_item_news_important, parent, false));
 
         if (viewType == NewsListItem.TYPE_REGULAR)
-            return new ViewHolder1(li.inflate(R.layout.list_item_news, parent, false));
+            return new NewsHolder(li.inflate(R.layout.list_item_news, parent, false));
 
         return null;
     }
@@ -74,30 +74,30 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         int type = holder.getItemViewType();
         if (type == NewsListItem.TYPE_IMPORTANT) {
-            ViewHolder0 vh = (ViewHolder0) holder;
+            ImportantHolder ih = (ImportantHolder) holder;
             ImportantNewsItem item = (ImportantNewsItem) mItems.get(position);
 
             CharSequence text = Utils.parseHtml(item.getText());
-            vh.mText.setText(text);
+            ih.mText.setText(text);
         } else if (type == NewsListItem.TYPE_REGULAR) {
-            ViewHolder1 vh = (ViewHolder1) holder;
+            NewsHolder nh = (NewsHolder) holder;
             final NewsItem item = (NewsItem) mItems.get(position);
 
             String url = item.getPhotoUrl();
-            vh.mImage.setVisibility(url.isEmpty() ? View.GONE : View.VISIBLE);
+            nh.mImage.setVisibility(url.isEmpty() ? View.GONE : View.VISIBLE);
             if (!url.isEmpty()) {
                 mRequestManager.load(url)
                         .apply(new RequestOptions().centerCrop())
-                        .into(vh.mImage);
+                        .into(nh.mImage);
             } else {
-                mRequestManager.clear(vh.mImage);
+                mRequestManager.clear(nh.mImage);
             }
 
-            vh.mTitle.setText(item.getTitle());
-            vh.mDate.setText(item.getCreated());
-            vh.mBody.setText(Utils.parseHtml(item.getText()).toString());
+            nh.mTitle.setText(item.getTitle());
+            nh.mDate.setText(item.getCreated());
+            nh.mBody.setText(Utils.parseHtml(item.getText()).toString());
 
-            vh.itemView.setOnClickListener(new View.OnClickListener() {
+            nh.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     EventBus.getDefault().post(item);
