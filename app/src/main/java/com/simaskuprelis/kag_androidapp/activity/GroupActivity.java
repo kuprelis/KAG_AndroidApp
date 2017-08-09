@@ -7,24 +7,26 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.simaskuprelis.kag_androidapp.R;
-import com.simaskuprelis.kag_androidapp.Utils;
-import com.simaskuprelis.kag_androidapp.adapter.LessonAdapter;
-import com.simaskuprelis.kag_androidapp.adapter.NodeAdapter;
+import com.simaskuprelis.kag_androidapp.adapter.CategoryDecoration;
+import com.simaskuprelis.kag_androidapp.adapter.MultiCatAdapter;
 import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
 import com.simaskuprelis.kag_androidapp.api.FirebaseListener;
 import com.simaskuprelis.kag_androidapp.entity.Group;
+import com.simaskuprelis.kag_androidapp.entity.NodeListItem;
 import com.simaskuprelis.kag_androidapp.entity.Node;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,16 +36,12 @@ public class GroupActivity extends AppCompatActivity {
     public static final String EXTRA_GROUP = "com.simaskuprelis.kag_androidapp.group";
     public static final String RESULT_GROUP_NODE_ID = "com.simaskuprelis.kag_androidapp.group_node_id";
 
-    @BindView(R.id.room_display)
-    LinearLayout mRoomDisplay;
-    @BindView(R.id.teacher_list)
-    RecyclerView mTeachers;
-    @BindView(R.id.room_list)
-    RecyclerView mRooms;
-    @BindView(R.id.lesson_list)
-    RecyclerView mLessons;
-    @BindView(R.id.student_list)
-    RecyclerView mStudents;
+    @BindView(R.id.recycler)
+    RecyclerView mRecycler;
+    @BindView(R.id.loading_indicator)
+    ProgressBar mLoadingIndicator;
+
+    private List<NodeListItem> mItems;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,32 +55,23 @@ public class GroupActivity extends AppCompatActivity {
         if (g == null) return;
 
         setTitle(g.getName());
-        Utils.setupRecycler(mLessons, this, new LessonAdapter(g.getLessons()));
 
         final Context context = this;
         FirebaseDatabaseApi.getGroupNodes(g.getId(), new FirebaseListener<List<Node>>() {
             @Override
             public void onLoad(List<Node> obj) {
-                List<Node> teachers = new ArrayList<>();
-                List<Node> rooms = new ArrayList<>();
-                List<Node> students = new ArrayList<>();
+                Collections.sort(obj);
+                mItems = new ArrayList<>();
+                mItems.addAll(g.getLessons());
+                mItems.addAll(obj);
 
-                for (Node n : obj) {
-                    switch (n.getCat()) {
-                        case Node.TEACHER: teachers.add(n); break;
-                        case Node.ROOM: rooms.add(n); break;
-                        case Node.STUDENT: students.add(n); break;
-                        default: break;
-                    }
-                }
+                mLoadingIndicator.setVisibility(View.GONE);
 
-                Utils.setupRecycler(mTeachers, context, new NodeAdapter(teachers));
-                Utils.setupRecycler(mStudents, context, new NodeAdapter(students));
-                if (rooms.size() != 0) {
-                    Utils.setupRecycler(mRooms, context, new NodeAdapter(rooms));
-                } else {
-                    mRoomDisplay.setVisibility(View.GONE);
-                }
+                LinearLayoutManager llm = new LinearLayoutManager(context);
+                mRecycler.setLayoutManager(llm);
+                CategoryDecoration cd = new CategoryDecoration(context);
+                mRecycler.addItemDecoration(cd);
+                mRecycler.setAdapter(new MultiCatAdapter(mItems));
             }
 
             @Override

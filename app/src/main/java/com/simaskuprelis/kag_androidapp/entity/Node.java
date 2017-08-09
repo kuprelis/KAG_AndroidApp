@@ -2,7 +2,7 @@ package com.simaskuprelis.kag_androidapp.entity;
 
 import android.support.annotation.NonNull;
 
-public class Node implements Comparable<Node> {
+public class Node extends NodeListItem implements Comparable<Node> {
     public static final int TEACHER = 1;
     public static final int ROOM = 2;
     public static final int STUDENT = 3;
@@ -33,6 +33,16 @@ public class Node implements Comparable<Node> {
 
     public void setId(String id) {
         mId = id;
+    }
+
+    @Override
+    public int getType() {
+        switch (mCat) {
+            case TEACHER: return NodeListItem.TYPE_TEACHER;
+            case ROOM: return NodeListItem.TYPE_ROOM;
+            case STUDENT: return NodeListItem.TYPE_STUDENT;
+            default: return -1;
+        }
     }
 
     @Override

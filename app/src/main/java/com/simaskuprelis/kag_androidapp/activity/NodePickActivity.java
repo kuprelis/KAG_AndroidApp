@@ -1,11 +1,13 @@
 package com.simaskuprelis.kag_androidapp.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
@@ -14,11 +16,12 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.simaskuprelis.kag_androidapp.R;
-import com.simaskuprelis.kag_androidapp.Utils;
-import com.simaskuprelis.kag_androidapp.adapter.NodeAdapter;
+import com.simaskuprelis.kag_androidapp.adapter.CategoryDecoration;
+import com.simaskuprelis.kag_androidapp.adapter.MultiCatAdapter;
 import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
 import com.simaskuprelis.kag_androidapp.api.FirebaseListener;
 import com.simaskuprelis.kag_androidapp.entity.Node;
+import com.simaskuprelis.kag_androidapp.entity.NodeListItem;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -40,8 +43,8 @@ public class NodePickActivity extends AppCompatActivity {
     @BindView(R.id.loading_indicator)
     ProgressBar mLoadingIndicator;
 
-    private List<Node> mNodes;
-    private List<Node> mAdapterNodes;
+    private List<NodeListItem> mNodes;
+    private List<NodeListItem> mAdapterNodes;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,12 +57,20 @@ public class NodePickActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(enableUp);
 
         setTitle(R.string.select_node);
+
+        final Context c = this;
         FirebaseDatabaseApi.getAllNodes(new FirebaseListener<List<Node>>() {
             @Override
             public void onLoad(List<Node> obj) {
-                mNodes = new ArrayList<>(obj);
-                mAdapterNodes = obj;
-                setupAdapter();
+                mNodes = new ArrayList<NodeListItem>(obj);
+                mAdapterNodes = new ArrayList<NodeListItem>(obj);
+
+                mLoadingIndicator.setVisibility(View.GONE);
+                LinearLayoutManager llm = new LinearLayoutManager(c);
+                mNodeList.setLayoutManager(llm);
+                CategoryDecoration cd = new CategoryDecoration(c);
+                mNodeList.addItemDecoration(cd);
+                mNodeList.setAdapter(new MultiCatAdapter(mAdapterNodes));
             }
 
             @Override
@@ -78,12 +89,6 @@ public class NodePickActivity extends AppCompatActivity {
     public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
-    }
-
-    private void setupAdapter() {
-        mLoadingIndicator.setVisibility(View.GONE);
-        NodeAdapter adapter = new NodeAdapter(mAdapterNodes);
-        Utils.setupRecycler(mNodeList, this, adapter);
     }
 
     @SuppressWarnings("unused")
@@ -135,11 +140,13 @@ public class NodePickActivity extends AppCompatActivity {
         query = query.toLowerCase();
         if (query.isEmpty()) {
             mAdapterNodes.addAll(mNodes);
-        } else for (Node n : mNodes) {
+        } else for (NodeListItem nli : mNodes) {
+            Node n = (Node) nli;
             String name = n.getName().toLowerCase();
-            if (name.contains(query)) mAdapterNodes.add(n);
+            if (name.contains(query)) mAdapterNodes.add(nli);
         }
         mLoadingIndicator.setVisibility(View.GONE);
-        mNodeList.getAdapter().notifyDataSetChanged();
+        MultiCatAdapter adapter = (MultiCatAdapter) mNodeList.getAdapter();
+        adapter.notifyDataChange();
     }
 }

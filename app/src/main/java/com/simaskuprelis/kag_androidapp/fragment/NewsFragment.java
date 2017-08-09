@@ -123,8 +123,8 @@ public class NewsFragment extends Fragment {
     }
 
     private void setupAdapter() {
-        if (mRecyclerView == null || mRecyclerView.getAdapter() != null) return;
-        if (mCallbacksReceived != 2) return;
+        if (mRecyclerView == null || mRecyclerView.getAdapter() != null || getActivity() == null ||
+                mCallbacksReceived != 2) return;
 
         mLoadingIndicator.setVisibility(View.GONE);
         NewsAdapter adapter = new NewsAdapter(mItems, Glide.with(this));

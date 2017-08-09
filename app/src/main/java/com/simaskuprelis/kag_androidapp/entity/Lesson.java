@@ -3,7 +3,7 @@ package com.simaskuprelis.kag_androidapp.entity;
 import android.os.Parcelable;
 import android.os.Parcel;
 
-public class Lesson implements Parcelable {
+public class Lesson extends NodeListItem implements Parcelable {
     private int mDay;
     private int mNum;
     private String mRoom;
@@ -33,6 +33,11 @@ public class Lesson implements Parcelable {
 
     public void setRoom(String room) {
         mRoom = room;
+    }
+
+    @Override
+    public int getType() {
+        return NodeListItem.TYPE_LESSON;
     }
 
     protected Lesson(Parcel in) {
