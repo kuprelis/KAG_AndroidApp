@@ -17,11 +17,6 @@ import com.simaskuprelis.kag_androidapp.api.NewsApi;
 import com.simaskuprelis.kag_androidapp.receiver.ImportantNewsReceiver;
 import com.squareup.moshi.Moshi;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
@@ -37,14 +32,6 @@ public class Utils {
     }
 
     public static CharSequence parseHtml(String html) {
-        Document doc = Jsoup.parse(html, BASE_URL);
-        Elements elements = doc.select("a");
-        for (Element e : elements) {
-            String absUrl = e.attr("abs:href");
-            if (!absUrl.isEmpty()) e.attr("href", absUrl);
-        }
-        html = doc.html();
-
         Spanned s = Html.fromHtml(html);
 
         int i = s.length() - 1;
