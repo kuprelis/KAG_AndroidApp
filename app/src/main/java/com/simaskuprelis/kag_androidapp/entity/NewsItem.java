@@ -45,11 +45,11 @@ public class NewsItem implements Parcelable {
     }
 
     public String getCreated() {
-        return mCreated;
+        return mCreated.substring(0, mCreated.length() - 3);
     }
 
     public String getUpdated() {
-        return mUpdated;
+        return mUpdated.substring(0, mUpdated.length() - 3);
     }
 
     protected NewsItem(Parcel in) {
