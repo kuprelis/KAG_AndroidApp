@@ -19,7 +19,7 @@ import com.simaskuprelis.kag_androidapp.activity.ArticleActivity;
 import com.simaskuprelis.kag_androidapp.api.NewsApi;
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.adapter.NewsAdapter;
-import com.simaskuprelis.kag_androidapp.api.NewsResponse;
+import com.simaskuprelis.kag_androidapp.entity.NewsResponse;
 import com.simaskuprelis.kag_androidapp.entity.ImportantNewsItem;
 import com.simaskuprelis.kag_androidapp.entity.NewsItem;
 import com.simaskuprelis.kag_androidapp.entity.NewsListItem;
