@@ -51,6 +51,7 @@ public class TimetablePagerFragment extends Fragment {
     private List<Group> mGroups;
     private List<Integer> mTimes;
     private String mDefaultId;
+    private String mDefaultName;
     private int mPage;
 
 
@@ -76,7 +77,8 @@ public class TimetablePagerFragment extends Fragment {
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         mDefaultId = sp.getString(getString(R.string.pref_user_id), null);
-        loadData(mDefaultId);
+        mDefaultName = sp.getString(getString(R.string.pref_user_name), null);
+        loadData(mDefaultId, mDefaultName);
     }
 
     @Nullable
@@ -118,7 +120,7 @@ public class TimetablePagerFragment extends Fragment {
                 break;
 
             case R.id.menu_default_node:
-                loadData(mDefaultId);
+                loadData(mDefaultId, mDefaultName);
                 break;
         }
 
@@ -131,11 +133,11 @@ public class TimetablePagerFragment extends Fragment {
         if (resultCode != Activity.RESULT_OK) return;
 
         if (requestCode == REQUEST_NODE_ID) {
-            String id = data.getStringExtra(NodePickActivity.RESULT_NODE_ID);
-            loadData(id);
+            Node n = data.getParcelableExtra(NodePickActivity.RESULT_NODE);
+            loadData(n.getId(), n.getName());
         } else if (requestCode == REQUEST_GROUP_NODE_ID) {
-            String id = data.getStringExtra(GroupActivity.RESULT_GROUP_NODE_ID);
-            loadData(id);
+            Node n = data.getParcelableExtra(GroupActivity.RESULT_GROUP_NODE);
+            loadData(n.getId(), n.getName());
         }
     }
 
@@ -153,26 +155,16 @@ public class TimetablePagerFragment extends Fragment {
         startActivityForResult(i, REQUEST_GROUP_NODE_ID);
     }
 
-    private void loadData(String nodeId) {
+    private void loadData(String id, String name) {
         if (mPager != null) {
             mPage = mPager.getCurrentItem();
             mPager.setAdapter(null);
             mLoading.setVisibility(View.VISIBLE);
         }
 
-        FirebaseDatabaseApi.getNode(nodeId, new FirebaseListener<Node>() {
-            @Override
-            public void onLoad(Node obj) {
-                Activity a = getActivity();
-                if (a != null) a.setTitle(obj.getName());
-            }
+        getActivity().setTitle(name);
 
-            @Override
-            public void onFail(Exception e) {
-            }
-        });
-
-        FirebaseDatabaseApi.getNodeGroups(nodeId, new FirebaseListener<List<Group>>() {
+        FirebaseDatabaseApi.getNodeGroups(id, new FirebaseListener<List<Group>>() {
             @Override
             public void onLoad(List<Group> list) {
                 mGroups = list;
@@ -181,7 +173,6 @@ public class TimetablePagerFragment extends Fragment {
 
             @Override
             public void onFail(Exception e) {
-
             }
         });
     }

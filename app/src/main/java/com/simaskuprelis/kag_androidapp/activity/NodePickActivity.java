@@ -36,7 +36,7 @@ import butterknife.ButterKnife;
 public class NodePickActivity extends AppCompatActivity {
 
     public static final String EXTRA_UP_NAV = "com.simaskuprelis.kag_androidapp.up_nav";
-    public static final String RESULT_NODE_ID = "com.simaskuprelis.kag_androidapp.node_id";
+    public static final String RESULT_NODE = "com.simaskuprelis.kag_androidapp.node";
 
     @BindView(R.id.node_list)
     RecyclerView mNodeList;
@@ -95,7 +95,7 @@ public class NodePickActivity extends AppCompatActivity {
     @Subscribe
     public void onNodeSelect(Node n) {
         Intent i = new Intent();
-        i.putExtra(RESULT_NODE_ID, n.getId());
+        i.putExtra(RESULT_NODE, n);
         setResult(RESULT_OK, i);
         finish();
     }

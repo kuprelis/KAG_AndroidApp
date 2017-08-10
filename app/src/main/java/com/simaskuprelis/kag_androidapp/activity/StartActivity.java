@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.Utils;
+import com.simaskuprelis.kag_androidapp.entity.Node;
 
 public class StartActivity extends AppCompatActivity {
     private static final int REQUEST_NODE_ID = 0;
@@ -36,10 +37,11 @@ public class StartActivity extends AppCompatActivity {
 
         if (requestCode == REQUEST_NODE_ID) {
             if (resultCode == RESULT_OK) {
-                String id = data.getStringExtra(NodePickActivity.RESULT_NODE_ID);
+                Node n = data.getParcelableExtra(NodePickActivity.RESULT_NODE);
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
                 sp.edit()
-                        .putString(getString(R.string.pref_user_id), id)
+                        .putString(getString(R.string.pref_user_id), n.getId())
+                        .putString(getString(R.string.pref_user_name), n.getName())
                         .apply();
                 startMain();
             } else finish();

@@ -43,5 +43,6 @@
     <string name="pref_notify_news">notifyNews</string>
     <string name="pref_poll_interval">pollInterval</string>
     <string name="pref_user_id">defaultId</string>
+    <string name="pref_user_name">defaultName</string>
     <string name="pref_app_ver">appVer</string>
 </resources>

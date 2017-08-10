@@ -44,9 +44,12 @@ public class SettingsFragment extends PreferenceFragmentCompat
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) return;
         if (requestCode == REQUEST_NODE_ID) {
-            String s = data.getStringExtra(NodePickActivity.RESULT_NODE_ID);
+            Node n = data.getParcelableExtra(NodePickActivity.RESULT_NODE);
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-            sp.edit().putString(getString(R.string.pref_user_id), s).apply();
+            sp.edit()
+                    .putString(getString(R.string.pref_user_id), n.getId())
+                    .putString(getString(R.string.pref_user_name), n.getName())
+                    .apply();
             updateIdPref();
         }
     }
@@ -73,19 +76,11 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     private void updateIdPref() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        final String id = getString(R.string.pref_user_id);
-        String val = sp.getString(id, null);
-        if (val == null) return;
-        FirebaseDatabaseApi.getNode(val, new FirebaseListener<Node>() {
-            @Override
-            public void onLoad(Node obj) {
-                Preference p = findPreference(id);
-                p.setSummary(obj.getName());
-            }
-
-            @Override
-            public void onFail(Exception e) {
-            }
-        });
+        String key = getString(R.string.pref_user_name);
+        String name = sp.getString(key, null);
+        if (name != null) {
+            Preference p = findPreference(getString(R.string.pref_user_id));
+            p.setSummary(name);
+        }
     }
 }

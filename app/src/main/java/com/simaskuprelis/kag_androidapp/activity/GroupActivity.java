@@ -34,7 +34,7 @@ import butterknife.ButterKnife;
 
 public class GroupActivity extends AppCompatActivity {
     public static final String EXTRA_GROUP = "com.simaskuprelis.kag_androidapp.group";
-    public static final String RESULT_GROUP_NODE_ID = "com.simaskuprelis.kag_androidapp.group_node_id";
+    public static final String RESULT_GROUP_NODE = "com.simaskuprelis.kag_androidapp.group_node";
 
     @BindView(R.id.recycler)
     RecyclerView mRecycler;
@@ -96,7 +96,7 @@ public class GroupActivity extends AppCompatActivity {
     @Subscribe
     public void onNodeSelect(Node n) {
         Intent i = new Intent();
-        i.putExtra(RESULT_GROUP_NODE_ID, n.getId());
+        i.putExtra(RESULT_GROUP_NODE, n);
         setResult(RESULT_OK, i);
         finish();
     }
