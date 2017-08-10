@@ -54,11 +54,11 @@ public class ImportantNewsReceiver extends BroadcastReceiver {
                     PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 
                     NotificationCompat.Builder nb = new NotificationCompat.Builder(context)
-                            .setSmallIcon(R.mipmap.ic_launcher)
+                            .setSmallIcon(R.drawable.ic_notification)
                             .setContentTitle(context.getString(R.string.important_news))
                             .setContentText(text)
                             .setSound(sound)
-                            .setColor(context.getResources().getColor(R.color.accent))
+                            .setColor(context.getResources().getColor(R.color.notification))
                             .setContentIntent(pi)
                             .setAutoCancel(true)
                             .setStyle(new NotificationCompat.BigTextStyle().bigText(text));
