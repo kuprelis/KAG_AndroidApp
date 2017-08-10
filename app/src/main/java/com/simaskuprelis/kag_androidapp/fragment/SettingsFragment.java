@@ -12,24 +12,26 @@ import com.simaskuprelis.kag_androidapp.BuildConfig;
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.activity.NodePickActivity;
-import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
-import com.simaskuprelis.kag_androidapp.api.FirebaseListener;
 import com.simaskuprelis.kag_androidapp.entity.Node;
+
 
 public class SettingsFragment extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final int REQUEST_NODE_ID = 0;
 
+    private Preference mIdPref;
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         findPreference(getString(R.string.pref_app_ver)).setSummary(BuildConfig.VERSION_NAME);
 
-        updateIdPref();
-        Preference idPref = findPreference(getString(R.string.pref_user_id));
-        idPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        mIdPref = findPreference(getString(R.string.pref_user_id));
+        mIdPref.setSummary(sp.getString(getString(R.string.pref_user_name), null));
+        mIdPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Intent i = new Intent(getContext(), NodePickActivity.class);
@@ -50,7 +52,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
                     .putString(getString(R.string.pref_user_id), n.getId())
                     .putString(getString(R.string.pref_user_name), n.getName())
                     .apply();
-            updateIdPref();
+            mIdPref.setSummary(n.getName());
         }
     }
 
@@ -68,19 +70,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(getString(R.string.pref_poll_interval))
-                || key.equals(getString(R.string.pref_notify_important))) {
+        if (key.equals(getString(R.string.pref_poll_interval)) || key.equals(getString(R.string.pref_notify_important))) {
             Utils.updatePollState(getContext());
-        }
-    }
-
-    private void updateIdPref() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String key = getString(R.string.pref_user_name);
-        String name = sp.getString(key, null);
-        if (name != null) {
-            Preference p = findPreference(getString(R.string.pref_user_id));
-            p.setSummary(name);
         }
     }
 }

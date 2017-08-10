@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="poll_interval_names">
-        <item>1 valanda</item>
-        <item>2 valandos</item>
-        <item>3 valandos</item>
-        <item>4 valandos</item>
-        <item>5 valandos</item>
-        <item>6 valandos</item>
+        <item>Kas 30 minučių</item>
+        <item>Kas valandą</item>
+        <item>Kas 2 valandas</item>
+        <item>Kas 3 valandas</item>
+        <item>Kas 6 valandas</item>
+        <item>Kas 12 valandų</item>
     </string-array>
 
     <string-array name="poll_interval_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>180</item>
+        <item>360</item>
+        <item>720</item>
     </string-array>
 </resources>

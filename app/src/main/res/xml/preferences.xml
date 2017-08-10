@@ -2,8 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <Preference
         android:title="@string/main_timetable"
-        android:key="@string/pref_user_id"
-        android:summary=" "/>
+        android:key="@string/pref_user_id"/>
 
     <PreferenceCategory android:title="@string/notifications">
         <SwitchPreference
@@ -22,7 +21,8 @@
             android:dependency="@string/pref_notify_important"
             android:entryValues="@array/poll_interval_values"
             android:entries="@array/poll_interval_names"
-            android:defaultValue="1"/>
+            android:defaultValue="60"
+            android:summary="%s"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/other">

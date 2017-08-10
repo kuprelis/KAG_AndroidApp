@@ -31,7 +31,7 @@
 
     <string name="main_timetable">Pagrindinis tvarkaraštis</string>
     <string name="notifications">Pranešimai</string>
-    <string name="poll_interval">Atnaujinimo dažnis</string>
+    <string name="poll_interval">Tikrinimo dažnis</string>
     <string name="other">Kita</string>
     <string name="contact">Susisiekti su kūrėju</string>
     <string name="app_ver">Programos versija</string>
