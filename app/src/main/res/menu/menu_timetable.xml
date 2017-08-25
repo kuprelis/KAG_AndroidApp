@@ -4,6 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_back"
+        android:title="@string/go_back"
+        android:icon="@drawable/ic_navigate_before_24dp"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/menu_default_node"
         android:title="@string/default_node"
         android:icon="@drawable/ic_home_24dp"

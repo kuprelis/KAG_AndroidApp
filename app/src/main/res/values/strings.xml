@@ -26,6 +26,7 @@
 
     <string name="select_node">Pasirinkite tvarkaraštį</string>
     <string name="search">Paieška</string>
+    <string name="go_back">Atgal</string>
     <string name="pick_node">Visi tvarkaraščiai</string>
     <string name="default_node">Grįžti į pagrindinį</string>
 
