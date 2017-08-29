@@ -48,7 +48,7 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/notification" />
 
-        <receiver android:name=".receiver.ImportantNewsReceiver"
+        <receiver android:name=".receiver.NewsReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.simaskuprelis.kag_androidapp.POLL_IMPORTANT" />

@@ -70,7 +70,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(getString(R.string.pref_poll_interval)) || key.equals(getString(R.string.pref_notify_important))) {
+        String keyInterval = getString(R.string.pref_poll_interval);
+        String keyImportant = getString(R.string.pref_notify_important);
+        String keyNews = getString(R.string.pref_notify_news);
+        if (key.equals(keyInterval) || key.equals(keyImportant) || key.equals(keyNews)) {
             Utils.updatePollState(getContext());
         }
     }

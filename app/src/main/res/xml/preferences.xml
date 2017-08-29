@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
     <Preference
         android:title="@string/main_timetable"
         android:key="@string/pref_user_id"/>
 
     <PreferenceCategory android:title="@string/notifications">
+
         <SwitchPreference
             android:key="@string/pref_notify_important"
             android:title="@string/important_news"
             android:defaultValue="true" />
-        <!--
+
         <SwitchPreference
             android:key="@string/pref_notify_news"
             android:title="@string/news"
             android:defaultValue="false" />
-        -->
+
         <ListPreference
             android:key="@string/pref_poll_interval"
             android:title="@string/poll_interval"
-            android:dependency="@string/pref_notify_important"
             android:entryValues="@array/poll_interval_values"
             android:entries="@array/poll_interval_names"
             android:defaultValue="60"
@@ -26,6 +27,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/other">
+
         <Preference
             android:title="@string/contact">
             <intent
@@ -38,6 +40,4 @@
             android:selectable="false"
             android:title="@string/app_ver" />
     </PreferenceCategory>
-
-
 </PreferenceScreen>

@@ -14,7 +14,7 @@ import android.text.Html;
 import android.text.Spanned;
 
 import com.simaskuprelis.kag_androidapp.api.NewsApi;
-import com.simaskuprelis.kag_androidapp.receiver.ImportantNewsReceiver;
+import com.simaskuprelis.kag_androidapp.receiver.NewsReceiver;
 import com.squareup.moshi.Moshi;
 
 import retrofit2.Retrofit;
@@ -56,9 +56,11 @@ public class Utils {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
         AlarmManager am = (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);
 
-        boolean on = sp.getBoolean(c.getString(R.string.pref_notify_important), true);
+        String keyImportant = c.getString(R.string.pref_notify_important);
+        String keyNews = c.getString(R.string.pref_notify_news);
+        boolean on = sp.getBoolean(keyImportant, true) || sp.getBoolean(keyNews, false);
 
-        Intent i = new Intent(ImportantNewsReceiver.ACTION_POLL_IMPORTANT);
+        Intent i = new Intent(NewsReceiver.ACTION_POLL_IMPORTANT);
         PendingIntent pi = PendingIntent.getBroadcast(c, 0, i, PendingIntent.FLAG_NO_CREATE);
         if (on) {
             if (pi == null) pi = PendingIntent.getBroadcast(c, 0, i, 0);

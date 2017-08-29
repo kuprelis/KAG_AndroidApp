@@ -6,7 +6,6 @@
         <item>Kas 2 valandas</item>
         <item>Kas 3 valandas</item>
         <item>Kas 6 valandas</item>
-        <item>Kas 12 valandų</item>
     </string-array>
 
     <string-array name="poll_interval_values">
@@ -15,6 +14,5 @@
         <item>120</item>
         <item>180</item>
         <item>360</item>
-        <item>720</item>
     </string-array>
 </resources>
