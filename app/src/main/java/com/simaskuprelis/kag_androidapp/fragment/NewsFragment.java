@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -41,7 +42,7 @@ public class NewsFragment extends Fragment {
     private static final String TAG = "NewsFragment";
 
     @BindView(R.id.news_list)
-    RecyclerView mRecyclerView;
+    RecyclerView mRecycler;
     @BindView(R.id.loading_indicator)
     ProgressBar mLoadingIndicator;
 
@@ -124,13 +125,18 @@ public class NewsFragment extends Fragment {
     }
 
     private void setupAdapter() {
-        if (mRecyclerView == null || mRecyclerView.getAdapter() != null || getActivity() == null ||
+        if (mRecycler == null || mRecycler.getAdapter() != null || getActivity() == null ||
                 mCallbacksReceived != 2) return;
 
         mLoadingIndicator.setVisibility(View.GONE);
+
         NewsAdapter adapter = new NewsAdapter(mItems, Glide.with(this));
-        Utils.setupRecycler(mRecyclerView, getContext(), adapter);
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        DividerItemDecoration did = new DividerItemDecoration(getContext(), llm.getOrientation());
+        mRecycler.setLayoutManager(llm);
+        mRecycler.addItemDecoration(did);
+        mRecycler.setAdapter(adapter);
+        mRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -152,7 +158,7 @@ public class NewsFragment extends Fragment {
                 mItems.addAll(data.getItems());
                 mItemsAvailable = data.getCurrentPage() != data.getLastPage();
                 mPage++;
-                mRecyclerView.getAdapter().notifyDataSetChanged();
+                mRecycler.getAdapter().notifyDataSetChanged();
                 mLoading = false;
             }
 
@@ -173,6 +179,6 @@ public class NewsFragment extends Fragment {
     }
 
     public void reset() {
-        mRecyclerView.smoothScrollToPosition(0);
+        mRecycler.smoothScrollToPosition(0);
     }
 }
