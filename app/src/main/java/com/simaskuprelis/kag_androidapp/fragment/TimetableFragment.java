@@ -3,6 +3,7 @@ package com.simaskuprelis.kag_androidapp.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -10,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.simaskuprelis.kag_androidapp.R;
-import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.adapter.TimetableAdapter;
+import com.simaskuprelis.kag_androidapp.adapter.TimetableDecoration;
 import com.simaskuprelis.kag_androidapp.entity.Group;
 
 import java.util.ArrayList;
@@ -47,7 +48,10 @@ public class TimetableFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_timetable, container, false);
         ButterKnife.bind(this, v);
 
-        Utils.setupRecycler(mTimetable, getContext(), new TimetableAdapter(mGroups, mTimes));
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        mTimetable.setLayoutManager(llm);
+        mTimetable.addItemDecoration(new TimetableDecoration(getContext()));
+        mTimetable.setAdapter(new TimetableAdapter(mGroups, mTimes));
 
         return v;
     }
