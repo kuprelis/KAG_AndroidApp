@@ -2,6 +2,7 @@ package com.simaskuprelis.kag_androidapp.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -65,7 +66,7 @@ public class NewsFragment extends Fragment {
         Call<ImportantNewsItem> importantCall = mNewsApi.getImportantNews();
         importantCall.enqueue(new Callback<ImportantNewsItem>() {
             @Override
-            public void onResponse(Call<ImportantNewsItem> call, Response<ImportantNewsItem> response) {
+            public void onResponse(@NonNull Call<ImportantNewsItem> call, @NonNull Response<ImportantNewsItem> response) {
                 mCallbacksReceived++;
                 ImportantNewsItem item = response.body();
                 if (item.isActive()) mItems.add(0, response.body());
@@ -73,7 +74,7 @@ public class NewsFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ImportantNewsItem> call, Throwable t) {
+            public void onFailure(@NonNull Call<ImportantNewsItem> call, @NonNull Throwable t) {
                 FirebaseCrash.logcat(Log.ERROR, TAG, t.toString());
             }
         });
@@ -81,7 +82,7 @@ public class NewsFragment extends Fragment {
         Call<NewsResponse> newsCall = mNewsApi.getNews(mPage, null);
         newsCall.enqueue(new Callback<NewsResponse>() {
             @Override
-            public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
+            public void onResponse(@NonNull Call<NewsResponse> call, @NonNull Response<NewsResponse> response) {
                 mCallbacksReceived++;
                 NewsResponse data = response.body();
                 for (NewsItem item : data.getItems()) {
@@ -93,7 +94,7 @@ public class NewsFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<NewsResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<NewsResponse> call, @NonNull Throwable t) {
                 FirebaseCrash.logcat(Log.ERROR, TAG, t.toString());
             }
         });
@@ -146,7 +147,7 @@ public class NewsFragment extends Fragment {
         Call<NewsResponse> call = mNewsApi.getNews(mPage, null);
         call.enqueue(new Callback<NewsResponse>() {
             @Override
-            public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
+            public void onResponse(@NonNull Call<NewsResponse> call, @NonNull Response<NewsResponse> response) {
                 NewsResponse data = response.body();
                 mItems.addAll(data.getItems());
                 mItemsAvailable = data.getCurrentPage() != data.getLastPage();
@@ -156,7 +157,7 @@ public class NewsFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<NewsResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<NewsResponse> call, @NonNull Throwable t) {
                 FirebaseCrash.logcat(Log.ERROR, TAG, t.toString());
                 mLoading = false;
             }

@@ -12,6 +12,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -44,7 +45,7 @@ public class NewsReceiver extends BroadcastReceiver {
         if (sp.getBoolean(keyImportant, true)) {
             api.getImportantNews().enqueue(new Callback<ImportantNewsItem>() {
                 @Override
-                public void onResponse(Call<ImportantNewsItem> call, Response<ImportantNewsItem> response) {
+                public void onResponse(@NonNull Call<ImportantNewsItem> call, @NonNull Response<ImportantNewsItem> response) {
                     ImportantNewsItem item = response.body();
                     if (!item.isActive()) return;
 
@@ -57,7 +58,7 @@ public class NewsReceiver extends BroadcastReceiver {
                 }
 
                 @Override
-                public void onFailure(Call<ImportantNewsItem> call, Throwable t) {
+                public void onFailure(@NonNull Call<ImportantNewsItem> call, @NonNull Throwable t) {
                     FirebaseCrash.logcat(Log.ERROR, TAG, t.toString());
                 }
             });
@@ -66,7 +67,7 @@ public class NewsReceiver extends BroadcastReceiver {
         if (sp.getBoolean(keyNews, false)) {
             api.getNews(1, 1).enqueue(new Callback<NewsResponse>() {
                 @Override
-                public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
+                public void onResponse(@NonNull Call<NewsResponse> call, @NonNull Response<NewsResponse> response) {
                     NewsResponse nr = response.body();
                     NewsItem item = nr.getItems().get(0);
                     if (!item.isVisible()) return;
@@ -80,7 +81,7 @@ public class NewsReceiver extends BroadcastReceiver {
                 }
 
                 @Override
-                public void onFailure(Call<NewsResponse> call, Throwable t) {
+                public void onFailure(@NonNull Call<NewsResponse> call, @NonNull Throwable t) {
                     FirebaseCrash.logcat(Log.ERROR, TAG, t.toString());
                 }
             });

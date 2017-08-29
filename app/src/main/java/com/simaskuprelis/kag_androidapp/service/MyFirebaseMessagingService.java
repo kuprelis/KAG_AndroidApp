@@ -5,7 +5,7 @@ import android.app.NotificationManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -21,7 +21,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (rmn == null) return;
 
         String text = rmn.getBody();
-        NotificationCompat.Builder nb = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+        NotificationCompat.Builder nb = new NotificationCompat.Builder(this)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_notification)

@@ -105,7 +105,7 @@ public class NodePickActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_onboarding, menu);
 
         MenuItem searchItem = menu.findItem(R.id.node_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
