@@ -163,7 +163,9 @@ public class NewsFragment extends Fragment {
             @Override
             public void onResponse(@NonNull Call<NewsResponse> call, @NonNull Response<NewsResponse> response) {
                 NewsResponse data = response.body();
-                mItems.addAll(data.getItems());
+                for (NewsItem item : data.getItems()) {
+                    if (item.isVisible()) mItems.add(item);
+                }
                 mItemsAvailable = data.getCurrentPage() != data.getLastPage();
                 mPage++;
                 mRecycler.getAdapter().notifyDataSetChanged();
