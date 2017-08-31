@@ -179,8 +179,8 @@ public class TimetablePagerFragment extends Fragment {
         if (mPager != null) {
             mPage = mPager.getCurrentItem();
             mPager.setAdapter(null);
-            mLoading.setVisibility(View.VISIBLE);
         }
+        if (mLoading != null) mLoading.setVisibility(View.VISIBLE);
 
         if (saveCurrent && mCurrent != null) mHistory.add(mCurrent);
         mCurrent = node;
