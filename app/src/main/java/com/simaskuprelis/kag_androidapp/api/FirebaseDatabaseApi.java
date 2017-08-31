@@ -23,23 +23,6 @@ public class FirebaseDatabaseApi {
     private static final String GROUPS = "groups";
     private static final String TIMES = "times";
 
-    public static void getNode(String id, final FirebaseListener<Node> listener) {
-        DatabaseReference dr = FirebaseDatabase.getInstance().getReference(NODES).child(id);
-        dr.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Node n = dataSnapshot.getValue(Node.class);
-                n.setId(dataSnapshot.getKey());
-                listener.onLoad(n);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                handleError(databaseError, listener);
-            }
-        });
-    }
-
     public static void getNodeGroups(String id, final FirebaseListener<List<Group>> listener) {
         DatabaseReference dr = FirebaseDatabase.getInstance().getReference(NODE_GROUPS).child(id);
         dr.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -73,23 +56,6 @@ public class FirebaseDatabaseApi {
                     nodes.add(n);
                 }
                 listener.onLoad(nodes);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                handleError(databaseError, listener);
-            }
-        });
-    }
-
-    public static void getGroup(String id, final FirebaseListener<Group> listener) {
-        DatabaseReference dr = FirebaseDatabase.getInstance().getReference(GROUPS).child(id);
-        dr.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Group g = dataSnapshot.getValue(Group.class);
-                g.setId(dataSnapshot.getKey());
-                listener.onLoad(g);
             }
 
             @Override
