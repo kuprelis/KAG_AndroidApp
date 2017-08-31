@@ -40,3 +40,18 @@
   **[] $VALUES;
   public *;
 }
+
+# Moshi
+-dontwarn okio.**
+-dontwarn javax.annotation.Nullable
+-dontwarn javax.annotation.ParametersAreNonnullByDefault
+-keepclasseswithmembers class * {
+    @com.squareup.moshi.* <methods>;
+}
+
+# EventBus
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }

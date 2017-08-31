@@ -3,9 +3,9 @@ package com.simaskuprelis.kag_androidapp.entity;
 import android.os.Parcelable;
 import android.os.Parcel;
 
-public class Lesson implements Parcelable {
+public class Lesson extends NodeListItem implements Parcelable {
     private int mDay;
-    private int mNumber;
+    private int mNum;
     private String mRoom;
 
     @SuppressWarnings("unused")
@@ -19,12 +19,12 @@ public class Lesson implements Parcelable {
         mDay = day;
     }
 
-    public int getNumber() {
-        return mNumber;
+    public int getNum() {
+        return mNum;
     }
 
-    public void setNumber(int number) {
-        mNumber = number;
+    public void setNum(int number) {
+        mNum = number;
     }
 
     public String getRoom() {
@@ -35,9 +35,14 @@ public class Lesson implements Parcelable {
         mRoom = room;
     }
 
+    @Override
+    public int getType() {
+        return NodeListItem.TYPE_LESSON;
+    }
+
     protected Lesson(Parcel in) {
         mDay = in.readInt();
-        mNumber = in.readInt();
+        mNum = in.readInt();
         mRoom = in.readString();
     }
 
@@ -49,7 +54,7 @@ public class Lesson implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(mDay);
-        dest.writeInt(mNumber);
+        dest.writeInt(mNum);
         dest.writeString(mRoom);
     }
 

@@ -16,25 +16,36 @@
     <string name="thursday">Ketvirtadienis</string>
     <string name="friday">Penktadienis</string>
 
-    <string name="teacher">Mokytojas</string>
-    <string name="room">Kabinetas</string>
+    <string name="teacher">Mokytojai</string>
+    <string name="room">Kabinetai</string>
     <string name="students">Mokiniai</string>
     <string name="lessons">Pamokos</string>
+    <string name="lesson">pamoka</string>
 
     <string name="important_news">Svarbi informacija</string>
 
     <string name="select_node">Pasirinkite tvarkaraštį</string>
     <string name="search">Paieška</string>
-    <string name="pick_node">Kitas tvarkaraštis</string>
+    <string name="go_back">Atgal</string>
+    <string name="pick_node">Visi tvarkaraščiai</string>
+    <string name="default_node">Grįžti į pagrindinį</string>
 
+    <string name="main_timetable">Pagrindinis tvarkaraštis</string>
     <string name="notifications">Pranešimai</string>
-    <string name="poll_interval">Atnaujinimo dažnis</string>
-    <string name="poll_interval_summary">Pasirinkite, kaip greitai norite gauti naujienas</string>
+    <string name="poll_interval">Tikrinimo dažnis</string>
     <string name="other">Kita</string>
     <string name="contact">Susisiekti su kūrėju</string>
+    <string name="app_ver">Programos versija</string>
     <string name="mail_uri">mailto:simas.kuprelis@gmail.com</string>
+
+    <string name="updated">Atnaujinta</string>
     
     <string name="pref_notify_important">notifyImportant</string>
     <string name="pref_notify_news">notifyNews</string>
     <string name="pref_poll_interval">pollInterval</string>
+    <string name="pref_user_id">defaultId</string>
+    <string name="pref_user_name">defaultName</string>
+    <string name="pref_app_ver">appVer</string>
+    <string name="pref_last_important">lastImportant</string>
+    <string name="pref_last_news">lastNews</string>
 </resources>

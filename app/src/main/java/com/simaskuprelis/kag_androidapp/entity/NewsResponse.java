@@ -1,6 +1,5 @@
-package com.simaskuprelis.kag_androidapp.api;
+package com.simaskuprelis.kag_androidapp.entity;
 
-import com.simaskuprelis.kag_androidapp.entity.NewsItem;
 import com.squareup.moshi.Json;
 
 import java.util.List;

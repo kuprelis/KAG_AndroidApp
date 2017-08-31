@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2E7D32</color>
-    <color name="colorPrimaryDark">#1B5E20</color>
-    <color name="colorAccent">#B71C1C</color>
+    <color name="primary">#2E7D32</color>
+    <color name="primaryDark">#1B5E20</color>
+    <color name="accent">#B71C1C</color>
 
-    <color name="dateText">#aaa</color>
+    <color name="textPrimary">#de000000</color>
+    <color name="textSecondary">#8a000000</color>
+
+    <color name="white">#fff</color>
+    <color name="notification">@color/primary</color>
 </resources>

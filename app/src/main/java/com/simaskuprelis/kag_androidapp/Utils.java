@@ -7,21 +7,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
 
 import com.simaskuprelis.kag_androidapp.api.NewsApi;
-import com.simaskuprelis.kag_androidapp.receiver.ImportantNewsReceiver;
+import com.simaskuprelis.kag_androidapp.receiver.NewsReceiver;
 import com.squareup.moshi.Moshi;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class Utils {
-    private static final String BASE_URL = "http://www.azuolynogimnazija.lt/json/";
+    public static final String BASE_URL = "http://www.azuolynogimnazija.lt";
+    public static final String JSON_URL = "http://www.azuolynogimnazija.lt/json/";
+
+    public static String absUrl(String url) {
+        if (url.length() >= 2 && url.substring(0, 2).equals("..")) {
+            return BASE_URL + url.substring(url.indexOf('/'));
+        }
+        return url;
+    }
 
     public static CharSequence parseHtml(String html) {
         Spanned s = Html.fromHtml(html);
@@ -38,7 +43,7 @@ public class Utils {
     public static NewsApi getApi() {
         Moshi moshi = new Moshi.Builder().build();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(JSON_URL)
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .build();
         return retrofit.create(NewsApi.class);
@@ -48,30 +53,23 @@ public class Utils {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
         AlarmManager am = (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);
 
-        boolean on = sp.getBoolean(c.getString(R.string.pref_notify_important), true);
+        String keyImportant = c.getString(R.string.pref_notify_important);
+        String keyNews = c.getString(R.string.pref_notify_news);
+        boolean on = sp.getBoolean(keyImportant, true) || sp.getBoolean(keyNews, false);
 
-        Intent i = new Intent(ImportantNewsReceiver.ACTION_POLL_IMPORTANT);
+        Intent i = new Intent(NewsReceiver.ACTION_POLL_IMPORTANT);
         PendingIntent pi = PendingIntent.getBroadcast(c, 0, i, PendingIntent.FLAG_NO_CREATE);
         if (on) {
             if (pi == null) pi = PendingIntent.getBroadcast(c, 0, i, 0);
-            int interval = Integer.valueOf(sp.getString(c.getString(R.string.pref_poll_interval), "1"));
+            int minutes = Integer.valueOf(sp.getString(c.getString(R.string.pref_poll_interval), "60"));
             am.cancel(pi);
             am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
-                    interval * 60 * 60 * 1000, pi);
+                    minutes * 60 * 1000, pi);
         } else  {
             if (pi != null) {
                 am.cancel(pi);
                 pi.cancel();
             }
         }
-    }
-
-    public static void setupRecycler(RecyclerView rv, Context c, RecyclerView.Adapter adapter) {
-        if (c == null) return;
-        LinearLayoutManager llm = new LinearLayoutManager(c);
-        rv.setLayoutManager(llm);
-        DividerItemDecoration did = new DividerItemDecoration(c, llm.getOrientation());
-        rv.addItemDecoration(did);
-        rv.setAdapter(adapter);
     }
 }

@@ -3,7 +3,7 @@ package com.simaskuprelis.kag_androidapp.entity;
 
 import com.squareup.moshi.Json;
 
-public class ImportantNewsItem {
+public class ImportantNewsItem extends NewsListItem {
     private static final int ACTIVE = 1;
 
     @Json(name = "text")
@@ -23,5 +23,10 @@ public class ImportantNewsItem {
 
     public String getUpdated() {
         return mUpdated;
+    }
+
+    @Override
+    public int getType() {
+        return TYPE_IMPORTANT;
     }
 }
