@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.activity.GroupActivity;
 import com.simaskuprelis.kag_androidapp.activity.NodePickActivity;
@@ -102,6 +103,13 @@ public class TimetablePagerFragment extends Fragment {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        FirebaseAnalytics fa = FirebaseAnalytics.getInstance(getContext());
+        fa.setCurrentScreen(getActivity(), getClass().getSimpleName(), null);
     }
 
     @Override

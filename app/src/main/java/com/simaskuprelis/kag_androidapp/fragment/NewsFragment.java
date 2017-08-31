@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crash.FirebaseCrash;
 import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.activity.ArticleActivity;
@@ -116,6 +117,13 @@ public class NewsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        FirebaseAnalytics fa = FirebaseAnalytics.getInstance(getContext());
+        fa.setCurrentScreen(getActivity(), getClass().getSimpleName(), null);
     }
 
     @Override
