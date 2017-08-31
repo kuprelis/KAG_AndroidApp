@@ -21,6 +21,14 @@ import butterknife.ButterKnife;
 public class ArticleActivity extends AppCompatActivity {
     public static final String EXTRA_ARTICLE = "com.simaskuprelis.kag_androidapp.article";
 
+    private static final String CSS =
+            "<style>" +
+            "body{margin: 0; padding: 0}" +
+            "div{margin: 0 !important; padding: 0 !important}" +
+            "img{display: inline; height: auto; max-width: 100%;}" +
+            "a{overflow-wrap: break-word;}" +
+            "</style>";
+
     @BindView(R.id.image)
     ImageView mImage;
     @BindView(R.id.title_text)
@@ -52,14 +60,7 @@ public class ArticleActivity extends AppCompatActivity {
         mTitle.setText(mItem.getTitle());
 
         mBody.setBackgroundColor(Color.TRANSPARENT);
-        String html =
-                "<style>" +
-                "body{margin: 0; padding: 0}" +
-                "div{margin: 0 !important; padding: 0 !important}" +
-                "img{display: inline; height: auto; max-width: 100%;}" +
-                "</style>" +
-                mItem.getText() + mItem.getBonusText();
-        mBody.loadDataWithBaseURL(Utils.BASE_URL, html, "text/html", null, null);
+        mBody.loadDataWithBaseURL(Utils.BASE_URL, CSS + mItem.getText(), "text/html", null, null);
 
         String created = mItem.getCreated();
         String updated = mItem.getUpdated();

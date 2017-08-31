@@ -36,11 +36,7 @@ public class NewsItem extends NewsListItem implements Parcelable {
     }
 
     public String getText() {
-        return mText;
-    }
-
-    public String getBonusText() {
-        return mBonusText;
+        return mText + mBonusText;
     }
 
     public boolean isVisible() {
