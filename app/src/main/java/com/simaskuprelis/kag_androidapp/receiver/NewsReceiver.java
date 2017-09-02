@@ -74,9 +74,8 @@ public class NewsReceiver extends BroadcastReceiver {
 
                     String key = context.getString(R.string.pref_last_news);
                     if (isNew(context, key, item.getCreated())) {
-                        String title = context.getString(R.string.news);
                         String text = Utils.parseHtml(item.getText()).toString();
-                        sendNotification(context, title, text);
+                        sendNotification(context, item.getTitle(), text);
                     }
                 }
 
