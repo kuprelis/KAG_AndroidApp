@@ -4,25 +4,24 @@ package com.simaskuprelis.kag_androidapp.entity;
 import com.squareup.moshi.Json;
 
 public class ImportantNewsItem extends NewsListItem {
-    private static final int ACTIVE = 1;
 
     @Json(name = "text")
-    private String mText;
+    private String text;
     @Json(name = "active")
-    private int mActive;
+    private int active;
     @Json(name = "updated_at")
-    private String mUpdated;
+    private String updated;
 
     public String getText() {
-        return mText;
+        return text;
     }
 
     public boolean isActive() {
-        return mActive == ACTIVE;
+        return active == 1;
     }
 
     public String getUpdated() {
-        return mUpdated;
+        return updated;
     }
 
     @Override

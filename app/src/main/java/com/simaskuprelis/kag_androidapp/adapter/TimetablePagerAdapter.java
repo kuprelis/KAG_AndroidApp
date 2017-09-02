@@ -17,26 +17,26 @@ public class TimetablePagerAdapter extends FragmentStatePagerAdapter {
 
     private static final int ITEM_COUNT = 5;
 
-    private List<Group> mGroups;
-    private List<Integer> mTimes;
-    private Context mContext;
+    private List<Group> groups;
+    private List<Integer> times;
+    private Context context;
 
     public TimetablePagerAdapter(FragmentManager fm, List<Group> groups, List<Integer> times, Context c) {
         super(fm);
-        mGroups = groups;
-        mTimes = times;
-        mContext = c;
+        this.groups = groups;
+        this.times = times;
+        context = c;
     }
 
     @Override
     public Fragment getItem(int position) {
         SparseArray<Group> groups = new SparseArray<>();
-        for (Group g : mGroups) {
+        for (Group g : this.groups) {
             for (Lesson l : g.getLessons()) {
                 if (l.getDay() == position + 1) groups.append(l.getNum(), g);
             }
         }
-        return TimetableFragment.newInstance(groups, mTimes);
+        return TimetableFragment.newInstance(groups, times);
     }
 
     @Override
@@ -47,11 +47,11 @@ public class TimetablePagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
-            case 0: return mContext.getString(R.string.mon_short);
-            case 1: return mContext.getString(R.string.tue_short);
-            case 2: return mContext.getString(R.string.wed_short);
-            case 3: return mContext.getString(R.string.thu_short);
-            case 4: return mContext.getString(R.string.fri_short);
+            case 0: return context.getString(R.string.mon_short);
+            case 1: return context.getString(R.string.tue_short);
+            case 2: return context.getString(R.string.wed_short);
+            case 3: return context.getString(R.string.thu_short);
+            case 4: return context.getString(R.string.fri_short);
             default: return "";
         }
     }

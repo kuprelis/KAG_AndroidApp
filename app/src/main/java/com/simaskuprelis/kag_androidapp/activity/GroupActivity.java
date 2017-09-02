@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.simaskuprelis.kag_androidapp.R;
-import com.simaskuprelis.kag_androidapp.adapter.CategoryDecoration;
+import com.simaskuprelis.kag_androidapp.decoration.CategoryDecoration;
 import com.simaskuprelis.kag_androidapp.adapter.MultiCatAdapter;
 import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
 import com.simaskuprelis.kag_androidapp.api.FirebaseListener;
@@ -37,11 +37,11 @@ public class GroupActivity extends AppCompatActivity {
     public static final String RESULT_GROUP_NODE = "com.simaskuprelis.kag_androidapp.group_node";
 
     @BindView(R.id.recycler)
-    RecyclerView mRecycler;
+    RecyclerView recycler;
     @BindView(R.id.loading_indicator)
-    ProgressBar mLoadingIndicator;
+    ProgressBar progressBar;
 
-    private List<NodeListItem> mItems;
+    private List<NodeListItem> items;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,17 +61,17 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void onLoad(List<Node> obj) {
                 Collections.sort(obj);
-                mItems = new ArrayList<>();
-                mItems.addAll(g.getLessons());
-                mItems.addAll(obj);
+                items = new ArrayList<>();
+                items.addAll(g.getLessons());
+                items.addAll(obj);
 
-                mLoadingIndicator.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
 
                 LinearLayoutManager llm = new LinearLayoutManager(context);
-                mRecycler.setLayoutManager(llm);
+                recycler.setLayoutManager(llm);
                 CategoryDecoration cd = new CategoryDecoration(context);
-                mRecycler.addItemDecoration(cd);
-                mRecycler.setAdapter(new MultiCatAdapter(mItems));
+                recycler.addItemDecoration(cd);
+                recycler.setAdapter(new MultiCatAdapter(items));
             }
 
             @Override

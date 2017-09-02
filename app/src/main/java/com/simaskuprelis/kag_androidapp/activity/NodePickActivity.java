@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +15,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.simaskuprelis.kag_androidapp.R;
-import com.simaskuprelis.kag_androidapp.adapter.CategoryDecoration;
+import com.simaskuprelis.kag_androidapp.decoration.CategoryDecoration;
 import com.simaskuprelis.kag_androidapp.adapter.MultiCatAdapter;
 import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
 import com.simaskuprelis.kag_androidapp.api.FirebaseListener;
@@ -39,17 +38,17 @@ public class NodePickActivity extends AppCompatActivity {
     public static final String RESULT_NODE = "com.simaskuprelis.kag_androidapp.node";
 
     @BindView(R.id.node_list)
-    RecyclerView mNodeList;
+    RecyclerView recycler;
     @BindView(R.id.loading_indicator)
-    ProgressBar mLoadingIndicator;
+    ProgressBar progressBar;
 
-    private List<NodeListItem> mNodes;
-    private List<NodeListItem> mAdapterNodes;
+    private List<NodeListItem> nodes;
+    private List<NodeListItem> adapterNodes;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_onboarding);
+        setContentView(R.layout.activity_node_pick);
         ButterKnife.bind(this);
 
         Intent i = getIntent();
@@ -62,15 +61,15 @@ public class NodePickActivity extends AppCompatActivity {
         FirebaseDatabaseApi.getAllNodes(new FirebaseListener<List<Node>>() {
             @Override
             public void onLoad(List<Node> obj) {
-                mNodes = new ArrayList<NodeListItem>(obj);
-                mAdapterNodes = new ArrayList<NodeListItem>(obj);
+                nodes = new ArrayList<NodeListItem>(obj);
+                adapterNodes = new ArrayList<NodeListItem>(obj);
 
-                mLoadingIndicator.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 LinearLayoutManager llm = new LinearLayoutManager(c);
-                mNodeList.setLayoutManager(llm);
+                recycler.setLayoutManager(llm);
                 CategoryDecoration cd = new CategoryDecoration(c);
-                mNodeList.addItemDecoration(cd);
-                mNodeList.setAdapter(new MultiCatAdapter(mAdapterNodes));
+                recycler.addItemDecoration(cd);
+                recycler.setAdapter(new MultiCatAdapter(adapterNodes));
             }
 
             @Override
@@ -134,19 +133,19 @@ public class NodePickActivity extends AppCompatActivity {
     }
 
     private void filterItems(String query) {
-        if (mNodes == null) return;
-        mLoadingIndicator.setVisibility(View.VISIBLE);
-        mAdapterNodes.clear();
+        if (nodes == null) return;
+        progressBar.setVisibility(View.VISIBLE);
+        adapterNodes.clear();
         query = query.toLowerCase();
         if (query.isEmpty()) {
-            mAdapterNodes.addAll(mNodes);
-        } else for (NodeListItem nli : mNodes) {
+            adapterNodes.addAll(nodes);
+        } else for (NodeListItem nli : nodes) {
             Node n = (Node) nli;
             String name = n.getName().toLowerCase();
-            if (name.contains(query)) mAdapterNodes.add(nli);
+            if (name.contains(query)) adapterNodes.add(nli);
         }
-        mLoadingIndicator.setVisibility(View.GONE);
-        MultiCatAdapter adapter = (MultiCatAdapter) mNodeList.getAdapter();
+        progressBar.setVisibility(View.GONE);
+        MultiCatAdapter adapter = (MultiCatAdapter) recycler.getAdapter();
         adapter.notifyDataChange();
     }
 }

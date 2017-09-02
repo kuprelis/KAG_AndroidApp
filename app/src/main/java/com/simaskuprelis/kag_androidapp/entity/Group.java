@@ -7,45 +7,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Group implements Parcelable {
-    private String mId;
-    private String mName;
-    private List<Lesson> mLessons;
+    private String id;
+    private String name;
+    private List<Lesson> lessons;
 
     @SuppressWarnings("unused")
     public Group() {}
 
     public String getId() {
-        return mId;
+        return id;
     }
 
     public void setId(String id) {
-        mId = id;
+        this.id = id;
     }
 
     public String getName() {
-        return mName;
+        return name;
     }
 
     public void setName(String name) {
-        mName = name;
+        this.name = name;
     }
 
     public List<Lesson> getLessons() {
-        return mLessons;
+        return lessons;
     }
 
     public void setLessons(List<Lesson> lessons) {
-        mLessons = lessons;
+        this.lessons = lessons;
     }
 
     protected Group(Parcel in) {
-        mId = in.readString();
-        mName = in.readString();
+        id = in.readString();
+        name = in.readString();
         if (in.readByte() == 0x01) {
-            mLessons = new ArrayList<>();
-            in.readList(mLessons, Lesson.class.getClassLoader());
+            lessons = new ArrayList<>();
+            in.readList(lessons, Lesson.class.getClassLoader());
         } else {
-            mLessons = null;
+            lessons = null;
         }
     }
 
@@ -56,13 +56,13 @@ public class Group implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mId);
-        dest.writeString(mName);
-        if (mLessons == null) {
+        dest.writeString(id);
+        dest.writeString(name);
+        if (lessons == null) {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
-            dest.writeList(mLessons);
+            dest.writeList(lessons);
         }
     }
 

@@ -30,17 +30,17 @@ public class ArticleActivity extends AppCompatActivity {
             "</style>";
 
     @BindView(R.id.image)
-    ImageView mImage;
+    ImageView image;
     @BindView(R.id.title_text)
-    TextView mTitle;
+    TextView title;
     @BindView(R.id.date_created)
-    TextView mCreated;
+    TextView created;
     @BindView(R.id.date_updated)
-    TextView mUpdated;
+    TextView updated;
     @BindView(R.id.body_text)
-    WebView mBody;
+    WebView body;
 
-    private NewsItem mItem;
+    private NewsItem item;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,27 +48,27 @@ public class ArticleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_article);
         ButterKnife.bind(this);
 
-        mItem = getIntent().getParcelableExtra(EXTRA_ARTICLE);
+        item = getIntent().getParcelableExtra(EXTRA_ARTICLE);
 
-        String imgUrl = mItem.getPhotoUrl();
+        String imgUrl = item.getPhotoUrl();
         if (imgUrl.isEmpty()) {
-            mImage.setVisibility(View.GONE);
+            image.setVisibility(View.GONE);
         } else {
-            Glide.with(this).load(imgUrl).into(mImage);
+            Glide.with(this).load(imgUrl).into(image);
         }
 
-        mTitle.setText(mItem.getTitle());
+        title.setText(item.getTitle());
 
-        mBody.setBackgroundColor(Color.TRANSPARENT);
-        mBody.loadDataWithBaseURL(Utils.BASE_URL, CSS + mItem.getText(), "text/html", null, null);
+        body.setBackgroundColor(Color.TRANSPARENT);
+        body.loadDataWithBaseURL(Utils.BASE_URL, CSS + item.getText(), "text/html", null, null);
 
-        String created = mItem.getCreated();
-        String updated = mItem.getUpdated();
-        mCreated.setText(created);
+        String created = item.getCreated();
+        String updated = item.getUpdated();
+        this.created.setText(created);
         if (created.equals(updated)) {
-            mUpdated.setVisibility(View.GONE);
+            this.updated.setVisibility(View.GONE);
         } else {
-            mUpdated.setText(getString(R.string.updated) + " " + updated);
+            this.updated.setText(getString(R.string.updated) + " " + updated);
         }
     }
 }

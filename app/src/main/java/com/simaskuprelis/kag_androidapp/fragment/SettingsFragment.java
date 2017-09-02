@@ -25,13 +25,13 @@ public class SettingsFragment extends PreferenceFragmentCompat
     private static final String PARAM_PREF = "pref";
     private static final String PARAM_VALUE = "value";
 
-    private Preference mIdPref;
-    private FirebaseAnalytics mAnalytics;
+    private Preference idPref;
+    private FirebaseAnalytics analytics;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAnalytics = FirebaseAnalytics.getInstance(getContext());
+        analytics = FirebaseAnalytics.getInstance(getContext());
     }
 
     @Override
@@ -41,9 +41,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
         findPreference(getString(R.string.pref_app_ver)).setSummary(BuildConfig.VERSION_NAME);
 
-        mIdPref = findPreference(getString(R.string.pref_user_id));
-        mIdPref.setSummary(sp.getString(getString(R.string.pref_user_name), null));
-        mIdPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        idPref = findPreference(getString(R.string.pref_user_id));
+        idPref.setSummary(sp.getString(getString(R.string.pref_user_name), null));
+        idPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Intent i = new Intent(getContext(), NodePickActivity.class);
@@ -64,7 +64,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
                     .putString(getString(R.string.pref_user_id), n.getId())
                     .putString(getString(R.string.pref_user_name), n.getName())
                     .apply();
-            mIdPref.setSummary(n.getName());
+            idPref.setSummary(n.getName());
         }
     }
 
@@ -73,7 +73,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         super.onResume();
         getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 
-        mAnalytics.setCurrentScreen(getActivity(), getClass().getSimpleName(), null);
+        analytics.setCurrentScreen(getActivity(), getClass().getSimpleName(), null);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
             } else if (key.equals(keyNews)) {
                 b.putBoolean(PARAM_VALUE, sp.getBoolean(key, false));
             }
-            mAnalytics.logEvent(EVENT_PREF_CHANGE, b);
+            analytics.logEvent(EVENT_PREF_CHANGE, b);
         }
     }
 }

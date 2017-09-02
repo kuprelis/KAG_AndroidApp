@@ -6,14 +6,14 @@ import android.content.Context;
 import com.simaskuprelis.kag_androidapp.R;
 
 public class NodeListCategory extends NodeListItem {
-    private int mCategory;
+    private int category;
 
     public NodeListCategory(int category) {
-        mCategory = category;
+        this.category = category;
     }
 
     public String getName(Context c) {
-        switch (mCategory) {
+        switch (category) {
             case NodeListItem.TYPE_LESSON: return c.getString(R.string.lessons);
             case NodeListItem.TYPE_ROOM: return c.getString(R.string.room);
             case NodeListItem.TYPE_STUDENT: return c.getString(R.string.students);

@@ -45,20 +45,20 @@ public class TimetablePagerFragment extends Fragment {
     private static final int REQUEST_GROUP_NODE_ID = 1;
 
     @BindView(R.id.pager)
-    ViewPager mPager;
+    ViewPager pager;
     @BindView(R.id.pager_tabs)
-    TabLayout mTabs;
+    TabLayout tabs;
     @BindView(R.id.loading_indicator)
-    ProgressBar mLoading;
+    ProgressBar progressBar;
 
-    private List<Group> mGroups;
-    private List<Integer> mTimes;
-    private int mPage;
-    private int mCallbacksReceived;
+    private List<Group> groups;
+    private List<Integer> times;
+    private int page;
+    private int callbacksReceived;
 
     // Pair structure: {id, name}
-    private Pair<String, String> mCurrent;
-    private Stack<Pair<String, String>> mHistory;
+    private Pair<String, String> current;
+    private Stack<Pair<String, String>> history;
 
 
     @Override
@@ -66,13 +66,13 @@ public class TimetablePagerFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
-        mCallbacksReceived = 0;
+        callbacksReceived = 0;
 
         FirebaseDatabaseApi.getTimes(new FirebaseListener<List<Integer>>() {
             @Override
             public void onLoad(List<Integer> list) {
-                mCallbacksReceived++;
-                mTimes = list;
+                callbacksReceived++;
+                times = list;
                 setupAdapter();
             }
 
@@ -81,8 +81,8 @@ public class TimetablePagerFragment extends Fragment {
             }
         });
 
-        mHistory = new Stack<>();
-        mPage = getTodayIndex();
+        history = new Stack<>();
+        page = getTodayIndex();
 
         setNode(getDefaultNode(), false);
     }
@@ -93,8 +93,8 @@ public class TimetablePagerFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_timetable_pager, container, false);
         ButterKnife.bind(this, v);
 
-        mTabs.setupWithViewPager(mPager);
-        if (mPager.getAdapter() == null) setupAdapter();
+        tabs.setupWithViewPager(pager);
+        if (pager.getAdapter() == null) setupAdapter();
 
         return v;
     }
@@ -137,7 +137,7 @@ public class TimetablePagerFragment extends Fragment {
                 return true;
 
             case R.id.menu_back:
-                if (!mHistory.empty()) setNode(mHistory.pop(), false);
+                if (!history.empty()) setNode(history.pop(), false);
                 return true;
         }
 
@@ -174,24 +174,24 @@ public class TimetablePagerFragment extends Fragment {
     }
 
     private void setNode(Pair<String, String> node, boolean saveCurrent) {
-        if (mCurrent != null && mCurrent.equals(node)) return;
+        if (current != null && current.equals(node)) return;
 
-        if (mPager != null) {
-            mPage = mPager.getCurrentItem();
-            mPager.setAdapter(null);
+        if (pager != null) {
+            page = pager.getCurrentItem();
+            pager.setAdapter(null);
         }
-        if (mLoading != null) mLoading.setVisibility(View.VISIBLE);
+        if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
 
-        if (saveCurrent && mCurrent != null) mHistory.add(mCurrent);
-        mCurrent = node;
+        if (saveCurrent && current != null) history.add(current);
+        current = node;
 
         getActivity().setTitle(node.second);
 
         FirebaseDatabaseApi.getNodeGroups(node.first, new FirebaseListener<List<Group>>() {
             @Override
             public void onLoad(List<Group> list) {
-                mCallbacksReceived++;
-                mGroups = list;
+                callbacksReceived++;
+                groups = list;
                 setupAdapter();
             }
 
@@ -202,12 +202,12 @@ public class TimetablePagerFragment extends Fragment {
     }
 
     private void setupAdapter() {
-        if (getActivity() == null || mPager == null || mCallbacksReceived < 2) return;
+        if (getActivity() == null || pager == null || callbacksReceived < 2) return;
 
-        mLoading.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        mPager.setAdapter(new TimetablePagerAdapter(fm, mGroups, mTimes, getContext()));
-        mPager.setCurrentItem(mPage, false);
+        pager.setAdapter(new TimetablePagerAdapter(fm, groups, times, getContext()));
+        pager.setCurrentItem(page, false);
     }
 
     private int getTodayIndex() {
@@ -229,7 +229,7 @@ public class TimetablePagerFragment extends Fragment {
     }
 
     public void reset() {
-        mPage = getTodayIndex();
-        mPager.setCurrentItem(mPage);
+        page = getTodayIndex();
+        pager.setCurrentItem(page);
     }
 }

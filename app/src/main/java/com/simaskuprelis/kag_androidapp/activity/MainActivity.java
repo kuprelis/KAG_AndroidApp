@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_TAB = "com.simaskuprelis.kag_androidapp.tab";
 
     @BindView(R.id.bottom_nav)
-    BottomNavigationView mBottomNav;
+    BottomNavigationView bottomNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,19 +36,19 @@ public class MainActivity extends AppCompatActivity {
         switch (tab) {
             case TAB_TIMETABLE:
                 putFragment(new TimetablePagerFragment());
-                mBottomNav.setSelectedItemId(R.id.tab_my_schedule);
+                bottomNav.setSelectedItemId(R.id.tab_my_schedule);
                 break;
             case TAB_NEWS:
                 putFragment(new NewsFragment());
-                mBottomNav.setSelectedItemId(R.id.tab_news);
+                bottomNav.setSelectedItemId(R.id.tab_news);
                 break;
             case TAB_SETTINGS:
                 putFragment(new SettingsFragment());
-                mBottomNav.setSelectedItemId(R.id.tab_settings);
+                bottomNav.setSelectedItemId(R.id.tab_settings);
                 break;
         }
 
-        mBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mBottomNav.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
+        bottomNav.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
             @Override
             public void onNavigationItemReselected(@NonNull MenuItem item) {
                 FragmentManager fm = getSupportFragmentManager();

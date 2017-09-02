@@ -1,4 +1,4 @@
-package com.simaskuprelis.kag_androidapp.adapter;
+package com.simaskuprelis.kag_androidapp.decoration;
 
 
 import android.content.Context;
@@ -14,14 +14,14 @@ import com.simaskuprelis.kag_androidapp.R;
 
 public class TimetableDecoration extends RecyclerView.ItemDecoration {
 
-    private Paint mPaint;
-    private int mHeight;
+    private Paint paint;
+    private int height;
 
     public TimetableDecoration(Context c) {
-        mPaint = new Paint();
-        mPaint.setARGB(31, 0, 0, 0);
-        mPaint.setStyle(Paint.Style.FILL);
-        mHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, c.getResources().getDisplayMetrics());
+        paint = new Paint();
+        paint.setARGB(31, 0, 0, 0);
+        paint.setStyle(Paint.Style.FILL);
+        height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, c.getResources().getDisplayMetrics());
     }
 
     @Override
@@ -29,14 +29,14 @@ public class TimetableDecoration extends RecyclerView.ItemDecoration {
         for (int i = 0; i < parent.getChildCount() - 1; i++) {
             View view = parent.getChildAt(i);
             TextView tv = view.findViewById(R.id.lesson_name);
-            c.drawRect(tv.getLeft(), view.getBottom(), view.getRight(), view.getBottom() + mHeight, mPaint);
+            c.drawRect(tv.getLeft(), view.getBottom(), view.getRight(), view.getBottom() + height, paint);
         }
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         if (parent.getChildAdapterPosition(view) < parent.getChildCount() - 1) {
-            outRect.set(0, 0, 0, mHeight);
+            outRect.set(0, 0, 0, height);
         } else {
             outRect.setEmpty();
         }

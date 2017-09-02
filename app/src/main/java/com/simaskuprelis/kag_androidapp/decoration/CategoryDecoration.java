@@ -1,4 +1,4 @@
-package com.simaskuprelis.kag_androidapp.adapter;
+package com.simaskuprelis.kag_androidapp.decoration;
 
 
 import android.content.Context;
@@ -13,14 +13,14 @@ import com.simaskuprelis.kag_androidapp.entity.NodeListItem;
 
 public class CategoryDecoration extends RecyclerView.ItemDecoration {
 
-    private Paint mPaint;
-    private int mHeight;
+    private Paint paint;
+    private int height;
 
     public CategoryDecoration(Context c) {
-        mPaint = new Paint();
-        mPaint.setARGB(31, 0, 0, 0);
-        mPaint.setStyle(Paint.Style.FILL);
-        mHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, c.getResources().getDisplayMetrics());
+        paint = new Paint();
+        paint.setARGB(31, 0, 0, 0);
+        paint.setStyle(Paint.Style.FILL);
+        height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, c.getResources().getDisplayMetrics());
     }
 
     @Override
@@ -28,7 +28,7 @@ public class CategoryDecoration extends RecyclerView.ItemDecoration {
         for (int i = 0; i < parent.getChildCount(); i++) {
             View view = parent.getChildAt(i);
             if (hasDivider(view, parent, state)) {
-                c.drawRect(view.getLeft(), view.getTop() - mHeight, view.getRight(), view.getTop(), mPaint);
+                c.drawRect(view.getLeft(), view.getTop() - height, view.getRight(), view.getTop(), paint);
             }
         }
     }
@@ -36,7 +36,7 @@ public class CategoryDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         if (hasDivider(view, parent, state)) {
-            outRect.set(0, mHeight, 0, 0);
+            outRect.set(0, height, 0, 0);
         } else {
             outRect.setEmpty();
         }

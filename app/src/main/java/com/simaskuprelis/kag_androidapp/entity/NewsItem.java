@@ -8,51 +8,50 @@ import com.simaskuprelis.kag_androidapp.Utils;
 import com.squareup.moshi.Json;
 
 public class NewsItem extends NewsListItem implements Parcelable {
-    private static final int VISIBLE = 1;
 
     @Json(name = "title")
-    private String mTitle;
+    private String title;
     @Json(name = "category")
-    private int mCategory;
+    private int category;
     @Json(name = "primarytext")
-    private String mText;
+    private String text;
     @Json(name = "maintext")
-    private String mBonusText;
+    private String bonusText;
     @Json(name = "visable")
-    private int mVisible;
+    private int visible;
     @Json(name = "fotourl")
-    private String mPhotoUrl;
+    private String photoUrl;
     @Json(name = "created_at")
-    private String mCreated;
+    private String created;
     @Json(name = "updated_at")
-    private String mUpdated;
+    private String updated;
 
     public String getTitle() {
-        return mTitle;
+        return title;
     }
 
     public int getCategory() {
-        return mCategory;
+        return category;
     }
 
     public String getText() {
-        return mText + mBonusText;
+        return text + bonusText;
     }
 
     public boolean isVisible() {
-        return mVisible == VISIBLE;
+        return visible == 1;
     }
 
     public String getPhotoUrl() {
-        return Utils.absUrl(mPhotoUrl);
+        return Utils.absUrl(photoUrl);
     }
 
     public String getCreated() {
-        return mCreated.substring(0, mCreated.length() - 3);
+        return created.substring(0, created.length() - 3);
     }
 
     public String getUpdated() {
-        return mUpdated.substring(0, mUpdated.length() - 3);
+        return updated.substring(0, updated.length() - 3);
     }
 
     @Override
@@ -61,14 +60,14 @@ public class NewsItem extends NewsListItem implements Parcelable {
     }
 
     protected NewsItem(Parcel in) {
-        mTitle = in.readString();
-        mCategory = in.readInt();
-        mText = in.readString();
-        mBonusText = in.readString();
-        mVisible = in.readInt();
-        mPhotoUrl = in.readString();
-        mCreated = in.readString();
-        mUpdated = in.readString();
+        title = in.readString();
+        category = in.readInt();
+        text = in.readString();
+        bonusText = in.readString();
+        visible = in.readInt();
+        photoUrl = in.readString();
+        created = in.readString();
+        updated = in.readString();
     }
 
     @Override
@@ -78,14 +77,14 @@ public class NewsItem extends NewsListItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mTitle);
-        dest.writeInt(mCategory);
-        dest.writeString(mText);
-        dest.writeString(mBonusText);
-        dest.writeInt(mVisible);
-        dest.writeString(mPhotoUrl);
-        dest.writeString(mCreated);
-        dest.writeString(mUpdated);
+        dest.writeString(title);
+        dest.writeInt(category);
+        dest.writeString(text);
+        dest.writeString(bonusText);
+        dest.writeInt(visible);
+        dest.writeString(photoUrl);
+        dest.writeString(created);
+        dest.writeString(updated);
     }
 
     @SuppressWarnings("unused")

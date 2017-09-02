@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.adapter.TimetableAdapter;
-import com.simaskuprelis.kag_androidapp.adapter.TimetableDecoration;
+import com.simaskuprelis.kag_androidapp.decoration.TimetableDecoration;
 import com.simaskuprelis.kag_androidapp.entity.Group;
 
 import java.util.ArrayList;
@@ -28,18 +28,18 @@ public class TimetableFragment extends Fragment {
     private static final String KEY_TIMES = "times";
 
     @BindView(R.id.timetable)
-    RecyclerView mTimetable;
+    RecyclerView recycler;
 
-    private SparseArray<Group> mGroups;
-    private List<Integer> mTimes;
+    private SparseArray<Group> groups;
+    private List<Integer> times;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
-        mGroups = args.getSparseParcelableArray(KEY_GROUPS);
-        mTimes = args.getIntegerArrayList(KEY_TIMES);
+        groups = args.getSparseParcelableArray(KEY_GROUPS);
+        times = args.getIntegerArrayList(KEY_TIMES);
     }
 
     @Nullable
@@ -49,9 +49,9 @@ public class TimetableFragment extends Fragment {
         ButterKnife.bind(this, v);
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        mTimetable.setLayoutManager(llm);
-        mTimetable.addItemDecoration(new TimetableDecoration(getContext()));
-        mTimetable.setAdapter(new TimetableAdapter(mGroups, mTimes));
+        recycler.setLayoutManager(llm);
+        recycler.addItemDecoration(new TimetableDecoration(getContext()));
+        recycler.setAdapter(new TimetableAdapter(groups, times));
 
         return v;
     }

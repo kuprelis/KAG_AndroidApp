@@ -9,40 +9,40 @@ public class Node extends NodeListItem implements Parcelable, Comparable<Node> {
     public static final int ROOM = 2;
     public static final int STUDENT = 3;
 
-    private String mId;
-    private int mCat;
-    private String mName;
+    private String id;
+    private int cat;
+    private String name;
 
     @SuppressWarnings("unused")
     public Node() {}
 
     public String getName() {
-        return mName;
+        return name;
     }
 
     public void setName(String name) {
-        mName = name;
+        this.name = name;
     }
 
     public int getCat() {
-        return mCat;
+        return cat;
     }
 
     public void setCat(int cat) {
-        mCat = cat;
+        this.cat = cat;
     }
 
     public String getId() {
-        return mId;
+        return id;
     }
 
     public void setId(String id) {
-        mId = id;
+        this.id = id;
     }
 
     @Override
     public int getType() {
-        switch (mCat) {
+        switch (cat) {
             case TEACHER: return NodeListItem.TYPE_TEACHER;
             case ROOM: return NodeListItem.TYPE_ROOM;
             case STUDENT: return NodeListItem.TYPE_STUDENT;
@@ -57,9 +57,9 @@ public class Node extends NodeListItem implements Parcelable, Comparable<Node> {
     }
 
     protected Node(Parcel in) {
-        mId = in.readString();
-        mCat = in.readInt();
-        mName = in.readString();
+        id = in.readString();
+        cat = in.readInt();
+        name = in.readString();
     }
 
     @Override
@@ -69,9 +69,9 @@ public class Node extends NodeListItem implements Parcelable, Comparable<Node> {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mId);
-        dest.writeInt(mCat);
-        dest.writeString(mName);
+        dest.writeString(id);
+        dest.writeInt(cat);
+        dest.writeString(name);
     }
 
     @SuppressWarnings("unused")

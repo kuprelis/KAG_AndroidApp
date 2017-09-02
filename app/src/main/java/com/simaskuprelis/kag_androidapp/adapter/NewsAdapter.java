@@ -23,12 +23,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<NewsListItem> mItems;
-    private RequestManager mRequestManager;
+    private List<NewsListItem> items;
+    private RequestManager requestManager;
 
     static class ImportantHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.text)
-        TextView mText;
+        TextView info;
 
         ImportantHolder(View v) {
             super(v);
@@ -38,13 +38,13 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     static class NewsHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.title_text)
-        TextView mTitle;
+        TextView title;
         @BindView(R.id.body_text)
-        TextView mBody;
+        TextView body;
         @BindView(R.id.date_created)
-        TextView mDate;
+        TextView date;
         @BindView(R.id.image)
-        ImageView mImage;
+        ImageView image;
 
         NewsHolder(View v) {
             super(v);
@@ -53,8 +53,8 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public NewsAdapter(List<NewsListItem> items, RequestManager rm) {
-        mItems = items;
-        mRequestManager = rm;
+        this.items = items;
+        requestManager = rm;
     }
 
     @Override
@@ -75,27 +75,27 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         int type = holder.getItemViewType();
         if (type == NewsListItem.TYPE_IMPORTANT) {
             ImportantHolder ih = (ImportantHolder) holder;
-            ImportantNewsItem item = (ImportantNewsItem) mItems.get(position);
+            ImportantNewsItem item = (ImportantNewsItem) items.get(position);
 
             CharSequence text = Utils.parseHtml(item.getText());
-            ih.mText.setText(text);
+            ih.info.setText(text);
         } else if (type == NewsListItem.TYPE_REGULAR) {
             NewsHolder nh = (NewsHolder) holder;
-            final NewsItem item = (NewsItem) mItems.get(position);
+            final NewsItem item = (NewsItem) items.get(position);
 
             String url = item.getPhotoUrl();
-            nh.mImage.setVisibility(url.isEmpty() ? View.GONE : View.VISIBLE);
+            nh.image.setVisibility(url.isEmpty() ? View.GONE : View.VISIBLE);
             if (!url.isEmpty()) {
-                mRequestManager.load(url)
+                requestManager.load(url)
                         .apply(new RequestOptions().centerCrop())
-                        .into(nh.mImage);
+                        .into(nh.image);
             } else {
-                mRequestManager.clear(nh.mImage);
+                requestManager.clear(nh.image);
             }
 
-            nh.mTitle.setText(item.getTitle());
-            nh.mDate.setText(item.getCreated());
-            nh.mBody.setText(Utils.parseHtml(item.getText()).toString());
+            nh.title.setText(item.getTitle());
+            nh.date.setText(item.getCreated());
+            nh.body.setText(Utils.parseHtml(item.getText()).toString());
 
             nh.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -108,11 +108,11 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        return mItems.get(position).getType();
+        return items.get(position).getType();
     }
 
     @Override
     public int getItemCount() {
-        return mItems.size();
+        return items.size();
     }
 }

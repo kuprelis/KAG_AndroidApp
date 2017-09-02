@@ -21,18 +21,18 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
 
     private static final int ITEM_COUNT = 8;
 
-    private SparseArray<Group> mGroups;
-    private List<Integer> mTimes;
+    private SparseArray<Group> groups;
+    private List<Integer> times;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.lesson_number)
-        TextView mNumber;
+        TextView number;
         @BindView(R.id.lesson_name)
-        TextView mName;
+        TextView name;
         @BindView(R.id.start_time)
-        TextView mStartTime;
+        TextView startTime;
         @BindView(R.id.end_time)
-        TextView mEndTime;
+        TextView endTime;
 
         ViewHolder(View v) {
             super(v);
@@ -41,8 +41,8 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
     }
 
     public TimetableAdapter(SparseArray<Group> groups, List<Integer> times) {
-        mGroups = groups;
-        mTimes = times;
+        this.groups = groups;
+        this.times = times;
     }
 
     @Override
@@ -53,14 +53,14 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
 
     @Override
     public void onBindViewHolder(TimetableAdapter.ViewHolder holder, int position) {
-        holder.mNumber.setText(Integer.toString(position + 1));
-        int start = mTimes.get(position * 2);
-        int end = mTimes.get(position * 2 + 1);
-        holder.mStartTime.setText(formatTime(start));
-        holder.mEndTime.setText(formatTime(end));
-        final Group g = mGroups.get(position + 1);
+        holder.number.setText(Integer.toString(position + 1));
+        int start = times.get(position * 2);
+        int end = times.get(position * 2 + 1);
+        holder.startTime.setText(formatTime(start));
+        holder.endTime.setText(formatTime(end));
+        final Group g = groups.get(position + 1);
         if (g != null) {
-            holder.mName.setText(g.getName());
+            holder.name.setText(g.getName());
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

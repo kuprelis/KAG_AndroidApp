@@ -43,35 +43,35 @@ public class NewsFragment extends Fragment {
     private static final String TAG = "NewsFragment";
 
     @BindView(R.id.news_list)
-    RecyclerView mRecycler;
+    RecyclerView recycler;
     @BindView(R.id.loading_indicator)
-    ProgressBar mLoadingIndicator;
+    ProgressBar progressBar;
 
-    private int mCallbacksReceived;
-    private int mPage;
-    private boolean mItemsAvailable;
-    private boolean mLoading;
-    private List<NewsListItem> mItems;
-    private NewsApi mNewsApi;
+    private int callbacksReceived;
+    private int page;
+    private boolean itemsAvailable;
+    private boolean loading;
+    private List<NewsListItem> items;
+    private NewsApi newsApi;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPage = 1;
-        mItemsAvailable = true;
-        mLoading = false;
-        mNewsApi = Utils.getApi();
-        mItems = new ArrayList<>();
-        mCallbacksReceived = 0;
+        page = 1;
+        itemsAvailable = true;
+        loading = false;
+        newsApi = Utils.getApi();
+        items = new ArrayList<>();
+        callbacksReceived = 0;
 
-        Call<ImportantNewsItem> importantCall = mNewsApi.getImportantNews();
+        Call<ImportantNewsItem> importantCall = newsApi.getImportantNews();
         importantCall.enqueue(new Callback<ImportantNewsItem>() {
             @Override
             public void onResponse(@NonNull Call<ImportantNewsItem> call, @NonNull Response<ImportantNewsItem> response) {
-                mCallbacksReceived++;
+                callbacksReceived++;
                 ImportantNewsItem item = response.body();
-                if (item.isActive()) mItems.add(0, response.body());
+                if (item.isActive()) items.add(0, response.body());
                 setupAdapter();
             }
 
@@ -81,17 +81,17 @@ public class NewsFragment extends Fragment {
             }
         });
 
-        Call<NewsResponse> newsCall = mNewsApi.getNews(mPage, null);
+        Call<NewsResponse> newsCall = newsApi.getNews(page, null);
         newsCall.enqueue(new Callback<NewsResponse>() {
             @Override
             public void onResponse(@NonNull Call<NewsResponse> call, @NonNull Response<NewsResponse> response) {
-                mCallbacksReceived++;
+                callbacksReceived++;
                 NewsResponse data = response.body();
                 for (NewsItem item : data.getItems()) {
-                    if (item.isVisible()) mItems.add(item);
+                    if (item.isVisible()) items.add(item);
                 }
-                mItemsAvailable = data.getCurrentPage() != data.getLastPage();
-                mPage++;
+                itemsAvailable = data.getCurrentPage() != data.getLastPage();
+                page++;
                 setupAdapter();
             }
 
@@ -133,49 +133,49 @@ public class NewsFragment extends Fragment {
     }
 
     private void setupAdapter() {
-        if (mRecycler == null || mRecycler.getAdapter() != null || getActivity() == null ||
-                mCallbacksReceived != 2) return;
+        if (recycler == null || recycler.getAdapter() != null || getActivity() == null ||
+                callbacksReceived != 2) return;
 
-        mLoadingIndicator.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
 
-        NewsAdapter adapter = new NewsAdapter(mItems, Glide.with(this));
+        NewsAdapter adapter = new NewsAdapter(items, Glide.with(this));
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         DividerItemDecoration did = new DividerItemDecoration(getContext(), llm.getOrientation());
-        mRecycler.setLayoutManager(llm);
-        mRecycler.addItemDecoration(did);
-        mRecycler.setAdapter(adapter);
-        mRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        recycler.setLayoutManager(llm);
+        recycler.addItemDecoration(did);
+        recycler.setAdapter(adapter);
+        recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 LinearLayoutManager llm = (LinearLayoutManager) recyclerView.getLayoutManager();
-                if (llm.findLastVisibleItemPosition() == mItems.size() - 1) addItems();
+                if (llm.findLastVisibleItemPosition() == items.size() - 1) addItems();
             }
         });
     }
 
     private void addItems() {
-        if (!mItemsAvailable || mLoading) return;
-        mLoading = true;
+        if (!itemsAvailable || loading) return;
+        loading = true;
 
-        Call<NewsResponse> call = mNewsApi.getNews(mPage, null);
+        Call<NewsResponse> call = newsApi.getNews(page, null);
         call.enqueue(new Callback<NewsResponse>() {
             @Override
             public void onResponse(@NonNull Call<NewsResponse> call, @NonNull Response<NewsResponse> response) {
                 NewsResponse data = response.body();
                 for (NewsItem item : data.getItems()) {
-                    if (item.isVisible()) mItems.add(item);
+                    if (item.isVisible()) items.add(item);
                 }
-                mItemsAvailable = data.getCurrentPage() != data.getLastPage();
-                mPage++;
-                mRecycler.getAdapter().notifyDataSetChanged();
-                mLoading = false;
+                itemsAvailable = data.getCurrentPage() != data.getLastPage();
+                page++;
+                recycler.getAdapter().notifyDataSetChanged();
+                loading = false;
             }
 
             @Override
             public void onFailure(@NonNull Call<NewsResponse> call, @NonNull Throwable t) {
                 FirebaseCrash.logcat(Log.ERROR, TAG, t.toString());
-                mLoading = false;
+                loading = false;
             }
         });
     }
@@ -189,6 +189,6 @@ public class NewsFragment extends Fragment {
     }
 
     public void reset() {
-        mRecycler.smoothScrollToPosition(0);
+        recycler.smoothScrollToPosition(0);
     }
 }

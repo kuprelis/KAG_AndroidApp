@@ -4,35 +4,35 @@ import android.os.Parcelable;
 import android.os.Parcel;
 
 public class Lesson extends NodeListItem implements Parcelable {
-    private int mDay;
-    private int mNum;
-    private String mRoom;
+    private int day;
+    private int num;
+    private String room;
 
     @SuppressWarnings("unused")
     public Lesson() {}
 
     public int getDay() {
-        return mDay;
+        return day;
     }
 
     public void setDay(int day) {
-        mDay = day;
+        this.day = day;
     }
 
     public int getNum() {
-        return mNum;
+        return num;
     }
 
     public void setNum(int number) {
-        mNum = number;
+        num = number;
     }
 
     public String getRoom() {
-        return mRoom;
+        return room;
     }
 
     public void setRoom(String room) {
-        mRoom = room;
+        this.room = room;
     }
 
     @Override
@@ -41,9 +41,9 @@ public class Lesson extends NodeListItem implements Parcelable {
     }
 
     protected Lesson(Parcel in) {
-        mDay = in.readInt();
-        mNum = in.readInt();
-        mRoom = in.readString();
+        day = in.readInt();
+        num = in.readInt();
+        room = in.readString();
     }
 
     @Override
@@ -53,9 +53,9 @@ public class Lesson extends NodeListItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mDay);
-        dest.writeInt(mNum);
-        dest.writeString(mRoom);
+        dest.writeInt(day);
+        dest.writeInt(num);
+        dest.writeString(room);
     }
 
     @SuppressWarnings("unused")

@@ -23,20 +23,20 @@ import butterknife.ButterKnife;
 
 public class MultiCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<NodeListItem> mItems;
+    private List<NodeListItem> items;
 
     public MultiCatAdapter(List<NodeListItem> items) {
-        mItems = items;
+        this.items = items;
         addCategories();
     }
 
     private void addCategories() {
         int lastType = -1;
-        for (int i = 0; i < mItems.size(); i++) {
-            NodeListItem item = mItems.get(i);
+        for (int i = 0; i < items.size(); i++) {
+            NodeListItem item = items.get(i);
             if (item.getType() != lastType) {
                 lastType = item.getType();
-                mItems.add(i, new NodeListCategory(lastType));
+                items.add(i, new NodeListCategory(lastType));
             }
         }
     }
@@ -48,7 +48,7 @@ public class MultiCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     static class ItemHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.node_name)
-        TextView mText;
+        TextView name;
 
         ItemHolder(View v) {
             super(v);
@@ -58,7 +58,7 @@ public class MultiCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     static class CategoryHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.category_name)
-        TextView mName;
+        TextView name;
 
         CategoryHolder(View v) {
             super(v);
@@ -77,13 +77,13 @@ public class MultiCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        NodeListItem item = mItems.get(position);
+        NodeListItem item = items.get(position);
         int type = item.getType();
         if (type == NodeListItem.TYPE_CATEGORY) {
             CategoryHolder ch = (CategoryHolder) holder;
 
             NodeListCategory glc = (NodeListCategory) item;
-            ch.mName.setText(glc.getName(holder.itemView.getContext()));
+            ch.name.setText(glc.getName(holder.itemView.getContext()));
         } else if (type == NodeListItem.TYPE_LESSON) {
             ItemHolder ih = (ItemHolder) holder;
             Lesson l = (Lesson) item;
@@ -102,12 +102,12 @@ public class MultiCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             text += ", " + l.getNum() + " " + c.getString(R.string.lesson);
 
             if (l.getRoom() != null) text += ", " + l.getRoom();
-            ih.mText.setText(text);
+            ih.name.setText(text);
         } else {
             ItemHolder ih = (ItemHolder) holder;
             final Node n = (Node) item;
 
-            ih.mText.setText(n.getName());
+            ih.name.setText(n.getName());
             ih.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -119,11 +119,11 @@ public class MultiCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemViewType(int position) {
-        return mItems.get(position).getType();
+        return items.get(position).getType();
     }
 
     @Override
     public int getItemCount() {
-        return mItems.size();
+        return items.size();
     }
 }
