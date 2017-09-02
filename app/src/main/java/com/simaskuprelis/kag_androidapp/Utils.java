@@ -61,7 +61,7 @@ public class Utils {
         PendingIntent pi = PendingIntent.getBroadcast(c, 0, i, PendingIntent.FLAG_NO_CREATE);
         if (on) {
             if (pi == null) pi = PendingIntent.getBroadcast(c, 0, i, 0);
-            int minutes = Integer.valueOf(sp.getString(c.getString(R.string.pref_poll_interval), "60"));
+            int minutes = Integer.parseInt(sp.getString(c.getString(R.string.pref_poll_interval), "60"));
             am.cancel(pi);
             am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
                     minutes * 60 * 1000, pi);

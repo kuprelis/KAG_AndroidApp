@@ -49,6 +49,8 @@ public class MultiCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     static class ItemHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.node_name)
         TextView name;
+        @BindView(R.id.node_class)
+        TextView classId;
 
         ItemHolder(View v) {
             super(v);
@@ -103,11 +105,23 @@ public class MultiCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             if (l.getRoom() != null) text += ", " + l.getRoom();
             ih.name.setText(text);
+            ih.classId.setVisibility(View.GONE);
         } else {
             ItemHolder ih = (ItemHolder) holder;
             final Node n = (Node) item;
 
             ih.name.setText(n.getName());
+            if (n.getCat() == Node.STUDENT) {
+                String text = n.getClassId();
+                if (text != null) {
+                    ih.classId.setVisibility(View.VISIBLE);
+                    ih.classId.setText(n.getClassId());
+                } else {
+                    ih.classId.setVisibility(View.GONE);
+                }
+            } else {
+                ih.classId.setVisibility(View.GONE);
+            }
             ih.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import java.util.Calendar;
+
 public class Node extends NodeListItem implements Parcelable, Comparable<Node> {
     public static final int TEACHER = 1;
     public static final int ROOM = 2;
@@ -38,6 +40,28 @@ public class Node extends NodeListItem implements Parcelable, Comparable<Node> {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getClassId() {
+        if (id.length() < 3) return null;
+
+        int index;
+        try {
+            index = Integer.parseInt(id.substring(0, 2));
+        } catch (Exception e) {
+            return null;
+        }
+
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        if (cal.get(Calendar.MONTH) < Calendar.SEPTEMBER) year--;
+
+        char letter = Character.toUpperCase(id.charAt(2));
+        if (!Character.isLetter(letter)) return null;
+
+        String number = Integer.toString(year - 1996 - (index - 1));  // pirmoji laida 1997
+
+        return number + letter;
     }
 
     @Override
