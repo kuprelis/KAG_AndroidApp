@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="poll_interval_names">
+        <item>Kas 15 minučių</item>
         <item>Kas 30 minučių</item>
         <item>Kas valandą</item>
         <item>Kas 2 valandas</item>
-        <item>Kas 3 valandas</item>
-        <item>Kas 6 valandas</item>
+        <item>Kas 4 valandas</item>
     </string-array>
 
     <string-array name="poll_interval_values">
+        <item>15</item>
         <item>30</item>
         <item>60</item>
         <item>120</item>
-        <item>180</item>
-        <item>360</item>
+        <item>240</item>
     </string-array>
 </resources>
