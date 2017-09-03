@@ -26,6 +26,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -61,6 +62,7 @@ public class NodePickActivity extends AppCompatActivity {
         FirebaseDatabaseApi.getAllNodes(new FirebaseListener<List<Node>>() {
             @Override
             public void onLoad(List<Node> obj) {
+                Collections.sort(obj);
                 nodes = new ArrayList<NodeListItem>(obj);
                 adapterNodes = new ArrayList<NodeListItem>(obj);
 
