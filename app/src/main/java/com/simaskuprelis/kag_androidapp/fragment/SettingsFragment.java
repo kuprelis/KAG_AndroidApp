@@ -73,7 +73,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
         super.onResume();
         getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 
-        analytics.setCurrentScreen(getActivity(), getClass().getSimpleName(), null);
+        String name = getClass().getSimpleName();
+        analytics.setCurrentScreen(getActivity(), name, name);
     }
 
     @Override

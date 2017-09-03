@@ -123,7 +123,8 @@ public class NewsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         FirebaseAnalytics fa = FirebaseAnalytics.getInstance(getContext());
-        fa.setCurrentScreen(getActivity(), getClass().getSimpleName(), null);
+        String name = getClass().getSimpleName();
+        fa.setCurrentScreen(getActivity(), name, name);
     }
 
     @Override
