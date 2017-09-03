@@ -3,6 +3,8 @@
           package="com.simaskuprelis.kag_androidapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
     <application
         android:name=".app.MyApp"
         android:allowBackup="true"
@@ -52,6 +54,12 @@
             android:exported="false">
             <intent-filter>
                 <action android:name="com.simaskuprelis.kag_androidapp.POLL_IMPORTANT" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".receiver.StartupReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
