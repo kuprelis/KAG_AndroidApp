@@ -21,8 +21,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     private static final int REQUEST_NODE_ID = 0;
 
-    private static final String EVENT_PREF_CHANGE = "pref_change";
-    private static final String PARAM_PREF = "pref";
     private static final String PARAM_VALUE = "value";
 
     private Preference idPref;
@@ -92,8 +90,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
             Utils.updatePollState(getContext());
 
             Bundle b = new Bundle();
-            b.putString(PARAM_PREF, key);
-
             if (key.equals(keyInterval)) {
                 b.putString(PARAM_VALUE, sp.getString(key, null));
 
@@ -103,7 +99,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
             } else if (key.equals(keyNews)) {
                 b.putBoolean(PARAM_VALUE, sp.getBoolean(key, false));
             }
-            analytics.logEvent(EVENT_PREF_CHANGE, b);
+            analytics.logEvent(key, b);
         }
     }
 }
