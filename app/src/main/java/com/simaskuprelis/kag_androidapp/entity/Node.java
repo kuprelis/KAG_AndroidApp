@@ -4,7 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import java.text.Collator;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class Node extends NodeListItem implements Parcelable, Comparable<Node> {
     public static final int TEACHER = 1;
@@ -77,7 +79,8 @@ public class Node extends NodeListItem implements Parcelable, Comparable<Node> {
     @Override
     public int compareTo(@NonNull Node o) {
         if (getCat() != o.getCat()) return getCat() - o.getCat();
-        return getName().compareToIgnoreCase(o.getName());
+        Collator collator = Collator.getInstance(new Locale("lt","LT"));
+        return collator.compare(getName(), o.getName());
     }
 
     protected Node(Parcel in) {
