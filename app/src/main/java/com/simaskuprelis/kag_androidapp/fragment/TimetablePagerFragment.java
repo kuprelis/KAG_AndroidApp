@@ -214,14 +214,17 @@ public class TimetablePagerFragment extends Fragment {
     }
 
     private int getTodayIndex() {
+        int i;
         Calendar cal = Calendar.getInstance();
         switch (cal.get(Calendar.DAY_OF_WEEK)) {
-            case Calendar.TUESDAY: return 1;
-            case Calendar.WEDNESDAY: return 2;
-            case Calendar.THURSDAY: return 3;
-            case Calendar.FRIDAY: return 4;
-            default: return 0;
+            case Calendar.TUESDAY: i = 1; break;
+            case Calendar.WEDNESDAY: i = 2; break;
+            case Calendar.THURSDAY: i = 3; break;
+            case Calendar.FRIDAY: i = 4; break;
+            default: i = 0; break;
         }
+        if (cal.get(Calendar.HOUR_OF_DAY) >= 16) i = (i + 1) % 5;
+        return i;
     }
 
     private Pair<String, String> getDefaultNode() {
