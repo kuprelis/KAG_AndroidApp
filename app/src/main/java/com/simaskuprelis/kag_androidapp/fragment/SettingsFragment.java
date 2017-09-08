@@ -21,8 +21,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     private static final int REQUEST_NODE_ID = 0;
 
-    private static final String PARAM_VALUE = "value";
-
     private Preference idPref;
     private FirebaseAnalytics analytics;
 
@@ -89,17 +87,11 @@ public class SettingsFragment extends PreferenceFragmentCompat
         if (key.equals(keyInterval) || key.equals(keyImportant) || key.equals(keyNews)) {
             Utils.updatePollState(getContext());
 
-            Bundle b = new Bundle();
             if (key.equals(keyInterval)) {
-                b.putString(PARAM_VALUE, sp.getString(key, null));
-
-            } else if (key.equals(keyImportant)) {
-                b.putBoolean(PARAM_VALUE, sp.getBoolean(key, true));
-
-            } else if (key.equals(keyNews)) {
-                b.putBoolean(PARAM_VALUE, sp.getBoolean(key, false));
+                Bundle b = new Bundle();
+                b.putString("interval", sp.getString(keyInterval, null));
+                analytics.logEvent("pollInterval", b);
             }
-            analytics.logEvent(key, b);
         }
     }
 }
