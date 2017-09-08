@@ -81,6 +81,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (f instanceof TimetablePagerFragment) {
+            TimetablePagerFragment tpf = (TimetablePagerFragment) f;
+            if (tpf.goUpHistory()) return;
+        }
+        super.onBackPressed();
+    }
+
     private void putFragment(Fragment f) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();

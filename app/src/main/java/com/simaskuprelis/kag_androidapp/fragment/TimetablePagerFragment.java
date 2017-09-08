@@ -138,7 +138,9 @@ public class TimetablePagerFragment extends Fragment {
                 return true;
 
             case R.id.menu_back:
-                if (!history.empty()) setNode(history.pop(), false);
+                goUpHistory();
+                FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
+                analytics.logEvent("timetableMenuBack", null);
                 return true;
         }
 
@@ -232,5 +234,11 @@ public class TimetablePagerFragment extends Fragment {
     public void reset() {
         page = getTodayIndex();
         pager.setCurrentItem(page);
+    }
+
+    public boolean goUpHistory() {
+        if (history.empty()) return false;
+        setNode(history.pop(), false);
+        return true;
     }
 }
