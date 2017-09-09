@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.simaskuprelis.kag_androidapp"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 25
         versionCode 5
         versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
