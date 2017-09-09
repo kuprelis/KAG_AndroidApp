@@ -209,24 +209,24 @@ public class TimetablePagerFragment extends Fragment {
 
         if (pager.getAdapter() == null) {
             pager.setAdapter(new TimetablePagerAdapter(fm, groups, times, getContext()));
-            pager.setCurrentItem(getTodayIndex(), false);
+            pager.setCurrentItem(getDefaultPage(), false);
         } else {
             pager.getAdapter().notifyDataSetChanged();
         }
     }
 
-    private int getTodayIndex() {
-        int i;
+    private int getDefaultPage() {
         Calendar cal = Calendar.getInstance();
+        int i = cal.get(Calendar.HOUR_OF_DAY) >= 16 ? 1 : 0;
         switch (cal.get(Calendar.DAY_OF_WEEK)) {
-            case Calendar.TUESDAY: i = 1; break;
-            case Calendar.WEDNESDAY: i = 2; break;
-            case Calendar.THURSDAY: i = 3; break;
-            case Calendar.FRIDAY: i = 4; break;
+            case Calendar.MONDAY: break;
+            case Calendar.TUESDAY: i += 1; break;
+            case Calendar.WEDNESDAY: i += 2; break;
+            case Calendar.THURSDAY: i += 3; break;
+            case Calendar.FRIDAY: i += 4; break;
             default: i = 0; break;
         }
-        if (cal.get(Calendar.HOUR_OF_DAY) >= 16) i = (i + 1) % 5;
-        return i;
+        return i % 5;
     }
 
     private Pair<String, String> getDefaultNode() {
@@ -237,7 +237,7 @@ public class TimetablePagerFragment extends Fragment {
     }
 
     public void reset() {
-        pager.setCurrentItem(getTodayIndex());
+        pager.setCurrentItem(getDefaultPage());
     }
 
     public boolean goUpHistory() {
