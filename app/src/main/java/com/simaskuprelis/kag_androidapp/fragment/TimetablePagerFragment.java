@@ -45,6 +45,9 @@ public class TimetablePagerFragment extends Fragment {
     private static final int REQUEST_NODE_ID = 0;
     private static final int REQUEST_GROUP_NODE_ID = 1;
 
+    public static final String EVENT_HISTORY = "timetable_back_nav";
+    public static final String PARAM_SOURCE = "click_source";
+
     @BindView(R.id.pager)
     ViewPager pager;
     @BindView(R.id.pager_tabs)
@@ -140,7 +143,9 @@ public class TimetablePagerFragment extends Fragment {
             case R.id.menu_back:
                 goUpHistory();
                 FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
-                analytics.logEvent("timetableMenuBack", null);
+                Bundle b = new Bundle();
+                b.putString(PARAM_SOURCE, "menu");
+                analytics.logEvent(EVENT_HISTORY, b);
                 return true;
         }
 

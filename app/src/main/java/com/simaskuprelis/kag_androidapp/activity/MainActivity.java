@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.simaskuprelis.kag_androidapp.fragment.NewsFragment;
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.fragment.SettingsFragment;
@@ -86,7 +87,13 @@ public class MainActivity extends AppCompatActivity {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (f instanceof TimetablePagerFragment) {
             TimetablePagerFragment tpf = (TimetablePagerFragment) f;
-            if (tpf.goUpHistory()) return;
+            if (tpf.goUpHistory()) {
+                FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
+                Bundle b = new Bundle();
+                b.putString(TimetablePagerFragment.PARAM_SOURCE, "back_button");
+                analytics.logEvent(TimetablePagerFragment.EVENT_HISTORY, b);
+                return;
+            }
         }
         super.onBackPressed();
     }
