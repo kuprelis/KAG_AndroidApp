@@ -26,17 +26,17 @@ public class TimetableDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-        for (int i = 0; i < parent.getChildCount() - 1; i++) {
+        for (int i = 1; i < parent.getChildCount(); i++) {
             View view = parent.getChildAt(i);
             TextView tv = view.findViewById(R.id.lesson_name);
-            c.drawRect(tv.getLeft(), view.getBottom(), view.getRight(), view.getBottom() + height, paint);
+            c.drawRect(tv.getLeft(), view.getTop(), view.getRight(), view.getTop() - height, paint);
         }
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        if (parent.getChildAdapterPosition(view) < parent.getChildCount() - 1) {
-            outRect.set(0, 0, 0, height);
+        if (parent.getChildAdapterPosition(view) > 0) {
+            outRect.set(0, height, 0, 0);
         } else {
             outRect.setEmpty();
         }

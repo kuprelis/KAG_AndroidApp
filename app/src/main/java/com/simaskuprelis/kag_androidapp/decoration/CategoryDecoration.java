@@ -27,7 +27,7 @@ public class CategoryDecoration extends RecyclerView.ItemDecoration {
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         for (int i = 0; i < parent.getChildCount(); i++) {
             View view = parent.getChildAt(i);
-            if (hasDivider(view, parent, state)) {
+            if (hasDivider(view, parent)) {
                 c.drawRect(view.getLeft(), view.getTop() - height, view.getRight(), view.getTop(), paint);
             }
         }
@@ -35,17 +35,16 @@ public class CategoryDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        if (hasDivider(view, parent, state)) {
+        if (hasDivider(view, parent)) {
             outRect.set(0, height, 0, 0);
         } else {
             outRect.setEmpty();
         }
     }
 
-    private boolean hasDivider(View view, RecyclerView parent, RecyclerView.State state) {
+    private boolean hasDivider(View view, RecyclerView parent) {
         int position = parent.getChildAdapterPosition(view);
         int viewType = parent.getAdapter().getItemViewType(position);
-        return position != 0 && position < state.getItemCount()
-                && viewType == NodeListItem.TYPE_CATEGORY;
+        return position != 0 && viewType == NodeListItem.TYPE_CATEGORY;
     }
 }
