@@ -33,6 +33,7 @@ import com.simaskuprelis.kag_androidapp.entity.Node;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Stack;
@@ -53,7 +54,6 @@ public class TimetablePagerFragment extends Fragment {
 
     private List<Group> groups;
     private List<Integer> times;
-    private int page;
     private int callbacksReceived;
 
     // Pair structure: {id, name}
@@ -81,8 +81,8 @@ public class TimetablePagerFragment extends Fragment {
             }
         });
 
+        groups = new ArrayList<>();
         history = new Stack<>();
-        page = getTodayIndex();
 
         setNode(getDefaultNode(), false);
     }
@@ -176,13 +176,9 @@ public class TimetablePagerFragment extends Fragment {
         startActivityForResult(i, REQUEST_GROUP_NODE_ID);
     }
 
-    private void setNode(Pair<String, String> node, boolean saveCurrent) {
+    private void setNode(final Pair<String, String> node, boolean saveCurrent) {
         if (current != null && current.equals(node)) return;
 
-        if (pager != null) {
-            page = pager.getCurrentItem();
-            pager.setAdapter(null);
-        }
         if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
 
         if (saveCurrent && current != null) history.add(current);
@@ -194,7 +190,8 @@ public class TimetablePagerFragment extends Fragment {
             @Override
             public void onLoad(List<Group> list) {
                 callbacksReceived++;
-                groups = list;
+                groups.clear();
+                groups.addAll(list);
                 setupAdapter();
             }
 
@@ -209,8 +206,13 @@ public class TimetablePagerFragment extends Fragment {
 
         progressBar.setVisibility(View.GONE);
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        pager.setAdapter(new TimetablePagerAdapter(fm, groups, times, getContext()));
-        pager.setCurrentItem(page, false);
+
+        if (pager.getAdapter() == null) {
+            pager.setAdapter(new TimetablePagerAdapter(fm, groups, times, getContext()));
+            pager.setCurrentItem(getTodayIndex(), false);
+        } else {
+            pager.getAdapter().notifyDataSetChanged();
+        }
     }
 
     private int getTodayIndex() {
@@ -235,8 +237,7 @@ public class TimetablePagerFragment extends Fragment {
     }
 
     public void reset() {
-        page = getTodayIndex();
-        pager.setCurrentItem(page);
+        pager.setCurrentItem(getTodayIndex());
     }
 
     public boolean goUpHistory() {

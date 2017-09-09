@@ -55,4 +55,9 @@ public class TimetablePagerAdapter extends FragmentStatePagerAdapter {
             default: return "";
         }
     }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
 }
