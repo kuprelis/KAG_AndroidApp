@@ -21,7 +21,6 @@ import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.activity.MainActivity;
 import com.simaskuprelis.kag_androidapp.api.NewsApi;
-import com.simaskuprelis.kag_androidapp.app.MyApp;
 import com.simaskuprelis.kag_androidapp.entity.ImportantNewsItem;
 import com.simaskuprelis.kag_androidapp.entity.NewsItem;
 import com.simaskuprelis.kag_androidapp.entity.NewsResponse;
@@ -54,7 +53,7 @@ public class NewsReceiver extends BroadcastReceiver {
                     if (isNew(context, key, item.getUpdated())) {
                         String title = context.getString(R.string.important_news);
                         String text = Utils.parseHtml(item.getText()).toString();
-                        sendNotification(context, MyApp.CHANNEL_IMPORTANT, title, text);
+                        sendNotification(context, title, text);
                     }
                 }
 
@@ -76,7 +75,7 @@ public class NewsReceiver extends BroadcastReceiver {
                     String key = context.getString(R.string.pref_last_news);
                     if (isNew(context, key, item.getCreated())) {
                         String text = Utils.parseHtml(item.getText()).toString();
-                        sendNotification(context, MyApp.CHANNEL_NEWS, item.getTitle(), text);
+                        sendNotification(context, item.getTitle(), text);
                     }
                 }
 
@@ -95,7 +94,7 @@ public class NewsReceiver extends BroadcastReceiver {
         return previous == null || previous.compareTo(value) < 0;
     }
 
-    private void sendNotification(Context c, String channel, String title, String body) {
+    private void sendNotification(Context c, String title, String body) {
         Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         int color = c.getResources().getColor(R.color.notification);
 
@@ -105,7 +104,7 @@ public class NewsReceiver extends BroadcastReceiver {
 
         NotificationCompat.Style style = new NotificationCompat.BigTextStyle().bigText(body);
 
-        NotificationCompat.Builder nb = new NotificationCompat.Builder(c, channel)
+        NotificationCompat.Builder nb = new NotificationCompat.Builder(c)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(title)
                 .setContentText(body)
