@@ -87,13 +87,7 @@ public class MainActivity extends AppCompatActivity {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (f instanceof TimetablePagerFragment) {
             TimetablePagerFragment tpf = (TimetablePagerFragment) f;
-            if (tpf.goUpHistory()) {
-                FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
-                Bundle b = new Bundle();
-                b.putString(TimetablePagerFragment.PARAM_SOURCE, "back_button");
-                analytics.logEvent(TimetablePagerFragment.EVENT_HISTORY, b);
-                return;
-            }
+            if (tpf.goUpHistory()) return;
         }
         super.onBackPressed();
     }
