@@ -34,7 +34,7 @@
     <string name="notifications">Pranešimai</string>
     <string name="poll_interval">Tikrinimo dažnis</string>
     <string name="other">Kita</string>
-    <string name="contact">Susisiekti su kūrėju</string>
+    <string name="report">Pranešti apie klaidą</string>
     <string name="app_ver">Programos versija</string>
     <string name="mail_uri">mailto:simas.kuprelis@gmail.com</string>
 

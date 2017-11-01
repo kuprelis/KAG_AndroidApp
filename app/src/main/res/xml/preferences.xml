@@ -29,7 +29,7 @@
     <PreferenceCategory android:title="@string/other">
 
         <Preference
-            android:title="@string/contact">
+            android:title="@string/report">
             <intent
                 android:action="android.intent.action.SENDTO"
                 android:data="@string/mail_uri" />
