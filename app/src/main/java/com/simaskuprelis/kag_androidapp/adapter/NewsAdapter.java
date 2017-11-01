@@ -1,6 +1,7 @@
 package com.simaskuprelis.kag_androidapp.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ImportantHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
+            info.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 
@@ -77,8 +79,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ImportantHolder ih = (ImportantHolder) holder;
             ImportantNewsItem item = (ImportantNewsItem) items.get(position);
 
-            CharSequence text = Utils.parseHtml(item.getText());
-            ih.info.setText(text);
+            ih.info.setText(Utils.parseHtml(item.getText(), true));
         } else if (type == NewsListItem.TYPE_REGULAR) {
             NewsHolder nh = (NewsHolder) holder;
             final NewsItem item = (NewsItem) items.get(position);
@@ -95,7 +96,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             nh.title.setText(item.getTitle());
             nh.date.setText(item.getCreated());
-            nh.body.setText(Utils.parseHtml(item.getText()).toString());
+            nh.body.setText(Utils.parseHtml(item.getText(), false).toString());
 
             nh.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

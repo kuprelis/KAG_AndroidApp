@@ -52,7 +52,7 @@ public class NewsReceiver extends BroadcastReceiver {
                     String key = context.getString(R.string.pref_last_important);
                     if (isNew(context, key, item.getUpdated())) {
                         String title = context.getString(R.string.important_news);
-                        String text = Utils.parseHtml(item.getText()).toString();
+                        String text = Utils.parseHtml(item.getText(), false).toString();
                         sendNotification(context, title, text);
                     }
                 }
@@ -74,7 +74,7 @@ public class NewsReceiver extends BroadcastReceiver {
 
                     String key = context.getString(R.string.pref_last_news);
                     if (isNew(context, key, item.getCreated())) {
-                        String text = Utils.parseHtml(item.getText()).toString();
+                        String text = Utils.parseHtml(item.getText(), false).toString();
                         sendNotification(context, item.getTitle(), text);
                     }
                 }
