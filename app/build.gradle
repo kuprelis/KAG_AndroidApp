@@ -1,9 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.firebase.firebase-perf'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.simaskuprelis.kag_androidapp"
         minSdkVersion 16
@@ -34,11 +35,11 @@ android {
 }
 
 ext {
-    supportVersion = '26.0.2'
+    supportVersion = '26.1.0'
     butterknifeVersion = '8.8.1'
     retrofitVersion = '2.3.0'
-    firebaseVersion = '11.2.2'
-    glideVersion = '4.1.1'
+    firebaseVersion = '11.4.2'
+    glideVersion = '4.3.0'
 }
 
 dependencies {
@@ -73,5 +74,3 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
 }
-
-apply plugin: 'com.google.gms.google-services'
