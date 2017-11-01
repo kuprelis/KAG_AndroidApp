@@ -29,10 +29,8 @@
     <PreferenceCategory android:title="@string/other">
 
         <Preference
+            android:key="@string/pref_report"
             android:title="@string/report">
-            <intent
-                android:action="android.intent.action.SENDTO"
-                android:data="@string/mail_uri" />
         </Preference>
 
         <Preference

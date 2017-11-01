@@ -1,12 +1,16 @@
 package com.simaskuprelis.kag_androidapp.fragment;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.simaskuprelis.kag_androidapp.BuildConfig;
@@ -44,6 +48,32 @@ public class SettingsFragment extends PreferenceFragmentCompat
             public boolean onPreferenceClick(Preference preference) {
                 Intent i = new Intent(getContext(), NodePickActivity.class);
                 startActivityForResult(i, REQUEST_NODE_ID);
+                return true;
+            }
+        });
+
+        Preference reportPref = findPreference(getString(R.string.pref_report));
+        reportPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                String email = getString(R.string.report_email);
+                String subject = getString(R.string.report_subject);
+                String body = getString(R.string.device) + ": " + Build.MANUFACTURER + " " + Build.MODEL + "\n"
+                        + getString(R.string.app_ver) + ": " + BuildConfig.VERSION_NAME + "\n"
+                        + getString(R.string.android_ver) + ": " + Build.VERSION.RELEASE + "\n"
+                        + getString(R.string.issue) + ": ";
+                String uri = "mailto:" + email
+                        + "?subject=" + Uri.encode(subject)
+                        + "&body=" + Uri.encode(body);
+
+                Intent i = new Intent(Intent.ACTION_SENDTO);
+                i.setData(Uri.parse(uri));
+                try {
+                    startActivity(i);
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(getContext(), getString(R.string.email_error),
+                            Toast.LENGTH_LONG).show();
+                }
                 return true;
             }
         });

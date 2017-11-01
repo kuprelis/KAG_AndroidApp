@@ -35,8 +35,13 @@
     <string name="poll_interval">Tikrinimo dažnis</string>
     <string name="other">Kita</string>
     <string name="report">Pranešti apie klaidą</string>
+    <string name="report_email">simas.kuprelis@gmail.com</string>
+    <string name="report_subject">Ąžuolyno programėlės klaidos pranešimas</string>
+    <string name="device">Prietaisas</string>
+    <string name="android_ver">Android versija</string>
+    <string name="issue">Problema</string>
+    <string name="email_error">Nerasta el. pašto programa</string>
     <string name="app_ver">Programos versija</string>
-    <string name="mail_uri">mailto:simas.kuprelis@gmail.com</string>
 
     <string name="updated">Atnaujinta</string>
     
@@ -48,4 +53,5 @@
     <string name="pref_app_ver">appVer</string>
     <string name="pref_last_important">lastImportant</string>
     <string name="pref_last_news">lastNews</string>
+    <string name="pref_report">report</string>
 </resources>
