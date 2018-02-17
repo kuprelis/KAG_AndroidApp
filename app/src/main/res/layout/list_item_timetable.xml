@@ -6,33 +6,42 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp"
     android:gravity="center_vertical"
     android:background="?android:attr/selectableItemBackground">
 
-
-    <TextView
-        android:id="@+id/lesson_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
-        android:textSize="24sp"
-        android:textColor="@color/textSecondary"
-        tools:text="1"/>
+    <FrameLayout
+        android:layout_width="56sp"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/lesson_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:fontFamily="sans-serif-light"
+            android:textSize="24sp"
+            android:textColor="@drawable/index_text_color"
+            android:background="@drawable/index_background"
+            tools:text="1"/>
+    </FrameLayout>
 
     <TextView
         android:id="@+id/lesson_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:textSize="17sp"
         tools:text="matematika, A"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
         android:orientation="vertical"
         android:gravity="center_horizontal">
 

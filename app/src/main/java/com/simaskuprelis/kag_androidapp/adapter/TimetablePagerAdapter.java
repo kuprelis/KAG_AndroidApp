@@ -36,7 +36,7 @@ public class TimetablePagerAdapter extends FragmentStatePagerAdapter {
                 if (l.getDay() == position + 1) groups.append(l.getNum(), g);
             }
         }
-        return TimetableFragment.newInstance(groups, times);
+        return TimetableFragment.newInstance(groups, times, position);
     }
 
     @Override

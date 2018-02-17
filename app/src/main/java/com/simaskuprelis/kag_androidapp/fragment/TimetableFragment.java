@@ -16,6 +16,7 @@ import com.simaskuprelis.kag_androidapp.decoration.TimetableDecoration;
 import com.simaskuprelis.kag_androidapp.entity.Group;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -26,12 +27,14 @@ public class TimetableFragment extends Fragment {
 
     private static final String KEY_GROUPS = "groups";
     private static final String KEY_TIMES = "times";
+    private static final String KEY_POS = "pos";
 
     @BindView(R.id.timetable)
     RecyclerView recycler;
 
     private SparseArray<Group> groups;
     private List<Integer> times;
+    private int position;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ public class TimetableFragment extends Fragment {
         Bundle args = getArguments();
         groups = args.getSparseParcelableArray(KEY_GROUPS);
         times = args.getIntegerArrayList(KEY_TIMES);
+        position = args.getInt(KEY_POS);
     }
 
     @Nullable
@@ -51,15 +55,16 @@ public class TimetableFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         recycler.setLayoutManager(llm);
         recycler.addItemDecoration(new TimetableDecoration(getContext()));
-        recycler.setAdapter(new TimetableAdapter(groups, times));
+        recycler.setAdapter(new TimetableAdapter(groups, times, Calendar.MONDAY + position));
 
         return v;
     }
 
-    public static TimetableFragment newInstance(SparseArray<Group> groups, List<Integer> times) {
+    public static TimetableFragment newInstance(SparseArray<Group> groups, List<Integer> times, int pos) {
         Bundle args = new Bundle();
         args.putSparseParcelableArray(KEY_GROUPS, groups);
         args.putIntegerArrayList(KEY_TIMES, new ArrayList<>(times));
+        args.putInt(KEY_POS, pos);
         TimetableFragment fragment = new TimetableFragment();
         fragment.setArguments(args);
         return fragment;
