@@ -25,18 +25,22 @@ public class MultiCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private List<NodeListItem> items;
 
+    /**
+     * @param items List of items sorted by category
+     */
     public MultiCatAdapter(List<NodeListItem> items) {
         this.items = items;
         addCategories();
     }
 
     private void addCategories() {
-        int lastType = -1;
-        for (int i = 0; i < items.size(); i++) {
-            NodeListItem item = items.get(i);
-            if (item.getType() != lastType) {
-                lastType = item.getType();
-                items.add(i, new NodeListCategory(lastType));
+        int count = 0;
+        for (int i = items.size() - 1; i >= 0; i--) {
+            count++;
+            int type = items.get(i).getType();
+            if (i == 0 || items.get(i - 1).getType() != type) {
+                items.add(i, new NodeListCategory(type, count));
+                count = 0;
             }
         }
     }
@@ -84,8 +88,10 @@ public class MultiCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (type == NodeListItem.TYPE_CATEGORY) {
             CategoryHolder ch = (CategoryHolder) holder;
 
-            NodeListCategory glc = (NodeListCategory) item;
-            ch.name.setText(glc.getName(holder.itemView.getContext()));
+            NodeListCategory nlc = (NodeListCategory) item;
+            String text = nlc.getName(holder.itemView.getContext());
+            if (nlc.getCount() > 3) text += " • " + nlc.getCount();
+            ch.name.setText(text);
         } else if (type == NodeListItem.TYPE_LESSON) {
             ItemHolder ih = (ItemHolder) holder;
             Lesson l = (Lesson) item;
@@ -101,7 +107,7 @@ public class MultiCatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 default: text = ""; break;
             }
 
-            text += ", " + l.getNum() + " " + c.getString(R.string.lesson);
+            text += ", " + l.getNum();
 
             if (l.getRoom() != null) text += ", " + l.getRoom();
             ih.name.setText(text);
