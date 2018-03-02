@@ -7,9 +7,11 @@ import com.simaskuprelis.kag_androidapp.R;
 
 public class NodeListCategory extends NodeListItem {
     private int category;
+    private int count;
 
-    public NodeListCategory(int category) {
+    public NodeListCategory(int category, int count) {
         this.category = category;
+        this.count = count;
     }
 
     public String getName(Context c) {
@@ -25,5 +27,9 @@ public class NodeListCategory extends NodeListItem {
     @Override
     public int getType() {
         return TYPE_CATEGORY;
+    }
+
+    public int getCount() {
+        return count;
     }
 }

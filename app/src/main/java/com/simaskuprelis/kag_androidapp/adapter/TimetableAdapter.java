@@ -9,9 +9,12 @@ import android.widget.TextView;
 
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.entity.Group;
+import com.simaskuprelis.kag_androidapp.entity.GroupSelectEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -23,6 +26,7 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
 
     private SparseArray<Group> groups;
     private List<Integer> times;
+    private int highlight;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.lesson_number)
@@ -40,9 +44,19 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
         }
     }
 
-    public TimetableAdapter(SparseArray<Group> groups, List<Integer> times) {
+    /**
+     * @param day constant from Calendar class
+     */
+    public TimetableAdapter(SparseArray<Group> groups, List<Integer> times, int day) {
         this.groups = groups;
         this.times = times;
+        Calendar cal = Calendar.getInstance();
+        if (cal.get(Calendar.DAY_OF_WEEK) == day) {
+            int now = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE);
+            int pos = Collections.binarySearch(times, now);
+            if (pos < 0) pos = -pos - 1;
+            highlight = pos / 2;
+        } else highlight = -1;
     }
 
     @Override
@@ -52,8 +66,9 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(TimetableAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final TimetableAdapter.ViewHolder holder, int position) {
         holder.number.setText(Integer.toString(position + 1));
+        holder.number.setEnabled(position == highlight);
         int start = times.get(position * 2);
         int end = times.get(position * 2 + 1);
         holder.startTime.setText(formatTime(start));
@@ -64,7 +79,7 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EventBus.getDefault().post(g);
+                    EventBus.getDefault().post(new GroupSelectEvent(g, holder.itemView));
                 }
             });
         }

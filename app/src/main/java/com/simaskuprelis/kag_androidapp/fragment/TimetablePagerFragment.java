@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.Pair;
@@ -28,6 +29,7 @@ import com.simaskuprelis.kag_androidapp.adapter.TimetablePagerAdapter;
 import com.simaskuprelis.kag_androidapp.api.FirebaseDatabaseApi;
 import com.simaskuprelis.kag_androidapp.api.FirebaseListener;
 import com.simaskuprelis.kag_androidapp.entity.Group;
+import com.simaskuprelis.kag_androidapp.entity.GroupSelectEvent;
 import com.simaskuprelis.kag_androidapp.entity.Node;
 
 import org.greenrobot.eventbus.EventBus;
@@ -40,6 +42,8 @@ import java.util.Stack;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.support.v4.app.ActivityOptionsCompat.makeSceneTransitionAnimation;
 
 public class TimetablePagerFragment extends Fragment {
     private static final int REQUEST_NODE_ID = 0;
@@ -164,10 +168,12 @@ public class TimetablePagerFragment extends Fragment {
 
     @SuppressWarnings("unused")
     @Subscribe
-    public void onGroupSelect(Group g) {
+    public void onGroupSelect(GroupSelectEvent event) {
         Intent i = new Intent(getContext(), GroupActivity.class);
-        i.putExtra(GroupActivity.EXTRA_GROUP, g);
-        startActivityForResult(i, REQUEST_GROUP_NODE_ID);
+        i.putExtra(GroupActivity.EXTRA_GROUP, event.group);
+        ActivityOptionsCompat ao =
+                makeSceneTransitionAnimation(getActivity(), event.view, "content_area");
+        startActivityForResult(i, REQUEST_GROUP_NODE_ID, ao.toBundle());
     }
 
     private void setNode(final Pair<String, String> node, boolean saveCurrent) {

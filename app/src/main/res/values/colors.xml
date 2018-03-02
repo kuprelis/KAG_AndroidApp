@@ -7,6 +7,6 @@
     <color name="textPrimary">#de000000</color>
     <color name="textSecondary">#8a000000</color>
 
-    <color name="white">#fff</color>
+    <color name="white">#ffffff</color>
     <color name="notification">@color/primary</color>
 </resources>
