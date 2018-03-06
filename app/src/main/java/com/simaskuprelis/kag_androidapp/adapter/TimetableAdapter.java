@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.entity.Group;
-import com.simaskuprelis.kag_androidapp.entity.GroupSelectEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -66,7 +65,7 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(final TimetableAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(TimetableAdapter.ViewHolder holder, int position) {
         holder.number.setText(Integer.toString(position + 1));
         holder.number.setEnabled(position == highlight);
         int start = times.get(position * 2);
@@ -79,7 +78,7 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EventBus.getDefault().post(new GroupSelectEvent(g, holder.itemView));
+                    EventBus.getDefault().post(g);
                 }
             });
         }
