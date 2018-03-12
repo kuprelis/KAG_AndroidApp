@@ -1,16 +1,15 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.firebase.firebase-perf'
-apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.simaskuprelis.kag_androidapp"
         minSdkVersion 16
-        targetSdkVersion 25
-        versionCode 7
-        versionName "1.0.3"
+        targetSdkVersion 27
+        versionCode 8
+        versionName "1.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -35,11 +34,11 @@ android {
 }
 
 ext {
-    supportVersion = '26.1.0'
+    supportVersion = '27.1.0'
     butterknifeVersion = '8.8.1'
     retrofitVersion = '2.3.0'
-    firebaseVersion = '11.4.2'
-    glideVersion = '4.3.0'
+    firebaseVersion = '11.8.0'
+    glideVersion = '4.6.1'
 }
 
 dependencies {
@@ -70,7 +69,9 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
 
     compile 'com.squareup.moshi:moshi:1.5.0'
-    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'org.greenrobot:eventbus:3.1.1'
 
     testCompile 'junit:junit:4.12'
 }
+
+apply plugin: 'com.google.gms.google-services'
