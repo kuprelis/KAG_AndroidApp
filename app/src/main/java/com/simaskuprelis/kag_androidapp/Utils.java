@@ -1,18 +1,15 @@
 package com.simaskuprelis.kag_androidapp;
 
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.Spanned;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.simaskuprelis.kag_androidapp.api.NewsApi;
-import com.simaskuprelis.kag_androidapp.receiver.NewsReceiver;
 import com.squareup.moshi.Moshi;
 
 import java.util.regex.Matcher;
@@ -71,27 +68,18 @@ public class Utils {
         return retrofit.create(NewsApi.class);
     }
 
-    public static void updatePollState(Context c) {
+    public static void setSubscription(String topic, boolean subscribe) {
+        FirebaseMessaging fm = FirebaseMessaging.getInstance();
+        if (subscribe) fm.subscribeToTopic(topic);
+        else fm.unsubscribeFromTopic(topic);
+    }
+
+    public static void updateSubscriptions(Context c) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
-        AlarmManager am = (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);
 
-        String keyImportant = c.getString(R.string.pref_notify_important);
-        String keyNews = c.getString(R.string.pref_notify_news);
-        boolean on = sp.getBoolean(keyImportant, true) || sp.getBoolean(keyNews, false);
-
-        Intent i = new Intent(NewsReceiver.ACTION_POLL_IMPORTANT);
-        PendingIntent pi = PendingIntent.getBroadcast(c, 0, i, PendingIntent.FLAG_NO_CREATE);
-        if (on) {
-            if (pi == null) pi = PendingIntent.getBroadcast(c, 0, i, 0);
-            int minutes = Integer.parseInt(sp.getString(c.getString(R.string.pref_poll_interval), "60"));
-            am.cancel(pi);
-            am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
-                    minutes * 60 * 1000, pi);
-        } else  {
-            if (pi != null) {
-                am.cancel(pi);
-                pi.cancel();
-            }
-        }
+        String alertKey = c.getString(R.string.pref_alerts);
+        String newsKey = c.getString(R.string.pref_news);
+        setSubscription(alertKey, sp.getBoolean(alertKey, true));
+        setSubscription(newsKey, sp.getBoolean(newsKey, false));
     }
 }

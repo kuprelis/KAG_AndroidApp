@@ -26,12 +26,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
     private static final int REQUEST_NODE_ID = 0;
 
     private Preference idPref;
-    private FirebaseAnalytics analytics;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        analytics = FirebaseAnalytics.getInstance(getContext());
     }
 
     @Override
@@ -100,7 +98,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 
         String name = getClass().getSimpleName();
-        analytics.setCurrentScreen(getActivity(), name, name);
+        FirebaseAnalytics.getInstance(getContext()).setCurrentScreen(getActivity(), name, name);
     }
 
     @Override
@@ -111,17 +109,11 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
-        String keyInterval = getString(R.string.pref_poll_interval);
-        String keyImportant = getString(R.string.pref_notify_important);
-        String keyNews = getString(R.string.pref_notify_news);
-        if (key.equals(keyInterval) || key.equals(keyImportant) || key.equals(keyNews)) {
-            Utils.updatePollState(getContext());
-
-            if (key.equals(keyInterval)) {
-                Bundle b = new Bundle();
-                b.putString("interval", sp.getString(keyInterval, null));
-                analytics.logEvent("pollInterval", b);
-            }
+        String keyAlerts = getString(R.string.pref_alerts);
+        String keyNews = getString(R.string.pref_news);
+        if (key.equals(keyAlerts) || key.equals(keyNews)) {
+            boolean value = sp.getBoolean(key, false);
+            Utils.setSubscription(key, value);
         }
     }
 }

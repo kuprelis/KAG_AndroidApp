@@ -8,22 +8,14 @@
     <PreferenceCategory android:title="@string/notifications">
 
         <SwitchPreference
-            android:key="@string/pref_notify_important"
+            android:key="@string/pref_alerts"
             android:title="@string/important_news"
             android:defaultValue="true" />
 
         <SwitchPreference
-            android:key="@string/pref_notify_news"
+            android:key="@string/pref_news"
             android:title="@string/news"
             android:defaultValue="false" />
-
-        <ListPreference
-            android:key="@string/pref_poll_interval"
-            android:title="@string/poll_interval"
-            android:entryValues="@array/poll_interval_values"
-            android:entries="@array/poll_interval_names"
-            android:defaultValue="60"
-            android:summary="%s"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/other">
