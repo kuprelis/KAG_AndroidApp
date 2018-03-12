@@ -33,9 +33,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Intent i = new Intent(this, MainActivity.class);
         i.putExtra(MainActivity.EXTRA_TAB, MainActivity.TAB_NEWS);
         PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
-        CharSequence title = data.containsKey("title") ?
-                Utils.parseHtml(data.get("title"), false) : getString(R.string.app_name);
-        CharSequence text = Utils.parseHtml(data.get("body"), false);
+        String title = data.containsKey("title") ?
+                Utils.parseHtml(data.get("title"), false).toString() : getString(R.string.app_name);
+        String text = Utils.parseHtml(data.get("body"), false).toString();
 
         NotificationCompat.Builder nb =
                 new NotificationCompat.Builder(this, getString(R.string.main_channel))
