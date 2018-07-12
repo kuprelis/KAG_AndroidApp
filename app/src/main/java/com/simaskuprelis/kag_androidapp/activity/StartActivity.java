@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.simaskuprelis.kag_androidapp.R;
-import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.entity.Node;
 
 public class StartActivity extends AppCompatActivity {

@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.simaskuprelis.kag_androidapp.fragment.NewsFragment;
 import com.simaskuprelis.kag_androidapp.R;
 import com.simaskuprelis.kag_androidapp.fragment.SettingsFragment;

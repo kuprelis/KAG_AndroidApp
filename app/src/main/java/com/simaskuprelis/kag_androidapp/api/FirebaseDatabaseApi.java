@@ -1,5 +1,6 @@
 package com.simaskuprelis.kag_androidapp.api;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
@@ -27,7 +28,7 @@ public class FirebaseDatabaseApi {
         DatabaseReference dr = FirebaseDatabase.getInstance().getReference(NODE_GROUPS).child(id);
         dr.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Group> groups = new ArrayList<>();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Group g = ds.getValue(Group.class);
@@ -38,7 +39,7 @@ public class FirebaseDatabaseApi {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 handleError(databaseError, listener);
             }
         });
@@ -48,7 +49,7 @@ public class FirebaseDatabaseApi {
         DatabaseReference dr = FirebaseDatabase.getInstance().getReference(NODES);
         dr.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Node> nodes = new ArrayList<>();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Node n = ds.getValue(Node.class);
@@ -59,7 +60,7 @@ public class FirebaseDatabaseApi {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 handleError(databaseError, listener);
             }
         });
@@ -69,7 +70,7 @@ public class FirebaseDatabaseApi {
         DatabaseReference dr = FirebaseDatabase.getInstance().getReference(GROUP_NODES).child(id);
         dr.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Node> nodes = new ArrayList<>();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Node n = ds.getValue(Node.class);
@@ -80,7 +81,7 @@ public class FirebaseDatabaseApi {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 handleError(databaseError, listener);
             }
         });
@@ -90,7 +91,7 @@ public class FirebaseDatabaseApi {
         DatabaseReference dr = FirebaseDatabase.getInstance().getReference(TIMES);
         dr.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Integer> items = new ArrayList<>();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Integer i = ds.getValue(Integer.class);
@@ -100,7 +101,7 @@ public class FirebaseDatabaseApi {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 handleError(databaseError, listener);
             }
         });

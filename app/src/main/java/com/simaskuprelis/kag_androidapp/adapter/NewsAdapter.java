@@ -1,5 +1,6 @@
 package com.simaskuprelis.kag_androidapp.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -59,21 +60,20 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         requestManager = rm;
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater li = LayoutInflater.from(parent.getContext());
 
         if (viewType == NewsListItem.TYPE_IMPORTANT)
             return new ImportantHolder(li.inflate(R.layout.list_item_news_important, parent, false));
 
-        if (viewType == NewsListItem.TYPE_REGULAR)
-            return new NewsHolder(li.inflate(R.layout.list_item_news, parent, false));
-
-        return null;
+        // if (viewType == NewsListItem.TYPE_REGULAR)
+        return new NewsHolder(li.inflate(R.layout.list_item_news, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         int type = holder.getItemViewType();
         if (type == NewsListItem.TYPE_IMPORTANT) {
             ImportantHolder ih = (ImportantHolder) holder;

@@ -1,5 +1,6 @@
 package com.simaskuprelis.kag_androidapp.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -58,14 +59,15 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
         } else highlight = -1;
     }
 
+    @NonNull
     @Override
-    public TimetableAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TimetableAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_timetable, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(TimetableAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TimetableAdapter.ViewHolder holder, int position) {
         holder.number.setText(Integer.toString(position + 1));
         holder.number.setEnabled(position == highlight);
         int start = times.get(position * 2);

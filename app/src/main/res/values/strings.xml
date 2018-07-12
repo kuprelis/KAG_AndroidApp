@@ -25,13 +25,11 @@
 
     <string name="select_node">Pasirinkite tvarkaraštį</string>
     <string name="search">Paieška</string>
-    <string name="go_back">Atgal</string>
     <string name="pick_node">Visi tvarkaraščiai</string>
     <string name="default_node">Grįžti į pagrindinį</string>
 
     <string name="main_timetable">Pagrindinis tvarkaraštis</string>
     <string name="notifications">Pranešimai</string>
-    <string name="poll_interval">Tikrinimo dažnis</string>
     <string name="other">Kita</string>
     <string name="report">Pranešti apie klaidą</string>
     <string name="report_email">simas.kuprelis@gmail.com</string>
