@@ -2,7 +2,7 @@ package com.simaskuprelis.kag_androidapp.api;
 
 import android.util.Log;
 
-import com.google.firebase.crash.FirebaseCrash;
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -107,7 +107,7 @@ public class FirebaseDatabaseApi {
     }
 
     private static void handleError(DatabaseError e, FirebaseListener l) {
-        FirebaseCrash.logcat(Log.ERROR, TAG, e.toString());
+        Crashlytics.log(Log.ERROR, TAG, e.toString());
         l.onFail(e.toException());
     }
 }

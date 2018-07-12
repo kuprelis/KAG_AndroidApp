@@ -15,8 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.crash.FirebaseCrash;
 import com.simaskuprelis.kag_androidapp.Utils;
 import com.simaskuprelis.kag_androidapp.activity.ArticleActivity;
 import com.simaskuprelis.kag_androidapp.api.NewsApi;
@@ -77,7 +77,7 @@ public class NewsFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<ImportantNewsItem> call, @NonNull Throwable t) {
-                FirebaseCrash.logcat(Log.ERROR, TAG, t.toString());
+                Crashlytics.log(Log.ERROR, TAG, t.toString());
             }
         });
 
@@ -97,7 +97,7 @@ public class NewsFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<NewsResponse> call, @NonNull Throwable t) {
-                FirebaseCrash.logcat(Log.ERROR, TAG, t.toString());
+                Crashlytics.log(Log.ERROR, TAG, t.toString());
             }
         });
     }
@@ -175,7 +175,7 @@ public class NewsFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<NewsResponse> call, @NonNull Throwable t) {
-                FirebaseCrash.logcat(Log.ERROR, TAG, t.toString());
+                Crashlytics.log(Log.ERROR, TAG, t.toString());
                 loading = false;
             }
         });

@@ -2,6 +2,9 @@
 
 buildscript {
     repositories {
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
         jcenter()
         google()
     }
@@ -12,6 +15,7 @@ buildscript {
         // in the individual module build.gradle files
         classpath 'com.google.gms:google-services:4.0.1'
         classpath 'com.google.firebase:firebase-plugins:1.1.5'
+        classpath 'io.fabric.tools:gradle:1.25.4'
     }
 }
 
