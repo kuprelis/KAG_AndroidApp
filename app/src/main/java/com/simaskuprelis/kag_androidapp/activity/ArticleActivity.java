@@ -1,9 +1,12 @@
 package com.simaskuprelis.kag_androidapp.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -47,6 +50,7 @@ public class ArticleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
         ButterKnife.bind(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         item = getIntent().getParcelableExtra(EXTRA_ARTICLE);
 
@@ -70,5 +74,16 @@ public class ArticleActivity extends AppCompatActivity {
         } else {
             this.updated.setText(getString(R.string.updated) + " " + updated);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            Intent i = NavUtils.getParentActivityIntent(this);
+            i.putExtra(MainActivity.EXTRA_TAB, MainActivity.TAB_NEWS);
+            NavUtils.navigateUpTo(this, i);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -1,5 +1,6 @@
 package com.simaskuprelis.kag_androidapp.activity;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
     public static final int TAB_SETTINGS = 2;
     public static final String EXTRA_TAB = "com.simaskuprelis.kag_androidapp.tab";
 
+    private static final int[] tabId = {R.id.tab_my_schedule, R.id.tab_news, R.id.tab_settings};
+    private int currTab;
+
     @BindView(R.id.bottom_nav)
     BottomNavigationView bottomNav;
 
@@ -32,36 +36,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        int tab = getIntent().getIntExtra(EXTRA_TAB, TAB_TIMETABLE);
-        switch (tab) {
-            case TAB_TIMETABLE:
-                putFragment(new TimetablePagerFragment());
-                bottomNav.setSelectedItemId(R.id.tab_my_schedule);
-                break;
-            case TAB_NEWS:
-                putFragment(new NewsFragment());
-                bottomNav.setSelectedItemId(R.id.tab_news);
-                break;
-            case TAB_SETTINGS:
-                putFragment(new SettingsFragment());
-                bottomNav.setSelectedItemId(R.id.tab_settings);
-                break;
-        }
+        currTab = getIntent().getIntExtra(EXTRA_TAB, TAB_TIMETABLE);
+        putFragment(fromTabId(tabId[currTab]));
+        bottomNav.setSelectedItemId(tabId[currTab]);
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.tab_my_schedule:
-                        putFragment(new TimetablePagerFragment());
-                        break;
-                    case R.id.tab_news:
-                        putFragment(new NewsFragment());
-                        break;
-                    case R.id.tab_settings:
-                        putFragment(new SettingsFragment());
-                        break;
-                }
+                putFragment(fromTabId(item.getItemId()));
                 return true;
             }
         });
@@ -82,6 +64,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        int tab = intent.getIntExtra(EXTRA_TAB, TAB_TIMETABLE);
+        if (tab == currTab) return;
+        currTab = tab;
+        bottomNav.setSelectedItemId(tabId[currTab]);
+    }
+
+    @Override
     public void onBackPressed() {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (f instanceof TimetablePagerFragment) {
@@ -91,12 +82,19 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    private Fragment fromTabId(int id) {
+        switch (id) {
+            case R.id.tab_my_schedule: return new TimetablePagerFragment();
+            case R.id.tab_news: return new NewsFragment();
+            case R.id.tab_settings: return new SettingsFragment();
+            default: return null;
+        }
+    }
+
     private void putFragment(Fragment f) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        Fragment old = fm.findFragmentById(R.id.fragment_container);
-        if (old != null) ft.remove(old);
-        if (f != null) ft.add(R.id.fragment_container, f);
+        ft.replace(R.id.fragment_container, f);
         ft.commit();
     }
 }

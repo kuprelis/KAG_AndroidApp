@@ -48,7 +48,6 @@ public class GroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
         ButterKnife.bind(this);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Group g = (Group) getIntent().getExtras().get(EXTRA_GROUP);
@@ -104,7 +103,9 @@ public class GroupActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            NavUtils.navigateUpFromSameTask(this);
+            Intent i = NavUtils.getParentActivityIntent(this);
+            i.putExtra(MainActivity.EXTRA_TAB, MainActivity.TAB_TIMETABLE);
+            NavUtils.navigateUpTo(this, i);
             return true;
         }
         return super.onOptionsItemSelected(item);
