@@ -72,7 +72,7 @@ public class ArticleActivity extends AppCompatActivity {
         if (created.equals(updated)) {
             this.updated.setVisibility(View.GONE);
         } else {
-            this.updated.setText(getString(R.string.updated) + " " + updated);
+            this.updated.setText(getString(R.string.updated, updated));
         }
     }
 

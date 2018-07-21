@@ -40,5 +40,5 @@
     <string name="email_error">Nerasta el. pašto programa</string>
     <string name="app_ver">Programos versija</string>
 
-    <string name="updated">Atnaujinta</string>
+    <string name="updated">Atnaujinta %s</string>
 </resources>
