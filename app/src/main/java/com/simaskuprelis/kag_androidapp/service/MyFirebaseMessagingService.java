@@ -32,6 +32,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Intent i = new Intent(this, MainActivity.class);
         i.putExtra(MainActivity.EXTRA_TAB, MainActivity.TAB_NEWS);
+        i.putExtra(MainActivity.EXTRA_RESET, true);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
         String title = data.containsKey("title") ?
                 Utils.parseHtml(data.get("title"), false).toString() : getString(R.string.app_name);

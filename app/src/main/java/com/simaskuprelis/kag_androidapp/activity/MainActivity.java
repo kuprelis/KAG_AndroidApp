@@ -23,9 +23,10 @@ public class MainActivity extends AppCompatActivity {
     public static final int TAB_NEWS = 1;
     public static final int TAB_SETTINGS = 2;
     public static final String EXTRA_TAB = "com.simaskuprelis.kag_androidapp.tab";
+    public static final String EXTRA_RESET = "com.simaskuprelis.kag_androidapp.reset";
 
     private static final int[] tabId = {R.id.tab_my_schedule, R.id.tab_news, R.id.tab_settings};
-    private int currTab;
+    private int currId;
 
     @BindView(R.id.bottom_nav)
     BottomNavigationView bottomNav;
@@ -36,14 +37,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        currTab = getIntent().getIntExtra(EXTRA_TAB, TAB_TIMETABLE);
-        putFragment(fromTabId(tabId[currTab]));
-        bottomNav.setSelectedItemId(tabId[currTab]);
+        currId = tabId[getIntent().getIntExtra(EXTRA_TAB, TAB_TIMETABLE)];
+        putFragment(fromTabId(currId));
+        bottomNav.setSelectedItemId(currId);
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                putFragment(fromTabId(item.getItemId()));
+                currId = item.getItemId();
+                putFragment(fromTabId(currId));
                 return true;
             }
         });
@@ -66,10 +68,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        int tab = intent.getIntExtra(EXTRA_TAB, TAB_TIMETABLE);
-        if (tab == currTab) return;
-        currTab = tab;
-        bottomNav.setSelectedItemId(tabId[currTab]);
+        int id = tabId[intent.getIntExtra(EXTRA_TAB, TAB_TIMETABLE)];
+        boolean reset = intent.getBooleanExtra(EXTRA_RESET, false);
+        if (!reset && id == currId) return;
+        currId = id;
+        bottomNav.setSelectedItemId(currId);
     }
 
     @Override
