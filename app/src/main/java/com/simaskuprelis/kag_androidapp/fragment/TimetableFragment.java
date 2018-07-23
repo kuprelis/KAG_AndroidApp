@@ -36,6 +36,7 @@ public class TimetableFragment extends Fragment {
     private SparseArray<Group> groups;
     private List<Integer> times;
     private int position;
+    private boolean wasAsleep;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class TimetableFragment extends Fragment {
         groups = args.getSparseParcelableArray(KEY_GROUPS);
         times = args.getIntegerArrayList(KEY_TIMES);
         position = args.getInt(KEY_POS);
+        wasAsleep = false;
     }
 
     @Nullable
@@ -59,6 +61,22 @@ public class TimetableFragment extends Fragment {
         recycler.setAdapter(new TimetableAdapter(groups, times, Calendar.MONDAY + position));
 
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (wasAsleep) {
+            TimetableAdapter adapter = (TimetableAdapter) recycler.getAdapter();
+            if (adapter != null) adapter.update();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        wasAsleep = true;
     }
 
     public static TimetableFragment newInstance(SparseArray<Group> groups, List<Integer> times, int pos) {
