@@ -9,8 +9,8 @@ android {
         applicationId "com.simaskuprelis.kag_androidapp"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 9
-        versionName "1.1.1"
+        versionCode 10
+        versionName "1.1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
