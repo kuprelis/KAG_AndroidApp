@@ -24,6 +24,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final int REQUEST_NODE_ID = 0;
+    private static final String PRIVACY_POLICY_URL = "http://bit.ly/2T4kNCG";
 
     private Preference idPref;
 
@@ -67,6 +68,17 @@ public class SettingsFragment extends PreferenceFragmentCompat
                     Toast.makeText(getContext(), getString(R.string.email_error),
                             Toast.LENGTH_LONG).show();
                 }
+                return true;
+            }
+        });
+
+        Preference policyPref = findPreference(getString(R.string.pref_policy));
+        policyPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(PRIVACY_POLICY_URL));
+                startActivity(i);
                 return true;
             }
         });

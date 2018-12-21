@@ -22,8 +22,11 @@
 
         <Preference
             android:key="@string/pref_report"
-            android:title="@string/report">
-        </Preference>
+            android:title="@string/report" />
+
+        <Preference
+            android:key="policy"
+            android:title="@string/privacy_policy" />
 
         <Preference
             android:key="@string/pref_app_ver"

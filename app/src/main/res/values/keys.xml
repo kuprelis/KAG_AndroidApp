@@ -6,6 +6,7 @@
     <string name="pref_user_name">defaultName</string>
     <string name="pref_app_ver">appVer</string>
     <string name="pref_report">report</string>
+    <string name="pref_policy">policy</string>
 
     <string name="main_channel">main</string>
 </resources>
